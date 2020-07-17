@@ -178,6 +178,24 @@ abstract class AbstractObject implements SplSubject
     }
 
     /**
+     * @param null $where
+     * @param null $order
+     * @return mixed|null
+     * @throws Exception
+     */
+    public static function listOne($where = null, $order = null) {
+        $return = null;
+        /**@var AbstractObject $object**/
+        $object_name = get_called_class();
+        $object = new $object_name();
+        $result = $object->loadAll($where, $order, [0,1]);
+        if(count($result) > 0) {
+            $return = $result[0];
+        }
+        return $return;
+    }
+
+    /**
      * @param mixed $id
      * @throws Exception
      */
