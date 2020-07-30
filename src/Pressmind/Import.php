@@ -382,16 +382,18 @@ class Import
      */
     private function _delete_old_touristic_data($touristic_object_name, $id_media_object)
     {
-        /** @var Pdo $db**/
-        $db = Registry::getInstance()->get('db');
-        $class_name = '\Pressmind\ORM\Object\Touristic' . $this->_touristic_object_map[$touristic_object_name];
-        /**@var AbstractObject $touristic_object * */
-        $touristic_object = new $class_name();
-        if($touristic_object->hasProperty('id_media_object')) {
-            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_delete_old_touristic_data(' . $touristic_object_name . ', ' . $id_media_object . '): deleting ' . $touristic_object_name . ' data for media_object: ' . $id_media_object, Writer::OUTPUT_FILE, 'import.log');
-            $db->delete($touristic_object->getDbTableName(), ['id_media_object = ?', $id_media_object]);
+        if(isset($this->_touristic_object_map[$touristic_object_name])) {
+            /** @var Pdo $db * */
+            $db = Registry::getInstance()->get('db');
+            $class_name = '\Pressmind\ORM\Object\Touristic' . $this->_touristic_object_map[$touristic_object_name];
+            /**@var AbstractObject $touristic_object * */
+            $touristic_object = new $class_name();
+            if ($touristic_object->hasProperty('id_media_object')) {
+                $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_delete_old_touristic_data(' . $touristic_object_name . ', ' . $id_media_object . '): deleting ' . $touristic_object_name . ' data for media_object: ' . $id_media_object, Writer::OUTPUT_FILE, 'import.log');
+                $db->delete($touristic_object->getDbTableName(), ['id_media_object = ?', $id_media_object]);
+            }
+            unset($touristic_object);
         }
-        unset($touristic_object);
     }
 
     /**
