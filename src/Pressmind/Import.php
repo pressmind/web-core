@@ -15,6 +15,15 @@ use \DirectoryIterator;
 use \Exception;
 use stdClass;
 
+// additional use statements for postImportImageProcessor()
+use Error;
+use ImagickException;
+use Pressmind\Image\Download;
+use Pressmind\Image\Processor\Adapter\Factory as ImageFactory;
+use Pressmind\Image\Processor\Config;
+use Pressmind\ORM\Object\MediaObject\DataType\Picture;
+use Pressmind\ORM\Object\MediaObject\DataType\Picture\Derivative;
+
 /**
  * Class Importer
  * @package Pressmind
@@ -413,8 +422,8 @@ class Import
                 $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): ' . $touristic_object_name . ' does not contain any data, skipping.', Writer::OUTPUT_FILE, 'import.log');
             }
             foreach ($touristic_objects as $touristic_object) {
-                $class_name = '\Pressmind\ORM\Object\Touristic' . $this->_touristic_object_map[$touristic_object_name];
                 if(isset($this->_touristic_object_field_map[$touristic_object_name])) {
+                    $class_name = '\Pressmind\ORM\Object\Touristic' . $this->_touristic_object_map[$touristic_object_name];
                     foreach ($touristic_object as $key => $value) {
                         if(isset($this->_touristic_object_field_map[$touristic_object_name][$key])) {
                             $new_key = $this->_touristic_object_field_map[$touristic_object_name][$key];
@@ -649,6 +658,77 @@ class Import
 
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::postImport(): bash -c "exec nohup php ' . APPLICATION_PATH . '/cli/file_downloader.php > /dev/null 2>&1 &"', Writer::OUTPUT_FILE, 'import.log');
         exec('bash -c "exec nohup php ' . APPLICATION_PATH . '/cli/file_downloader.php > /dev/null 2>&1 &"');
+    }
+
+    /**
+     * Additional method to do post import image process for one mediaObject
+     * 20200624 <mb@lbrmedia.de>.
+     * @param int $id_media_object
+     * @throws Exception
+     */
+    public function postImportImageProcessor($id_media_object)
+    {
+        Writer::write('Image processor for id_media_object '.$id_media_object.' started', WRITER::OUTPUT_FILE, 'image_processor.log');
+
+        $config = Registry::getInstance()->get('config');
+
+        try {
+            /** @var Picture[] $result */
+            $result = Picture::listAll(['path' => 'IS NULL', 'id_media_object' => (int)$id_media_object]);
+        } catch (Exception $e) {
+            Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
+        }
+
+        $image_save_path = HelperFunctions::buildPathString([WEBSERVER_DOCUMENT_ROOT, $config['imageprocessor']['image_file_path']]);
+
+        if (!is_dir($image_save_path)) {
+            mkdir($image_save_path, 0777, true);
+        }
+
+        Writer::write('Processing '.count($result).' images', WRITER::OUTPUT_FILE, 'image_processor.log');
+
+        foreach ($result as $image) {
+            try {
+                $download_url = $image->tmp_url;
+                Writer::write('Downloading image from '.$download_url, WRITER::OUTPUT_FILE, 'image_processor.log');
+                $downloader = new Download();
+                $query = [];
+                $url = parse_url($image->tmp_url);
+                parse_str($url['query'], $query);
+                $filename = $downloader->download($download_url, $image_save_path, $image->id_media_object.'_'.$query['id']);
+                Writer::write('Saving image '.$filename, WRITER::OUTPUT_FILE, 'image_processor.log');
+                $image->path = $image_save_path;
+                $image->uri = $config['imageprocessor']['image_file_path'];
+                $image->file_name = $filename;
+                $image->update();
+            } catch (Exception $e) {
+                Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
+                continue;
+            }
+
+            Writer::write('Creating derivatives', WRITER::OUTPUT_FILE, 'image_processor.log');
+
+            foreach ($config['imageprocessor']['derivatives'] as $derivative_name => $derivative_config) {
+                Writer::write('Creating derivative '.$derivative_name, WRITER::OUTPUT_FILE, 'image_processor.log');
+                try {
+                    $imageProcessor = ImageFactory::create($config['imageprocessor']['adapter']);
+                    $processor_config = Config::create($derivative_config);
+                    $path = $imageProcessor->process($processor_config, $image_save_path.DIRECTORY_SEPARATOR.$image->file_name, $derivative_name);
+                    $result[] = $path;
+                    $derivative = new Derivative();
+                    $derivative->id_image = $image->getId();
+                    $derivative->name = $derivative_name;
+                    $derivative->path = $path;
+                    $derivative->uri = '/'.$config['imageprocessor']['image_file_path'].'/'.pathinfo($path)['filename'].'.'.pathinfo($path)['extension'];
+                    $derivative->create();
+                    Writer::write('Derivative '.$derivative_name.' created: '.$derivative->uri, WRITER::OUTPUT_FILE, 'image_processor.log');
+                } catch (ImagickException | Exception | Error $e) {
+                    Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
+                    continue;
+                }
+            }
+        }
+        Writer::write('Image processor finished', WRITER::OUTPUT_FILE, 'image_processor.log');
     }
 
     /**

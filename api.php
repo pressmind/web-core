@@ -30,7 +30,7 @@ if($request->isGet()) {
         try {
             $importer = new Import();
             $importer->importMediaObject($request->getParameter('id_media_object'));
-            $importer->postImport();
+            $importer->postImportImageProcessor($request->getParameter('id_media_object'));
             if($request->getParameter('preview') == "1") {
                 $media_object = new ORM\Object\MediaObject($request->getParameter('id_media_object'));
                 $config = Registry::getInstance()->get('config');
