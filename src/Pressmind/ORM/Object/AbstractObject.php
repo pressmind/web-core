@@ -558,6 +558,9 @@ abstract class AbstractObject implements SplSubject
             }
             return $new_values;
         }
+        if(empty($value) && (isset($property_info['default_value']) && !is_null($property_info['default_value']))) {
+            $value = $property_info['default_value'];
+        }
         if (isset($property_info['validators']) && is_array($property_info['validators'])) {
             $this->validatePropertyValue($name, $value, $property_info['validators']);
         }
