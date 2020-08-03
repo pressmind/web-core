@@ -403,7 +403,8 @@ class Option extends AbstractObject
                         'title' => 'Price_due',
                         'name' => 'price_due',
                         'type' => 'string',
-                        'required' => true,
+                        'required' => false,
+                        'default_value' => 'person_stay',
                         'validators' =>
                             array(
                                 0 =>
