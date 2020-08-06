@@ -80,6 +80,7 @@ class Link extends AbstractObject
                         'params' => [
                             'iframe',
                             'href',
+                            'link'
                         ],
                     ]
                 ],
