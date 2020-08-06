@@ -10,10 +10,9 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 $args = $argv;
 $args[1] = isset($argv[1]) ? $argv[1] : null;
 
-$importer = new Import();
-
 switch ($args[1]) {
     case 'fullimport':
+        $importer = new Import('fullimport');
         Writer::write('Importing all media objects', Writer::OUTPUT_BOTH, 'import.log');
         try {
             $importer->import();
@@ -29,6 +28,7 @@ switch ($args[1]) {
         break;
     case 'mediaobject':
         if(!empty($args[2])) {
+            $importer = new Import('mediaobject');
             Writer::write('Importing mediaobject ID(s): ' . $args[2], Writer::OUTPUT_BOTH, 'import.log');
             $ids = array_map('trim', explode(',', $args[2]));
             try {
@@ -48,6 +48,7 @@ switch ($args[1]) {
         break;
     case 'objecttypes':
         if(!empty($args[2])) {
+            $importer = new Import('objecttypes');
             Writer::write('Importing objecttypes ID(s): ' . $args[2], Writer::OUTPUT_BOTH, 'import.log');
             $ids = array_map('trim', explode(',', $args[2]));
             try {
@@ -98,6 +99,7 @@ switch ($args[1]) {
         }
         break;
     case 'remove_orphans':
+        $importer = new Import('remove_orphans');
         Writer::write('Removing orphans from database', Writer::OUTPUT_BOTH, 'import.log');
         try {
             $importer->removeOrphans();

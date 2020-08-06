@@ -60,6 +60,8 @@ class Import
      */
     private $_current_media_object_data_to_import = [];
 
+    private $_import_type = null;
+
     /**
      * @var array
      */
@@ -70,6 +72,7 @@ class Import
         'touristic_transports' => '\Transport',
         'touristic_booking_earlybirds' => '\Booking\Earlybird',
         'touristic_housing_packages' => '\Housing\Package',
+        'touristic_housing_packages_description_links' => '\Housing\Package\DescriptionLink',
         'touristic_option_descriptions' => '\Option\Description',
         'touristic_options' => '\Option',
         'touristic_startingpoint_options' => '\Startingpoint\Option',
@@ -105,14 +108,16 @@ class Import
 
     /**
      * Importer constructor.
+     * @param string $importType
      * @throws Exception
      */
-    public function __construct()
+    public function __construct($importType = 'fullimport')
     {
         $this->_start_time = microtime(true);
         $this->_overall_start_time = microtime(true);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::__construct()', Writer::OUTPUT_FILE, 'import.log');
         $this->_client = new Client();
+        $this->_import_type = $importType;
     }
 
     /**
@@ -125,8 +130,6 @@ class Import
         $allowed_object_types = array_keys($conf['data']['media_types']);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::import()', Writer::OUTPUT_FILE, 'import.log');
         $params = [
-            //'visibility' => implode(',', $this->_visibilities),
-            //'state' => implode(',', $this->_states),
             'id_media_object_type' => implode(',', $allowed_object_types)
         ];
         if (!is_null($id_pool)) {
@@ -145,7 +148,6 @@ class Import
      */
     private function _importIds($startIndex, $params, $numItems = 50)
     {
-        //$this->_log[] =  Writer::write(APPLICATION_PATH . DIRECTORY_SEPARATOR . $this->_tmp_import_folder . DIRECTORY_SEPARATOR . $item->id_media_object
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importIds()', Writer::OUTPUT_FILE, 'import.log');
         $params['startIndex'] = $startIndex;
         $params['numItems'] = $numItems;
@@ -296,9 +298,6 @@ class Import
                 $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_tree_items', Writer::OUTPUT_FILE, 'import.log');
                 $db->delete('pmt2core_media_object_tree_items', ['id_media_object = ?', $id_media_object]);
 
-                //$this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_urls', Writer::OUTPUT_FILE, 'import.log');
-                //$db->delete('pmt2core_media_object_urls', ['id_media_object = ?', $id_media_object]);
-
                 $category_tree_ids = $this->_importMediaObjectData($response[0], $id_media_object);
             }
             if(!empty($starting_point_ids)) {
@@ -402,6 +401,7 @@ class Import
     {
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): parsing touristic data', Writer::OUTPUT_BOTH, 'import.log');
         $this->_current_touristic_data_to_import = [];
+        $linked_media_object_ids = [];
         foreach ($touristic_data as $touristic_object_name => $touristic_objects) {
             $this->_delete_old_touristic_data($touristic_object_name, $id_media_object);
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): Mapping ' . $touristic_object_name, Writer::OUTPUT_FILE, 'import.log');
@@ -427,6 +427,11 @@ class Import
                     } catch (Exception $e) {
                         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): ' . $class_name . ' mapping failed: ' . $e->getMessage(), Writer::OUTPUT_FILE, 'import_error.log');
                         $this->_errors[] = 'Importer::_importMediaObjectTouristicData(' . $id_media_object . '): ' . $class_name . ' mapping failed: ' . $e->getMessage();
+                    }
+                    if($touristic_object_name == 'touristic_housing_packages_description_links' && $this->_import_type == 'mediaobject') {
+                        if(isset($touristic_object->id_media_object) && !empty($touristic_object->id_media_object)) {
+                            $linked_media_object_ids[] = $touristic_object->id_media_object;
+                        }
                     }
                     unset($object);
                     $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): Object removed from heap', Writer::OUTPUT_FILE, 'import.log');
@@ -458,6 +463,10 @@ class Import
             unset($touristic_object_to_import);
             unset($touristic_data);
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): Object removed from heap', Writer::OUTPUT_FILE, 'import.log');
+        }
+        if(count($linked_media_object_ids) > 0) {
+            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectTouristicData(' . $id_media_object . '): Linked media objects found, starting to import linked objects', Writer::OUTPUT_BOTH, 'import.log');
+            $this->importMediaObjectsFromArray($linked_media_object_ids);
         }
         return $starting_point_ids;
     }
@@ -584,6 +593,7 @@ class Import
         $this->_current_media_object_data_to_import = [];
         $values = [];
         $ignore = [];
+        $linked_media_object_ids = [];
         foreach ($media_object_data->data as $datafield) {
             if (is_array($datafield->sections)) {
                 foreach ($datafield->sections as $section) {
@@ -605,6 +615,11 @@ class Import
                             }
                         } else if(isset($datafield->value) && isset($datafield->value->$section_id)) {
                             $value = $datafield->value->$section_id;
+                        }
+                        if($datafield->type == 'objectlink' && $this->_import_type == 'mediaobject' && !is_null($value)) {
+                            foreach ($value->objects as $linked_media_object_id) {
+                                $linked_media_object_ids[] = $linked_media_object_id;
+                            }
                         }
                         $values[$language]['language'] = $language;
                         $values[$language]['id_media_object'] = $media_object_data->id_media_object;
@@ -630,6 +645,10 @@ class Import
         }
         unset($values);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Heap cleaned up', Writer::OUTPUT_FILE, 'import.log');
+        if(count($linked_media_object_ids) > 0) {
+            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Linked media objects found, starting to import linked objects', Writer::OUTPUT_BOTH, 'import.log');
+            $this->importMediaObjectsFromArray($linked_media_object_ids);
+        }
         return $category_tree_ids;
     }
 

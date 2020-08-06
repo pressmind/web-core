@@ -1,6 +1,7 @@
 <?php
 namespace Pressmind;
 
+use Exception;
 use Pressmind\MVC\Request;
 use Pressmind\MVC\Response;
 use Pressmind\REST\Controller\Ibe;
@@ -16,7 +17,7 @@ if($request->isPost()) {
         $action = $request->getParameter('action');
         $class = new Ibe($request->getParameter('data'));
         $response->setBody(json_encode(['success' => true, 'data' => $class->$action()]));
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         $response->setCode(500);
         $response->setBody(json_encode(['success' => false, 'msg' => $e->getMessage()]));
     }
@@ -28,7 +29,7 @@ if($request->isGet()) {
         $response = new Response();
         $response->setContentType('application/json');
         try {
-            $importer = new Import();
+            $importer = new Import('mediaobject');
             $importer->importMediaObject($request->getParameter('id_media_object'));
             $importer->postImportImageProcessor($request->getParameter('id_media_object'));
             if($request->getParameter('preview') == "1") {
@@ -41,7 +42,7 @@ if($request->isGet()) {
             } else {
                 $response->setBody(json_encode(['status' => 'Code 200: Import erfolgreich', 'url' => null, 'msg' => implode("\n", $importer->getLog())]));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response->setCode(500);
             $response->setBody(json_encode(['status' => 'Code 500: Es ist ein Fehler aufgetreten', 'msg' => $e->getMessage()]));
         }

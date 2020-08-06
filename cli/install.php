@@ -43,6 +43,7 @@ if($args[1] != 'only_static') {
         '\Touristic\Date',
         '\Touristic\ExtrasToMediaObject',
         '\Touristic\Housing\Package',
+        '\Touristic\Housing\Package\DescriptionLink',
         '\Touristic\Insurance',
         '\Touristic\Insurance\Group',
         '\Touristic\Insurance\InsuranceToGroup',

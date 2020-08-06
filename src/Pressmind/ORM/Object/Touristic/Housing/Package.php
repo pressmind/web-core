@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Pressmind\ORM\Object\AbstractObject;
 use Pressmind\ORM\Object\CheapestPriceSpeed;
+use Pressmind\ORM\Object\Touristic\Housing\Package\DescriptionLink;
 use Pressmind\ORM\Object\Touristic\Option;
 
 /**
@@ -20,6 +21,7 @@ use Pressmind\ORM\Object\Touristic\Option;
  * @property string $code_ibe
  * @property string $room_type
  * @property Option[] $options
+ * @property DescriptionLink[] $description_links
  */
 class Package extends AbstractObject
 {
@@ -178,6 +180,20 @@ class Package extends AbstractObject
                         'filters' => array(
                             'type' => 'housing_option'
                         )
+                    ),
+                    'required' => false,
+                    'validators' => null,
+                    'filters' => null
+                ),
+                'description_links' => array(
+                    'title' => 'Description Links',
+                    'name' => 'description_links',
+                    'type' => 'relation',
+                    'relation' => array(
+                        'type' => 'hasMany',
+                        'related_id' => 'id_housing_package',
+                        'class' => DescriptionLink::class,
+                        'filters' => null,
                     ),
                     'required' => false,
                     'validators' => null,
