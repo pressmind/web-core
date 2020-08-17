@@ -418,7 +418,8 @@ class Option extends AbstractObject
                                                 3 => 'weekly',
                                                 4 => 'stay',
                                                 5 => 'nights_person',
-                                                6 => 'person_stay'
+                                                6 => 'person_stay',
+                                                7 => 'once_stay'
                                             ),
                                     ),
                             ),
