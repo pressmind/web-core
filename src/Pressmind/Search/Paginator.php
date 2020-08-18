@@ -3,10 +3,6 @@
 
 namespace Pressmind\Search;
 
-
-use Pressmind\Custom\MVC\Snippet;
-use Pressmind\Search;
-
 /**
  * Class Paginator
  * @package Pressmind - Search
@@ -39,16 +35,6 @@ class Paginator
     }
 
     /**
-     * @return false|string
-     */
-    public function renderPagination()
-    {
-        if($this->_total_pages > 1) {
-            return Snippet::render('pagination', ['current_page' => $this->_current_page, 'total_pages' => $this->_total_pages]);
-        }
-    }
-
-    /**
      * @return int
      */
     public function getPageSize()
@@ -59,6 +45,11 @@ class Paginator
     public function getCurrentPage()
     {
         return $this->_current_page;
+    }
+
+    public function getTotalPages()
+    {
+        return $this->_total_pages;
     }
 
     /**
