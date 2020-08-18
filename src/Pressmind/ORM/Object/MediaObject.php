@@ -282,10 +282,11 @@ class MediaObject extends AbstractObject
     /**
      * @param string $template
      * @param string $language
+     * @param object $custom_data
      * @return false|string
      * @throws Exception
      */
-    public function render($template, $language = 'de') {
+    public function render($template, $language = 'de', $custom_data = null) {
         $config = Registry::getInstance()->get('config');
         $media_type_name = $config['data']['media_types'][$this->id_object_type];
         $data = HelperFunctions::findObjectInArray($this->data, 'language', $language);
@@ -296,7 +297,8 @@ class MediaObject extends AbstractObject
         return $view->render([
             'data' => $data,
             'booking_packages' => $booking_packages,
-            'media_object' => $media_object
+            'media_object' => $media_object,
+            'custom_data' => $custom_data
         ]);
         /*$template_file = HelperFunctions::buildPathString(
             [
@@ -337,7 +339,8 @@ class MediaObject extends AbstractObject
      */
     public function getCheapestPrice($filters = null)
     {
-        return $this->getCheapestPrices($filters)[0];
+        $CheapestPrice = $this->getCheapestPrices($filters);
+        return empty($CheapestPrice[0]) ? null : $CheapestPrice[0];
     }
 
     /**
