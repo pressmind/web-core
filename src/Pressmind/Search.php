@@ -248,6 +248,9 @@ class Search
             $visibility = null;
         }
         $this->_sql = $sql_start . $additional_fields_string . " FROM pmt2core_media_objects " . implode(' ', $joins) . " WHERE" . $visibility . " (" . implode(') AND (', $sql). ")" . $sql_end;
+        if(empty($this->_conditions)) {
+            $this->_sql = $sql_start . " FROM pmt2core_media_objects " . " WHERE pmt2core_media_objects.visibility = 30" . $sql_end;
+        }
         if(!empty($this->_sort_properties)  && $returnTotalCount == false) {
             $order_strings = [];
             foreach ($this->_sort_properties as $property => $direction) {
