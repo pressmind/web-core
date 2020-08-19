@@ -4,6 +4,8 @@
 namespace Pressmind\Search\Condition;
 
 
+use stdClass;
+
 class Category implements ConditionInterface
 {
 
@@ -27,6 +29,9 @@ class Category implements ConditionInterface
      */
     private $_sort = 3;
 
+    /**
+     * @var string
+     */
     private $_combine_operator;
 
     /**
@@ -35,13 +40,16 @@ class Category implements ConditionInterface
      * @param array $pItemIds
      * @param string $pCombineOperator
      */
-    public function __construct($pVarName = null, $pItemIds = null, $pCombineOperator = 'OR')
+    public function __construct($pVarName, $pItemIds, $pCombineOperator = 'OR')
     {
         $this->_var_name = $pVarName;
         $this->_item_ids = $pItemIds;
         $this->_combine_operator = $pCombineOperator;
     }
 
+    /**
+     * @return string
+     */
     public function getSQL()
     {
         $item_id_strings = [];
@@ -55,37 +63,56 @@ class Category implements ConditionInterface
         return $sql;
     }
 
+    /**
+     * @return int
+     */
     public function getSort()
     {
         return $this->_sort;
     }
 
+    /**
+     * @return array
+     */
     public function getValues()
     {
         return $this->_values;
     }
 
+    /**
+     * @return string|null
+     */
     public function getJoins()
     {
         return 'INNER JOIN pmt2core_media_object_tree_items ' . $this->_var_name . ' ON pmt2core_media_objects.id = ' . $this->_var_name . '.id_media_object';
     }
 
+    /**
+     * @return string|null
+     */
     public function getAdditionalFields()
     {
         return null;
     }
 
-    public static function create($pVarName, $pItemIds)
+    /**
+     * @param string $pVarName
+     * @param array $pItemIds
+     * @param string $pCombineOperator
+     * @return Category
+     */
+    public static function create($pVarName, $pItemIds, $pCombineOperator = 'OR')
     {
-        $object = new self($pVarName, $pItemIds);
+        $object = new self($pVarName, $pItemIds, $pCombineOperator);
         return $object;
     }
 
     /**
-     * @param \stdClass $config
+     * @param stdClass $config
      */
     public function setConfig($config) {
         $this->_var_name = $config->var_name;
         $this->_item_ids = $config->item_ids;
+        $this->_combine_operator = $config->combine_operator;
     }
 }
