@@ -66,6 +66,10 @@ mysql> GRANT ALL ON pressmind.* TO 'my_database_user'@'localhost' IDENTIFIED BY 
 //... SNAP
 ```
 * save the config.json file
+### Security Notice
+Please be aware, that it is NOT a good idea to leave the config file under the document root of your webserver when going into production. 
+Best practice would be to have all files outside the document root, except of the assets folder for it holds all images and other files as well as an index.php which will include the bootstrap.php.
+
 * on a console move to folder cli and execute install.php
 ```shell script
 # Install
