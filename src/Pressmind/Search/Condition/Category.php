@@ -27,15 +27,19 @@ class Category implements ConditionInterface
      */
     private $_sort = 3;
 
+    private $_combine_operator;
+
     /**
      * Category constructor.
-     * @param $pVarName
-     * @param $pItemIds
+     * @param string $pVarName
+     * @param array $pItemIds
+     * @param string $pCombineOperator
      */
-    public function __construct($pVarName = null, $pItemIds = null)
+    public function __construct($pVarName = null, $pItemIds = null, $pCombineOperator = 'OR')
     {
         $this->_var_name = $pVarName;
         $this->_item_ids = $pItemIds;
+        $this->_combine_operator = $pCombineOperator;
     }
 
     public function getSQL()
@@ -47,7 +51,7 @@ class Category implements ConditionInterface
             $item_id_strings[] = $this->_var_name . '.id_item = :' . $this->_var_name . $term_counter;
             $this->_values[':' . $this->_var_name . $term_counter] = $item_id;
         }
-        $sql = $this->_var_name . ".var_name = '" . $this->_var_name . "' AND (" . implode(' OR ', $item_id_strings) . ")";
+        $sql = $this->_var_name . ".var_name = '" . $this->_var_name . "' AND (" . implode(' ' . $this->_combine_operator . ' ', $item_id_strings) . ")";
         return $sql;
     }
 
