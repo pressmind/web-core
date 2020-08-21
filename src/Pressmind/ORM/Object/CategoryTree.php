@@ -113,10 +113,11 @@ class CategoryTree extends AbstractObject
     /**
      * @param string|int $media_object_type
      * @param $variable_name
+     * @param string $language
      * @return CategoryTree
      * @throws Exception
      */
-    public static function findForMediaObjectType($media_object_type, $variable_name)
+    public static function findForMediaObjectType($media_object_type, $variable_name, $language = 'de')
     {
         $media_object_type_id = null;
         if(is_int($media_object_type)) {
@@ -139,7 +140,8 @@ class CategoryTree extends AbstractObject
         inner join pmt2core_media_objects mo 
         ON ti.id_media_object = mo.id 
         WHERE mo.id_object_type = {$media_object_type_id} 
-        AND ti.var_name = '{$variable_name}'";
+        AND ti.var_name = '{$variable_name}'
+        AND ti.language = {$language}";
         $result = $db->fetchRow($sql);
         if(is_null($result)) {
             throw new Exception('Category tree could not be found');
