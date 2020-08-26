@@ -29,6 +29,7 @@ if($args[1] != 'only_static') {
         '\MediaObject\DataType\Location',
         '\MediaObject\DataType\Objectlink',
         '\MediaObject\DataType\Picture',
+        '\MediaObject\DataType\Picture\Section',
         '\MediaObject\DataType\Picture\Derivative',
         '\MediaObject\DataType\Table',
         '\MediaObject\DataType\Table\Row',

@@ -29,7 +29,7 @@ foreach ($result as $file_result) {
         $download_url = $file->download_url;
         $file_name = $file->file_name;
         Writer::write('Downloading file from ' . $download_url, WRITER::OUTPUT_FILE, 'file_downloader.log');
-        $downloader = new \Pressmind\Image\Download();
+        $downloader = new \Pressmind\Image\Download('binary');
         $downloader->download($download_url, $file_save_path, $file_name);
         $file->file_path = $file_save_path;
         $file->download_url = $config['file_download']['download_file_path'] . '/' . $file_name;

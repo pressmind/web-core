@@ -280,6 +280,12 @@ class Import
                 $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_images', Writer::OUTPUT_FILE, 'import.log');
                 $db->delete('pmt2core_media_object_images', ['id_media_object = ?', $id_media_object]);
 
+                $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_image_derivatives', Writer::OUTPUT_FILE, 'import.log');
+                $db->delete('pmt2core_media_object_image_derivatives', ['id_media_object = ?', $id_media_object]);
+
+                $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_image_sections', Writer::OUTPUT_FILE, 'import.log');
+                $db->delete('pmt2core_media_object_image_sections', ['id_media_object = ?', $id_media_object]);
+
                 $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_links', Writer::OUTPUT_FILE, 'import.log');
                 $db->delete('pmt2core_media_object_links', ['id_media_object = ?', $id_media_object]);
 
@@ -674,63 +680,55 @@ class Import
      */
     public function postImportImageProcessor($id_media_object)
     {
-        Writer::write('Image processor for id_media_object '.$id_media_object.' started', WRITER::OUTPUT_FILE, 'image_processor.log');
-
         $config = Registry::getInstance()->get('config');
+
+        $images_save_path = BASE_PATH . DIRECTORY_SEPARATOR . $config['imageprocessor']['image_file_path'];
+
+        if(!is_dir($images_save_path)) {
+            mkdir($images_save_path, 0777, true);
+        }
+
+        Writer::write('Image processor started', WRITER::OUTPUT_FILE, 'image_processor.log');
 
         try {
             /** @var Picture[] $result */
-            $result = Picture::listAll(['path' => 'IS NULL', 'id_media_object' => (int)$id_media_object]);
+            $result = Picture::listAll(array('path' => 'IS NULL', 'id_media_object' => (int)$id_media_object));
         } catch (Exception $e) {
             Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
         }
 
-        $image_save_path = HelperFunctions::buildPathString([WEBSERVER_DOCUMENT_ROOT, $config['imageprocessor']['image_file_path']]);
-
-        if (!is_dir($image_save_path)) {
-            mkdir($image_save_path, 0777, true);
-        }
-
-        Writer::write('Processing '.count($result).' images', WRITER::OUTPUT_FILE, 'image_processor.log');
+        Writer::write('Processing ' . count($result) . ' images', WRITER::OUTPUT_FILE, 'image_processor.log');
 
         foreach ($result as $image) {
+            Writer::write('Processing image ID:' . $image->getId(), WRITER::OUTPUT_FILE, 'image_processor.log');
+            Writer::write('Downloading image from ' . $image->tmp_url, WRITER::OUTPUT_FILE, 'image_processor.log');
             try {
-                $download_url = $image->tmp_url;
-                Writer::write('Downloading image from '.$download_url, WRITER::OUTPUT_FILE, 'image_processor.log');
-                $downloader = new Download();
-                $query = [];
-                $url = parse_url($image->tmp_url);
-                parse_str($url['query'], $query);
-                $filename = $downloader->download($download_url, $image_save_path, $image->id_media_object.'_'.$query['id']);
-                Writer::write('Saving image '.$filename, WRITER::OUTPUT_FILE, 'image_processor.log');
-                $image->path = $image_save_path;
-                $image->uri = $config['imageprocessor']['image_file_path'];
-                $image->file_name = $filename;
-                $image->update();
+                $image->downloadOriginal($images_save_path);
             } catch (Exception $e) {
                 Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
                 continue;
             }
-
+            $imageProcessor = \Pressmind\Image\Processor\Adapter\Factory::create($config['imageprocessor']['adapter']);
             Writer::write('Creating derivatives', WRITER::OUTPUT_FILE, 'image_processor.log');
-
             foreach ($config['imageprocessor']['derivatives'] as $derivative_name => $derivative_config) {
-                Writer::write('Creating derivative '.$derivative_name, WRITER::OUTPUT_FILE, 'image_processor.log');
                 try {
-                    $imageProcessor = ImageFactory::create($config['imageprocessor']['adapter']);
-                    $processor_config = Config::create($derivative_config);
-                    $path = $imageProcessor->process($processor_config, $image_save_path.DIRECTORY_SEPARATOR.$image->file_name, $derivative_name);
-                    $result[] = $path;
-                    $derivative = new Derivative();
-                    $derivative->id_image = $image->getId();
-                    $derivative->name = $derivative_name;
-                    $derivative->path = $path;
-                    $derivative->uri = '/'.$config['imageprocessor']['image_file_path'].'/'.pathinfo($path)['filename'].'.'.pathinfo($path)['extension'];
-                    $derivative->create();
-                    Writer::write('Derivative '.$derivative_name.' created: '.$derivative->uri, WRITER::OUTPUT_FILE, 'image_processor.log');
-                } catch (Exception | Error $e) {
+                    $processor_config = Config::create($derivative_name, $derivative_config);
+                    $image->createDerivative($processor_config, $imageProcessor);
+                    Writer::write('Processing sections', WRITER::OUTPUT_FILE, 'image_processor.log');
+                } catch (Exception $e) {
                     Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
                     continue;
+                }
+                foreach ($image->sections as $section) {
+                    Writer::write('Downloading section image from ' . $section->tmp_url, WRITER::OUTPUT_FILE, 'image_processor.log');
+                    try {
+                        $section->downloadOriginal($images_save_path);
+                        Writer::write('Creating section image derivatives', WRITER::OUTPUT_FILE, 'image_processor.log');
+                        $section->createDerivative($processor_config, $imageProcessor);
+                    } catch (Exception $e) {
+                        Writer::write($e->getMessage(), WRITER::OUTPUT_FILE, 'image_processor_error.log');
+                        continue;
+                    }
                 }
             }
         }

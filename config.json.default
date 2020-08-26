@@ -64,23 +64,30 @@
         },
         "imageprocessor": {
             "adapter": "ImageMagick",
+            "image_http_path": "/assets/image/",
             "image_file_path": "assets/image",
+            "webp_support": false,
+            "webp_library": "cwebp",
             "derivatives": {
                 "thumbnail": {
                     "max_width": "125",
                     "max_height": "83",
-                    "preserve_aspect_ratio": "true",
-                    "crop": "true",
+                    "preserve_aspect_ratio": false,
+                    "crop": true,
                     "horizontal_crop": "center",
-                    "vertical_crop": "center"
+                    "vertical_crop": "center",
+                    "webp_create": false,
+                    "webp_quality": 80
                 },
                 "teaser": {
                     "max_width": "500",
                     "max_height": "333",
-                    "preserve_aspect_ratio": "true",
-                    "crop": "true",
+                    "preserve_aspect_ratio": false,
+                    "crop": true,
                     "horizontal_crop": "center",
-                    "vertical_crop": "center"
+                    "vertical_crop": "center",
+                    "webp_create": false,
+                    "webp_quality": 80
                 }
             }
         }

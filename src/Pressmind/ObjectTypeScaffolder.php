@@ -183,6 +183,9 @@ class ObjectTypeScaffolder
                     'related_id' => 'id_media_object',
                     'filters' => ['var_name' => $definitionField[0]]
                 ];
+                if(ucfirst($definitionField[1]) == 'Picture') {
+                    $property['relation']['filters']['section_name'] = 'IS NULL';
+                }
                 $properties[] = ' * @property ' . 'DataType\\' . ucfirst($definitionField[1]) . '[] $' . $definitionField[0];
             } else {
                 $properties[] = ' * @property ' . $definitionField[2] . ' $' . $definitionField[0];
@@ -287,7 +290,7 @@ class ObjectTypeScaffolder
         foreach ($this->_class_definitions['properties'] as $property_name => $property) {
             if($property['type'] == 'relation') {
                 if($property['relation']['class'] == '\Pressmind\ORM\Object\MediaObject\DataType\Picture') {
-                    $property_list .= "\n<dt>" . $property_name . "</dt>\n<dd>type: " . $property['relation']['class'] . "\n<br>value: \n\t" . '<?php foreach($' . strtolower(HelperFunctions::human_to_machine($this->_object_definition->name)) . '->' . $property_name . ' as $' . $property_name . "_item) {?>\n\t\t<img src=\"<?php echo $" . $property_name . "_item->getUri('thumbnail');?>\" title=\"<?php echo $" . $property_name . "_item->copyright;?>\" alt=\"<?php echo $" . $property_name . "_item->alt;?>\">\n\t\t<pre>\n\t\t\t<?php print_r($" . $property_name . "_item->toStdClass());?>\n\t\t</pre>\n\t<?php }?>\n</dd>";
+                    $property_list .= "\n<dt>" . $property_name . "</dt>\n<dd>type: " . $property['relation']['class'] . "\n<br>value:<br> \n\t" . '<?php foreach($' . strtolower(HelperFunctions::human_to_machine($this->_object_definition->name)) . '->' . $property_name . ' as $' . $property_name . "_item) {?>\n\t\t<img src=\"<?php echo $" . $property_name . "_item->getUri('thumbnail');?>\" title=\"<?php echo $" . $property_name . "_item->copyright;?>\" alt=\"<?php echo $" . $property_name . "_item->alt;?>\">\n\t\t<pre>\n\t\t\t<?php print_r($" . $property_name . "_item->toStdClass());?>\n\t\t</pre>\n\t<?php }?>\n</dd>";
                 } else {
                     $property_list .= "\n<dt>" . $property_name . "</dt>\n<dd>type: " . $property['relation']['class'] . "\n<br>value: \n\t" . '<?php foreach($' . strtolower(HelperFunctions::human_to_machine($this->_object_definition->name)) . '->' . $property_name . ' as $' . $property_name . "_item) {?>\n\t\t<pre>\n\t\t\t<?php print_r($" . $property_name . "_item->toStdClass());?>\n\t\t</pre>\n\t<?php }?>\n</dd>";
                 }

@@ -55,6 +55,11 @@ abstract class AbstractObject implements SplSubject
     protected $_db;
 
     /**
+     * @var array
+     */
+    protected $_log = [];
+
+    /**
      * AbstractObject constructor.
      * @param null $id
      * @param bool $readRelations
@@ -69,6 +74,11 @@ abstract class AbstractObject implements SplSubject
         if(!is_null($id)) {
             $this->read($id);
         }
+    }
+
+    public function getLog()
+    {
+        return $this->_log;
     }
 
     /**
@@ -116,8 +126,8 @@ abstract class AbstractObject implements SplSubject
                 if($value == 'IS NULL') {
                     $operator = 'IS NULL';
                     $variable_replacement = '';
-                } else if($value == 'NOT IS NULL') {
-                    $operator = 'NOT IS NULL';
+                } else if($value == 'IS NOT NULL') {
+                    $operator = 'IS NOT NULL';
                     $variable_replacement = '';
                 } else {
                     $values[] = $value;
@@ -129,7 +139,6 @@ abstract class AbstractObject implements SplSubject
                 $query .= $key . ' ' . $operator . $variable_replacement;
                 $where_i++;
             }
-            //$query .= implode(' ' . $operator . ' ? AND ', $keys) . ' ' . $operator . ' ?';
         } else if(!is_null($where)) {
             $query .= " WHERE " . $where;
         }
@@ -154,12 +163,9 @@ abstract class AbstractObject implements SplSubject
             /**@var AbstractObject $object * */
             $class_name = get_class($this);
             $object = new $class_name(null, $this->_read_relations);
-            //print_r($stdObject);
             $object->fromStdClass($stdObject);
-            //print_r($object);
             $result[] = $object;
         }
-        //print_r($result);
         return $result;
     }
 
@@ -717,6 +723,10 @@ abstract class AbstractObject implements SplSubject
                 $relation_object = new $relation_class_name(null, $this->_read_relations);
             }
             $filters = [$property_info['relation']['related_id'] => $this->_getRelationId()];
+            if(isset($property_info['relation']['related_foreign_id'])) {
+                $local_relation_name = $property_info['relation']['related_id'];
+                $filters = [$property_info['relation']['related_foreign_id'] => $this->$local_relation_name];
+            }
             if (isset($property_info['relation']['filters']) && is_array($property_info['relation']['filters'])) {
                 $filters = array_merge($filters, $property_info['relation']['filters']);
             }

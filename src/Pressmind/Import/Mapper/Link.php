@@ -15,7 +15,7 @@ class Link implements MapperInterface
             $mapped_object->language = $pLanguage;
             $mapped_object->var_name = $pVarName;
             $mapped_object->href = $pObject->hrefLink;
-            $mapped_object->link_type = $pObject->link_type;
+            $mapped_object->link_type = isset($pObject->link_type) ? $pObject->link_type : null;
             return ([$mapped_object]);
         } else {
             return [];

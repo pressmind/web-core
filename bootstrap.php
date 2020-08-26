@@ -16,6 +16,13 @@ define('APPLICATION_PATH', __DIR__);
 define('WEBSERVER_DOCUMENT_ROOT', __DIR__);
 if (php_sapi_name() != "cli") {
     define('WEBSERVER_HTTP', ((empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . '/');
+
+    /**
+     * WebP Support, if support of older Browsers like IE10 is required you can turn off WebP support here by using a conditional state based on request headers fo example
+     */
+    $browser = get_browser();
+    $webp_on = $browser->browser == 'IE' ? false:true; //Just for example purpose, you should use a more sophisticated solution in production environments
+    define('WEBP_SUPPORT', $webp_on);
 }
 define('ENV', 'development'); //For example purposes we set the ENV here, for real world applications it's a good idea to set an environment variable in a .htaccess file or in the webservers configuration
 

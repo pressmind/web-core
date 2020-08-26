@@ -8,6 +8,18 @@ use Exception;
 
 class Download
 {
+
+    /**
+     * @var string
+     */
+    private $_file_type;
+
+
+    public function __construct($file_type = 'image')
+    {
+        $this->_file_type = $file_type;
+    }
+
     /**
      * @param string $url
      * @param string $targetPath
@@ -37,7 +49,7 @@ class Download
             }
             fwrite($fp, $raw);
             fclose($fp);
-            if (substr($targetName, -3) == 'pdf') {
+            if ($this->_file_type !== 'image') {
                 $new_name = $targetName;
             } else {
                 $path_info = pathinfo($targetPath . DIRECTORY_SEPARATOR . $targetName);

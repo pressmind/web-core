@@ -1,8 +1,13 @@
 <?php
 
 namespace Pressmind\ORM\Object\MediaObject\DataType;
+use Exception;
+use Pressmind\Image\Download;
+use Pressmind\Image\Processor;
 use Pressmind\ORM\Object\AbstractObject;
 use Pressmind\ORM\Object\MediaObject\DataType\Picture\Derivative;
+use Pressmind\ORM\Object\MediaObject\DataType\Picture\Section;
+use Pressmind\Registry;
 
 /**
  * Class Plaintext
@@ -25,6 +30,7 @@ use Pressmind\ORM\Object\MediaObject\DataType\Picture\Derivative;
  * @property string $path
  * @property string $mime_type
  * @property Derivative[] $derivatives
+ * @property Section[] $sections
  */
 class Picture extends AbstractObject
 {
@@ -192,20 +198,32 @@ class Picture extends AbstractObject
                 'validators' => null,
                 'relation' => [
                     'type' => 'hasMany',
-                    'class' => '\\Pressmind\\ORM\\Object\\MediaObject\\DataType\\Picture\\Derivative',
+                    'class' => Derivative::class,
                     'related_id' => 'id_image',
-                    /*'on_save_related_properties' => [
-                        'id' => 'id_image'
-                    ],*/
-                    'filters' => null,
                 ],
-            ]
+            ],
+            'sections' => [
+                'title' => 'sections',
+                'name' => 'sections',
+                'type' => 'relation',
+                'required' => false,
+                'filters' => null,
+                'validators' => null,
+                'relation' => [
+                    'type' => 'hasMany',
+                    'class' => Section::class,
+                    'related_id' => 'id_image',
+                    'on_save_related_properties' => [
+                        'id' => 'id_image'
+                    ],
+                ],
+            ],
         ]
     ];
 
     /**
      * @param \stdClass $object
-     * @throws \Exception
+     * @throws Exception
      */
     /*public function fromStdClass($object)
     {
@@ -243,12 +261,22 @@ class Picture extends AbstractObject
      * @return string
      */
     public function getUri($derivativeName = null) {
+        $config = Registry::getInstance()->get('config');
         if(!is_null($derivativeName)) {
             if($derivative = $this->_hasDerivative($derivativeName)) {
-                return $derivative->uri;
+                $uri = $config['imageprocessor']['image_http_path'] . $derivative->file_name;
+                if($config['imageprocessor']['webp_support'] == true && $config['imageprocessor']['derivatives'][$derivativeName]['webp_create'] == true && defined('WEBP_SUPPORT') && WEBP_SUPPORT === true) {
+                    $path_info = pathinfo($uri);
+                    $uri = str_replace($path_info['extension'], 'webp', $uri);
+                }
+                $uri = is_null($this->path) ? $this->tmp_url : $uri;
+            } else {
+                $uri = is_null($this->path) ? $this->tmp_url : $config['imageprocessor']['image_http_path'] . $this->file_name;
             }
+        } else {
+            $uri = is_null($this->path) ? $this->tmp_url : $config['imageprocessor']['image_http_path'] . $this->file_name;
         }
-        return is_null($this->uri) ? $this->tmp_url : $this->uri . '/' . $this->file_name;
+        return $uri;
     }
 
     private function _hasDerivative($derivativeName)
@@ -262,5 +290,71 @@ class Picture extends AbstractObject
             }
         }
         return false;
+    }
+
+    /**
+     * @param string $sectionName
+     * @return Section|null
+     */
+    public function getSection($sectionName) {
+        foreach ($this->sections as $section) {
+            if($section->section_name == $sectionName) {
+                return $section;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param $target_path
+     * @param bool $use_cache
+     * @throws Exception
+     */
+    public function downloadOriginal($target_path, $use_cache = true)
+    {
+        $download_url = $this->tmp_url;
+        if($use_cache == false) {
+            $download_url .= '&cache=0';
+        }
+        $downloader = new Download();
+        $query = [];
+        $url = parse_url($this->tmp_url);
+        parse_str($url['query'], $query);
+        $filename = $downloader->download($download_url, $target_path, $this->file_name);
+        $this->path = $target_path;
+        $this->file_name = $filename;
+        $this->update();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function removeDerivatives()
+    {
+        foreach ($this->derivatives as $derivative) {
+            $derivative->delete();
+        }
+    }
+
+    /**
+     * @param Processor\Config $derivative_config
+     * @param Processor\AdapterInterface $image_processor
+     * @throws Exception
+     */
+    public function createDerivative($derivative_config, $image_processor)
+    {
+        $path = $image_processor->process($derivative_config, $this->path . DIRECTORY_SEPARATOR . $this->file_name, $derivative_config->name);
+        $webp_processor = new Processor\Adapter\WebPicture();
+        $webp_processor->process($derivative_config, $this->path . DIRECTORY_SEPARATOR . $this->file_name, $derivative_config->name);
+        $derivative = new Derivative();
+        $derivative->id_image = $this->getId();
+        $derivative->id_media_object = $this->id_media_object;
+        $derivative->name = $derivative_config->name;
+        $derivative->file_name = pathinfo($path)['filename'] . '.' . pathinfo($path)['extension'];
+        $derivative->path = $this->path;
+        $derivative->width = $derivative_config->max_width;
+        $derivative->height = $derivative_config->max_height;
+        //$derivative->uri = $this->uri;
+        $derivative->create();
     }
 }
