@@ -1,5 +1,6 @@
 <?php
 namespace Pressmind;
+
 use Autoloader;
 use Pressmind\DB\Adapter\Pdo;
 
@@ -20,9 +21,9 @@ if (php_sapi_name() != "cli") {
     /**
      * WebP Support, if support of older Browsers like IE10 is required you can turn off WebP support here by using a conditional state based on request headers fo example
      */
-    $browser = get_browser();
-    $webp_on = $browser->browser == 'IE' ? false:true; //Just for example purpose, you should use a more sophisticated solution in production environments
-    define('WEBP_SUPPORT', $webp_on);
+    if (empty($_SERVER['HTTP_ACCEPT']) === false) {
+        define('WEBP_SUPPORT', in_array('image/webp', explode(',', $_SERVER['HTTP_ACCEPT'])));
+    }
 }
 define('ENV', 'development'); //For example purposes we set the ENV here, for real world applications it's a good idea to set an environment variable in a .htaccess file or in the webservers configuration
 
@@ -53,10 +54,25 @@ $db_config = DB\Config\Pdo::create(
     $config['database']['username'],
     $config['database']['password']
 );
+
 /**
  * create the database adapter
  */
-$db = new Pdo($db_config);
+try {
+    $db = new Pdo($db_config);
+} catch (\Exception $e) {
+
+    if (
+        empty($config['database']['host']) || empty($config['database']['dbname']) ||
+        empty($config['database']['username']) || empty($config['database']['password'])
+    ) {
+        echo 'Error: database is not configured yet, please check ' . __DIR__ . '/config.json';
+    }
+
+    echo 'Error: ';
+    echo $e->getMessage();
+    exit;
+}
 
 /**
  * Init the registry and add configuration and database adapter
