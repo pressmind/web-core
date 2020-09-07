@@ -84,11 +84,20 @@ if($args[1] != 'only_static') {
         $response = $client->sendRequest('ObjectType', 'getAll');
         $config = Registry::getInstance()->get('config');
         $media_types = [];
+        $media_types_pretty_url = [];
         foreach ($response->result as $item) {
             $media_types[$item->id_type] = $item->type_name;
             $ids[] = $item->id_type;
+            $pretty_url = [
+                'prefix' => '/' . HelperFunctions::human_to_machine($item->type_name) . '/',
+                'field' => ['name' => 'name'],
+                'strategy' => 'unique',
+                'suffix' => ''
+            ];
+            $media_types_pretty_url[$item->id_type] = $pretty_url;
         }
         $config['data']['media_types'] = $media_types;
+        $config['data']['media_types_pretty_url'] = $media_types_pretty_url;
         Registry::getInstance()->get('config_adapter')->write($config);
         Registry::getInstance()->add('config', $config);
         $importer->importMediaObjectTypes($ids);

@@ -10,6 +10,7 @@ namespace Pressmind\ORM\Object;
  * @property integer $id
  * @property string $route
  * @property integer $id_media_object
+ * @property integer $id_object_type
  * @property string $language
  */
 class Route extends AbstractObject
@@ -43,6 +44,14 @@ class Route extends AbstractObject
             'id_media_object' => [
                 'title' => 'id_media_object',
                 'name' => 'id_media_object',
+                'type' => 'integer',
+                'required' => false,
+                'filters' => null,
+                'validators' => null,
+            ],
+            'id_object_type' => [
+                'title' => 'id_object_type',
+                'name' => 'id_object_type',
                 'type' => 'integer',
                 'required' => false,
                 'filters' => null,

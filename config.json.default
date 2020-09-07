@@ -40,6 +40,7 @@
                 ]
             },
             "media_types": {},
+            "media_types_pretty_url": {},
             "sections": {
                 "default": "Default",
                 "fallback": "Default",

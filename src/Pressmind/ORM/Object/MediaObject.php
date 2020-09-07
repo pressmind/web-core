@@ -6,8 +6,10 @@ use DateTime;
 use Exception;
 use Custom\AbstractMediaType;
 use Custom\MediaType\Factory;
+use Pressmind\DB\Adapter\Pdo;
 use Pressmind\HelperFunctions;
 use Pressmind\MVC\View;
+use Pressmind\ORM\Object\MediaObject\DataType\Objectlink;
 use Pressmind\ORM\Object\Touristic\Booking\Package;
 use Pressmind\ORM\Object\Touristic\CheapestPrice;
 use Pressmind\ORM\Object\Touristic\Date;
@@ -371,10 +373,71 @@ class MediaObject extends AbstractObject
         return $cheapest_prices;
     }
 
+    /**
+     * @return string[]
+     */
+    public function buildPrettyUrls()
+    {
+        $config = Registry::getInstance()->get('config');
+        $field = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['field']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['field'] : ['name' => 'name'];
+        $url = $this->name;
+        $field_name = $field['name'];
+        if($field_name == 'name' || $field_name == 'code') {
+            $url = HelperFunctions::replaceLatinSpecialChars(trim(strtolower($this->$field_name)));
+        } else {
+            $object = $this->data[0];
+            if($object->getPropertyDefinition($field_name)['type'] == 'string') {
+                if(!empty($object->$field_name)) {
+                    $url = HelperFunctions::replaceLatinSpecialChars(trim(strtolower($object->$field_name)));
+                }
+            }
+            if($object->getPropertyDefinition($field_name)['type'] == 'relation') {
+                $linked_object_field_name = $field['linked_object_field'];
+                $linked_objects = $object->$field_name;
+                if(!empty($object->$field_name)) {
+                    if(is_array($linked_objects)) {
+                        if(get_class($linked_objects[0]) == Objectlink::class) {
+                            $objectlink = new MediaObject($linked_objects[0]->id_media_object_link);
+                            $url = $objectlink->data[0]->$linked_object_field_name;
+                        }
+                    } else {
+                        if(get_class($linked_objects) == Objectlink::class) {
+                            $objectlink = new MediaObject($linked_objects->id_media_object_link);
+                            $url = $objectlink->data[0]->$linked_object_field_name;
+                        }
+                    }
+                }
+            }
+        }
+        $prefix = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['prefix']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['prefix'] : '/';
+        $suffix = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['suffix']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['suffix'] : '';
+        return [$prefix . preg_replace('/\W+/', '-', $url) . $suffix];
+    }
+
     public function getPrettyUrl()
     {
-        $name = HelperFunctions::replaceLatinSpecialChars(trim(strtolower($this->name)));
-        return preg_replace('/\W+/', '-', $name);
+        $routes = $this->routes;
+        if(!empty($routes)) {
+            return $routes[0]->route;
+        }
+        return null;
+    }
+
+    /**
+     * @param $route
+     * @param $id_object_type
+     * @param $visibility = 30
+     * @return MediaObject|null
+     * @throws Exception
+     */
+    public static function getByPrettyUrl($route, $id_object_type, $visibility = 30)
+    {
+        /** @var Pdo $db */
+        $db = Registry::getInstance()->get('db');
+        $sql = "SELECT pmt2core_media_objects.id FROM pmt2core_media_objects INNER JOIN pmt2core_routes p2cr on pmt2core_media_objects.id = p2cr.id_media_object WHERE p2cr.route = ? AND p2cr.id_object_type = ? AND pmt2core_media_objects.visibility = ?";
+        $values = [$route, $id_object_type, $visibility];
+        $result = $db->fetchAll($sql, $values);
+        return $result;
     }
 
     /**

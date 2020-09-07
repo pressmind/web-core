@@ -342,18 +342,22 @@ class Import
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting Route entries', Writer::OUTPUT_FILE, 'import.log');
             $db->delete('pmt2core_routes', ['id_media_object = ?', $media_object->getId()]);
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Inserting Route entries', Writer::OUTPUT_FILE, 'import.log');
-            $route = new Route();
-            $route->id_media_object = $media_object->getId();
-            $route->route = $media_object->getPrettyUrl();
-            $route->language = 'de';
-            $route->create();
+            $media_object->setReadRelations(true);
+            $media_object->readRelations();
+            $urls = $media_object->buildPrettyUrls();
+            foreach ($urls as $url) {
+                $route = new Route();
+                $route->id_media_object = $media_object->getId();
+                $route->id_object_type = $media_object->id_object_type;
+                $route->route = $url;
+                $route->language = 'de';
+                $route->create();
+            }
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Routes updated', Writer::OUTPUT_FILE, 'import.log');
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting CheapestPriceSpeed entries', Writer::OUTPUT_FILE, 'import.log');
             /**@var Pdo $db**/
             $db->delete('pmt2core_cheapest_price_speed', ['id_media_object = ?', $media_object->getId()]);
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Inserting CheapestPriceSpeed entries', Writer::OUTPUT_FILE, 'import.log');
-            $media_object->setReadRelations(true);
-            $media_object->readRelations();
             $media_object->insertCheapestPrice();
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  CheapestPriceSpeed table updated', Writer::OUTPUT_FILE, 'import.log');
             if ($import_error == true) {
