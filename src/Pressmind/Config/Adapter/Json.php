@@ -35,6 +35,6 @@ class Json implements AdapterInterface
     {
         $tmp_config = json_decode(file_get_contents($this->_config_file), true);
         $tmp_config[$this->_environment] = $data;
-        file_put_contents($this->_config_file, json_encode($tmp_config, JSON_PRETTY_PRINT));
+        file_put_contents($this->_config_file, json_encode($tmp_config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 }
