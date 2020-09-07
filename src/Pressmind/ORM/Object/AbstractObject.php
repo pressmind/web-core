@@ -341,7 +341,6 @@ abstract class AbstractObject implements SplSubject
                         $objects_to_convert = [$this->$property_name];
                     }
                     foreach ($objects_to_convert as $object_to_convert) {
-                        //print_r($object_to_convert->toObject());
                         if ($property['relation']['type'] == 'hasOne') {
                             $object->$property_name = $object_to_convert->toStdClass();
                         } else {
@@ -514,7 +513,6 @@ abstract class AbstractObject implements SplSubject
      */
     public function __set($name, $value)
     {
-        //if($name == 'bilder_default') print_r($value);
         if (isset($this->_definitions['properties'][$name]) ) {
             try {
                 $this->$name = $this->parsePropertyValue($name, $value);
@@ -550,7 +548,6 @@ abstract class AbstractObject implements SplSubject
                     if (is_a($tmp_value, $class)) {
                         $new_values[] = $tmp_value;
                     } else if (is_a($tmp_value, 'stdClass') && (!isset($property_info['relation']['from_factory']) || ($property_info['relation']['from_factory'] != true))) {
-                        //echo $class . "\n";
                         $object = new $class();
                         $object->fromStdClass($tmp_value);
                         $new_values[] = $object;
@@ -647,7 +644,6 @@ abstract class AbstractObject implements SplSubject
      */
     public function __get($name)
     {
-        //echo $name . "\n";
         if(empty($this->$name)) {
             if ($name != '_definitions' && isset($this->_definitions['properties'][$name])) {
                 $property_info = $this->_definitions['properties'][$name];
@@ -662,12 +658,10 @@ abstract class AbstractObject implements SplSubject
                             $relation = $this->getRelationManyToMany($property_info);
                         }
                         $this->$name = $relation;
-
-                        //print_r($this->$name);
                     }
                 }
             } else if ($name != '_definitions' || $this->_check_variables_for_existence == false) {
-                throw new Exception('Variable ' . $name . ' does not exist in class ' . $this->_definitions['class']['name']);
+                return '### ' . $name . ' does not exist in object type ' . $this->_definitions['class']['name'].' ###';
             }
         }
         return isset($this->$name) ? $this->$name : null;
@@ -693,8 +687,6 @@ abstract class AbstractObject implements SplSubject
         if(!empty($this->$relation_object_id_name)) {
             $relation_class_name = $property_info['relation']['class'];
             /**@var $relation_object AbstractObject* */
-            //echo $property_info['relation']['related_id'];
-            //echo $this->$relation_object_id_name;
             $relation_object = new $relation_class_name($this->$relation_object_id_name, $this->_read_relations);
             return $relation_object;
         }
