@@ -794,6 +794,10 @@ abstract class AbstractObject implements SplSubject
         return $this->_definitions['properties'];
     }
 
+    public function getPropertyDefinition($propertyName) {
+        return $this->_definitions['properties'][$propertyName];
+    }
+
     /**
      * Returns the table name of the representing database table in _definitions['database']['table_name']
      * @return string
