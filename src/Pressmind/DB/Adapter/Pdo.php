@@ -64,14 +64,18 @@ class Pdo implements AdapterInterface
     /**
      * @param null $query
      * @param null $parameters
+     * @param null $class_name
      * @return array|void
      * @throws Exception
      */
-    public function fetchAll($query = null, $parameters = null)
+    public function fetchAll($query = null, $parameters = null, $class_name = null)
     {
         if (!is_null($query)) {
             $this->statement = $this->databaseConnection->prepare($query);
             $this->statement->execute($parameters);
+        }
+        if(!is_null($class_name)) {
+            return $this->statement->fetchAll(\PDO::FETCH_CLASS, $class_name);
         }
         return $this->statement->fetchAll(\PDO::FETCH_OBJ);
     }
@@ -79,12 +83,13 @@ class Pdo implements AdapterInterface
     /**
      * @param null $query
      * @param null $parameters
+     * @param null $class_name
      * @return null|stdClass
      * @throws Exception
      */
-    public function fetchRow($query = null, $parameters = null)
+    public function fetchRow($query = null, $parameters = null, $class_name = null)
     {
-        $result = $this->fetchAll($query, $parameters);
+        $result = $this->fetchAll($query, $parameters, $class_name);
         if (count($result) > 0) {
             return $result[0];
         }
@@ -136,10 +141,15 @@ class Pdo implements AdapterInterface
      * @param $where
      * @throws Exception
      */
-    public function delete($tableName, $where = [])
+    public function delete($tableName, $where = null)
     {
-        $query = "DELETE FROM " . $this->table_prefix . $tableName . " WHERE " . $where[0];
-        $this->execute($query, [$where[1]]);
+        $query = "DELETE FROM " . $this->table_prefix . $tableName;
+        $parameters = null;
+        if(!is_null($where) && is_array($where)) {
+            $query .= " WHERE " . $where[0];
+            $parameters[] = $where[1];
+        }
+        $this->execute($query, $parameters);
     }
 
     /**

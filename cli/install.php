@@ -92,7 +92,7 @@ if($args[1] != 'only_static') {
                 'prefix' => '/' . HelperFunctions::human_to_machine($item->type_name) . '/',
                 'field' => ['name' => 'name'],
                 'strategy' => 'unique',
-                'suffix' => ''
+                'suffix' => '/'
             ];
             $media_types_pretty_url[$item->id_type] = $pretty_url;
         }

@@ -16,6 +16,8 @@ use Pressmind\ORM\Object\Touristic\Date;
 use Pressmind\ORM\Object\Touristic\Option;
 use Pressmind\ORM\Object\Touristic\Transport;
 use Pressmind\Registry;
+use Pressmind\ValueObject\MediaObject\Result\GetByPrettyUrl;
+use stdClass;
 
 /**
  * Class MediaObject
@@ -375,20 +377,24 @@ class MediaObject extends AbstractObject
 
     /**
      * @return string[]
+     * @throws Exception
      */
     public function buildPrettyUrls()
     {
+        /** @var Pdo $db */
+        $db = Registry::getInstance()->get('db');
         $config = Registry::getInstance()->get('config');
         $field = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['field']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['field'] : ['name' => 'name'];
+        $strategy = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['strategy']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['strategy'] : 'unique';
         $url = $this->name;
         $field_name = $field['name'];
         if($field_name == 'name' || $field_name == 'code') {
-            $url = HelperFunctions::replaceLatinSpecialChars(trim(strtolower($this->$field_name)));
+            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($this->$field_name)));
         } else {
             $object = $this->data[0];
             if($object->getPropertyDefinition($field_name)['type'] == 'string') {
                 if(!empty($object->$field_name)) {
-                    $url = HelperFunctions::replaceLatinSpecialChars(trim(strtolower($object->$field_name)));
+                    $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($object->$field_name)));
                 }
             }
             if($object->getPropertyDefinition($field_name)['type'] == 'relation') {
@@ -398,12 +404,12 @@ class MediaObject extends AbstractObject
                     if(is_array($linked_objects)) {
                         if(get_class($linked_objects[0]) == Objectlink::class) {
                             $objectlink = new MediaObject($linked_objects[0]->id_media_object_link);
-                            $url = $objectlink->data[0]->$linked_object_field_name;
+                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($objectlink->data[0]->$linked_object_field_name)));
                         }
                     } else {
                         if(get_class($linked_objects) == Objectlink::class) {
                             $objectlink = new MediaObject($linked_objects->id_media_object_link);
-                            $url = $objectlink->data[0]->$linked_object_field_name;
+                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($objectlink->data[0]->$linked_object_field_name)));
                         }
                     }
                 }
@@ -411,7 +417,29 @@ class MediaObject extends AbstractObject
         }
         $prefix = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['prefix']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['prefix'] : '/';
         $suffix = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['suffix']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['suffix'] : '';
-        return [$prefix . preg_replace('/\W+/', '-', $url) . $suffix];
+        $final_url = $prefix . preg_replace('/\W+/', '-', $url) . $suffix;
+        if($strategy == 'unique' || $strategy == 'count-up') {
+            /** @var Route[] $existing_routes */
+            $existing_routes = $db->fetchAll("SELECT * FROM pmt2core_routes WHERE SUBSTR(REPLACE(route, '" . $suffix . "', ''),1 , LENGTH(REPLACE(route, '$suffix', '')) - 1) = '" . str_replace($suffix, '', $final_url) . "' OR route = '" . $final_url . "'", null, Route::class);
+            if(count($existing_routes) > 0) {
+                if($strategy == 'unique') {
+                    throw new Exception('Route with url ' . $final_url . ' already exists and route-building strategy is set to unique in config.json.');
+                }
+                /*if($strategy == 'count-up') {
+                    $counter = 1;
+                    foreach ($existing_routes as $existing_route) {
+                        if (substr(str_replace($suffix, '', $existing_route->route), 0, -2) == $final_url || $existing_route->route == $final_url) {
+                            //echo $existing_route->id_media_object . ': ' . substr(str_replace($suffix, '', $existing_route->route), 0, -2) . '-' . $counter . $suffix . "\n";
+                            $new_route = str_replace($suffix, '', $existing_route->route) . '-' . count($existing_routes) . $suffix;
+                            $existing_route->route = $new_route;
+                            $existing_route->update();
+                            $counter++;
+                        }
+                    }
+                }*/
+            }
+        }
+        return [$final_url];
     }
 
     public function getPrettyUrl()
@@ -427,16 +455,27 @@ class MediaObject extends AbstractObject
      * @param $route
      * @param $id_object_type
      * @param $visibility = 30
-     * @return MediaObject|null
+     * @return GetByPrettyUrl[]
      * @throws Exception
      */
-    public static function getByPrettyUrl($route, $id_object_type, $visibility = 30)
+    public static function getByPrettyUrl($route, $id_object_type = null, $language = 'de', $visibility = null)
     {
         /** @var Pdo $db */
         $db = Registry::getInstance()->get('db');
-        $sql = "SELECT pmt2core_media_objects.id FROM pmt2core_media_objects INNER JOIN pmt2core_routes p2cr on pmt2core_media_objects.id = p2cr.id_media_object WHERE p2cr.route = ? AND p2cr.id_object_type = ? AND pmt2core_media_objects.visibility = ?";
-        $values = [$route, $id_object_type, $visibility];
-        $result = $db->fetchAll($sql, $values);
+        $sql = [];
+        $values = [$route, $language];
+        $sql[] = "SELECT p2cmo.id, p2cmo.id_object_type, p2cmo.visibility, '" . $language ."' as language FROM pmt2core_media_objects p2cmo INNER JOIN pmt2core_routes p2cr on p2cmo.id = p2cr.id_media_object WHERE";
+        $sql[] = "p2cr.route = ?";
+        $sql[] = "AND p2cr.language = ?";
+        if(!is_null($id_object_type)) {
+            $sql[] = "AND p2cr.id_object_type = ?";
+            $values[] = $id_object_type;
+        }
+        if(!is_null($visibility)) {
+            $sql[] = "AND pmt2core_media_objects.visibility = ?";
+            $values[] = $visibility;
+        }
+        $result = $db->fetchAll(implode(' ', $sql), $values, GetByPrettyUrl::class);
         return $result;
     }
 
