@@ -96,7 +96,7 @@ class Request
     private function _parseRequestHeaders()
     {
         $this->_headers = $this->_apache_request_headers();
-        $this->_content_type = $this->_headers['content-type'];
+        $this->_content_type = isset($this->_headers['content-type']) ? $this->_headers['content-type'] : 'application/octet-stream';
     }
 
     /**
