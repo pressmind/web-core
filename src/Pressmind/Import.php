@@ -344,14 +344,19 @@ class Import
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Inserting Route entries', Writer::OUTPUT_FILE, 'import.log');
             $media_object->setReadRelations(true);
             $media_object->readRelations();
-            $urls = $media_object->buildPrettyUrls();
-            foreach ($urls as $url) {
-                $route = new Route();
-                $route->id_media_object = $media_object->getId();
-                $route->id_object_type = $media_object->id_object_type;
-                $route->route = $url;
-                $route->language = 'de';
-                $route->create();
+            try {
+                $urls = $media_object->buildPrettyUrls();
+                foreach ($urls as $url) {
+                    $route = new Route();
+                    $route->id_media_object = $media_object->getId();
+                    $route->id_object_type = $media_object->id_object_type;
+                    $route->route = $url;
+                    $route->language = 'de';
+                    $route->create();
+                }
+            } catch (Exception $e) {
+                $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Creating routes failed: ' . $e->getMessage(), Writer::OUTPUT_FILE, 'import_error.log');
+                $this->_errors[] = 'Importer::importMediaObject(' . $id_media_object . '):  Creating routes failed: ' . $e->getMessage();
             }
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Routes updated', Writer::OUTPUT_FILE, 'import.log');
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting CheapestPriceSpeed entries', Writer::OUTPUT_FILE, 'import.log');
