@@ -16,7 +16,6 @@ switch ($args[1]) {
         Writer::write('Importing all media objects', Writer::OUTPUT_BOTH, 'import.log');
         try {
             $importer->import();
-            $importer->postImport();
             if($importer->hasErrors()) {
                 echo ("WARNING: Import threw errors:\n" . implode("\n", $importer->getErrors())) . "\nSEE " . Writer::getLogFilePath() . DIRECTORY_SEPARATOR . "import_errors.log for details\n";
             }
@@ -24,6 +23,8 @@ switch ($args[1]) {
         } catch(Exception $e) {
             Writer::write($e->getMessage(), Writer::OUTPUT_BOTH, 'import_error.log');
             echo "WARNING: Import threw errors:\n" . $e->getMessage() . "\nSEE " . Writer::getLogFilePath() . DIRECTORY_SEPARATOR . "import_errors.log for details\n";
+        } finally {
+            $importer->postImport();
         }
         break;
     case 'mediaobject':
