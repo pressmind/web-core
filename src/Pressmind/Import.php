@@ -660,7 +660,7 @@ class Import
         }
         unset($values);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Heap cleaned up', Writer::OUTPUT_FILE, 'import.log');
-        if(count($linked_media_object_ids) > 0) {
+        if(count($linked_media_object_ids) > 0 && $import_linked_objects == true) {
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Linked media objects found, starting to import linked objects', Writer::OUTPUT_BOTH, 'import.log');
             $this->importMediaObjectsFromArray($linked_media_object_ids, false);
         }
