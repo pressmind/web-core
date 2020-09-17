@@ -631,7 +631,7 @@ class Import
                         } else if(isset($datafield->value) && isset($datafield->value->$section_id)) {
                             $value = $datafield->value->$section_id;
                         }
-                        if($datafield->type == 'objectlink' && $this->_import_type == 'mediaobject' && !is_null($value) && $import_linked_objects == true) {
+                        if($datafield->type == 'objectlink' && $this->_import_type == 'mediaobject' && !is_null($value) && is_a($value,'stdClass') && isset($value->objects) && is_array($value->objects) && $import_linked_objects == true) {
                             foreach ($value->objects as $linked_media_object_id) {
                                 $linked_media_object_ids[] = $linked_media_object_id;
                             }
