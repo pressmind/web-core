@@ -237,10 +237,10 @@ class Import
      * @param $media_object_ids
      * @throws Exception
      */
-    public function importMediaObjectsFromArray($media_object_ids)
+    public function importMediaObjectsFromArray($media_object_ids, $import_linked_objects = true)
     {
         foreach ($media_object_ids as $media_object_id) {
-            $this->importMediaObject($media_object_id);
+            $this->importMediaObject($media_object_id, $import_linked_objects);
         }
     }
 
@@ -249,7 +249,7 @@ class Import
      * @return bool
      * @throws Exception
      */
-    public function importMediaObject($id_media_object)
+    public function importMediaObject($id_media_object, $import_linked_objects = true)
     {
         $id_media_object = intval($id_media_object);
         $db = Registry::getInstance()->get('db');
@@ -304,7 +304,7 @@ class Import
                 $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Deleting media_object_tree_items', Writer::OUTPUT_FILE, 'import.log');
                 $db->delete('pmt2core_media_object_tree_items', ['id_media_object = ?', $id_media_object]);
 
-                $category_tree_ids = $this->_importMediaObjectData($response[0], $id_media_object);
+                $category_tree_ids = $this->_importMediaObjectData($response[0], $id_media_object, $import_linked_objects);
             }
             if(!empty($starting_point_ids)) {
                 $this->_importMediaObjectTouristicStartingPointOptions($starting_point_ids);
@@ -599,7 +599,7 @@ class Import
      * @return array
      * @throws Exception
      */
-    private function _importMediaObjectData($media_object_data, $id_media_object)
+    private function _importMediaObjectData($media_object_data, $id_media_object, $import_linked_objects = true)
     {
         $category_tree_ids = [];
         $conf =  Registry::getInstance()->get('config');
@@ -662,7 +662,7 @@ class Import
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Heap cleaned up', Writer::OUTPUT_FILE, 'import.log');
         if(count($linked_media_object_ids) > 0) {
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObjectData(' . $id_media_object . '): Linked media objects found, starting to import linked objects', Writer::OUTPUT_BOTH, 'import.log');
-            $this->importMediaObjectsFromArray($linked_media_object_ids);
+            $this->importMediaObjectsFromArray($linked_media_object_ids, false);
         }
         return $category_tree_ids;
     }
