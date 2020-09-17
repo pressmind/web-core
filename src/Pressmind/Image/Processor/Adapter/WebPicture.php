@@ -16,7 +16,7 @@ class WebPicture implements AdapterInterface
     public function process($config, $file, $derivativeName)
     {
         $conf = Registry::getInstance()->get('config');
-        if(!empty(exec('which ' . $conf['imageprocessor']['webp_library'])) && true === $config->webp_create) {
+        if(isset($conf['imageprocessor']['webp_library']) && !empty(exec('which ' . $conf['imageprocessor']['webp_library'])) && true === $config->webp_create) {
             $path_info = pathinfo($file);
             $path = $path_info['dirname'];
             $new_name = $path_info['filename'] . '_' . $derivativeName . '.' . $path_info['extension'];
