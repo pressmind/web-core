@@ -92,7 +92,7 @@ The index.php file demonstrates a simple search and will display a list of found
 The detail.php will render the information based on the view scripts that can be found in the examples/views folder.
 
 ### Quick Examples
-#### 1. Search for media objects
+#### Search for media objects
 searchMediaObjects.php
 ```php
 <?php
@@ -121,6 +121,39 @@ foreach ($mediaObjects as $mediaObject) {
     echo $mediaObject->render('test'); //will use Reise_Test.php as view file (code is shown below)
 }
 ```
+
+#### Build search filters
+```php
+<?php
+namespace Pressmind;
+
+require_once dirname(__DIR__) . '/bootstrap.php';
+
+$search = new Search(
+    [
+        Search\Condition\Category::create('zielgebiet_default', ['304E15ED-302F-CD33-9153-14B8C6F955BD', '4C5833CB-F29A-A0F4-5A10-14B762FB4019', '78321653-CF81-2EF1-ED02-9D07E01651C1']),
+        Search\Condition\PriceRange::create(100, 3000),
+        Search\Condition\DurationRange::create(0, 30),
+        Search\Condition\Visibility::create([10,30])
+    ]
+);
+
+$category_filter = new Search\Filter\Category('1207', $search);
+foreach ($category_filter->getResult() as $id => $tree_item) {
+    echo  '<pre>' . $id . ': ' . $tree_item->name . '</pre>';
+}
+$price_range_filter = new Search\Filter\PriceRange($search);
+echo '<pre>' . print_r($price_range_filter->getResult(), true) . '</pre>';
+
+$duration_filter = new Search\Filter\Duration($search);
+echo '<pre>' . print_r($duration_filter->getResult(), true) . '</pre>';
+
+foreach ($search->getResults(true) as $result) {
+    $cheapest_price = $result->getCheapestPrice();
+    echo '<a href="/examples/detail.php?id=' . $result->getId() . '">' . $result->name . '(' . $cheapest_price->price_total . ' EUR, ' . $cheapest_price->duration . ' Tage)</a><br>';
+}
+```
+
 #### View script for a media objects
 Reise_Test.php (see also the *_Example.php scripts in /examples/views for reference)
 ```php
