@@ -58,6 +58,11 @@ class Search
     private $_total_result_count;
 
     /**
+     * @var Result
+     */
+    private $_result = null;
+
+    /**
      * Search constructor.
      * @param array $pConditions
      * @param array $pLimits
@@ -143,6 +148,7 @@ class Search
             $this->_limits = $this->_paginator->getLimits($total_count);
         }
         $this->_concatSql();
+        //echo $this->_sql . "\n";
         $db_result = $db->fetchAll($this->_sql, $this->_values);
         $result = new Result();
         $result->setQuery($this->_sql);
@@ -163,8 +169,10 @@ class Search
      */
     public function getResults($loadFull = false)
     {
-        $result = $this->exec();
-        return $result->getResult($loadFull);
+        if(is_null($this->_result)) {
+            $this->_result = $this->exec();
+        }
+        return $this->_result->getResult($loadFull);
     }
 
     /**
@@ -283,6 +291,20 @@ class Search
         foreach ($this->_conditions as $condition) {
             if(is_a($condition, $pClassName)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $pClassName
+     * @return ConditionInterface|null
+     */
+    public function getCondition($pClassName)
+    {
+        foreach ($this->_conditions as $condition) {
+            if(is_a($condition, $pClassName)) {
+                return $condition;
             }
         }
         return false;

@@ -14,6 +14,7 @@ use Pressmind\ORM\Object\AbstractObject;
  * @property string $id_media_object
  * @property string $dynamic_values
  * @property integer $sort
+ * @property Item[] $children
  */
 class Item extends AbstractObject
 {

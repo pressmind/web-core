@@ -12,12 +12,12 @@ class Category implements ConditionInterface
     /**
      * @var string
      */
-    private $_var_name;
+    public $var_name;
 
     /**
      * @var array
      */
-    private $_item_ids = [];
+    public $item_ids = [];
 
     /**
      * @var array
@@ -42,8 +42,8 @@ class Category implements ConditionInterface
      */
     public function __construct($pVarName, $pItemIds, $pCombineOperator = 'OR')
     {
-        $this->_var_name = $pVarName;
-        $this->_item_ids = $pItemIds;
+        $this->var_name = $pVarName;
+        $this->item_ids = $pItemIds;
         $this->_combine_operator = $pCombineOperator;
     }
 
@@ -54,12 +54,12 @@ class Category implements ConditionInterface
     {
         $item_id_strings = [];
         $term_counter = 0;
-        foreach ($this->_item_ids as $item_id) {
+        foreach ($this->item_ids as $item_id) {
             $term_counter++;
-            $item_id_strings[] = $this->_var_name . '.id_item = :' . $this->_var_name . $term_counter;
-            $this->_values[':' . $this->_var_name . $term_counter] = $item_id;
+            $item_id_strings[] = $this->var_name . '.id_item = :' . $this->var_name . $term_counter;
+            $this->_values[':' . $this->var_name . $term_counter] = $item_id;
         }
-        $sql = $this->_var_name . ".var_name = '" . $this->_var_name . "' AND (" . implode(' ' . $this->_combine_operator . ' ', $item_id_strings) . ")";
+        $sql = $this->var_name . ".var_name = '" . $this->var_name . "' AND (" . implode(' ' . $this->_combine_operator . ' ', $item_id_strings) . ")";
         return $sql;
     }
 
@@ -84,7 +84,7 @@ class Category implements ConditionInterface
      */
     public function getJoins()
     {
-        return 'INNER JOIN pmt2core_media_object_tree_items ' . $this->_var_name . ' ON pmt2core_media_objects.id = ' . $this->_var_name . '.id_media_object';
+        return 'INNER JOIN pmt2core_media_object_tree_items ' . $this->var_name . ' ON pmt2core_media_objects.id = ' . $this->var_name . '.id_media_object';
     }
 
     /**
@@ -111,8 +111,8 @@ class Category implements ConditionInterface
      * @param stdClass $config
      */
     public function setConfig($config) {
-        $this->_var_name = $config->var_name;
-        $this->_item_ids = $config->item_ids;
+        $this->var_name = $config->var_name;
+        $this->item_ids = $config->item_ids;
         $this->_combine_operator = $config->combine_operator;
     }
 }

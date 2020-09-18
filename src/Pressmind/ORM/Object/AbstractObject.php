@@ -119,6 +119,13 @@ abstract class AbstractObject implements SplSubject
                 } else {
                     $operator = '=';
                 }
+                if(strtolower($operator) == 'in') {
+                    $value_array = explode(',', $value);
+                    $variable_replacement = ' (' . implode(',', array_fill(0,count($value_array),'?')) . ')';
+                    foreach ($value_array as $item) {
+                        $values[] = $item;
+                    }
+                }
                 if($value == 'CURRENT_DATE') {
                     $now = new \DateTime();
                     $value = $now->format('Y-m-d h:i:s');
@@ -129,7 +136,7 @@ abstract class AbstractObject implements SplSubject
                 } else if($value == 'IS NOT NULL') {
                     $operator = 'IS NOT NULL';
                     $variable_replacement = '';
-                } else {
+                } else if(strtolower($operator) != 'in') {
                     $values[] = $value;
                 }
                 $keys[] = $key;
