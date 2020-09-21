@@ -43,7 +43,7 @@ class PriceRange
         $prices = [];
         foreach ($results as $result) {
             $cheapest_price = $result->getCheapestPrice();
-            if(($min == null || $max == null) || ($min <= $cheapest_price->price_total && $max >= $cheapest_price->price_total)) {
+            if(!is_null($cheapest_price->price_total) && (($min == null || $max == null) || ($min <= $cheapest_price->price_total && $max >= $cheapest_price->price_total))) {
                 $prices[] = $cheapest_price->price_total;
             }
         }
