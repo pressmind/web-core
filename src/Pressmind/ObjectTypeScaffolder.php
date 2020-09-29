@@ -322,7 +322,10 @@ class ObjectTypeScaffolder
                 if ($file->isFile()) {
                     $example_suffix = str_replace('.' . $file->getExtension(), '', $file->getBasename());
                     $text = str_replace($search, $replace, file_get_contents($file->getRealPath()));
-                    file_put_contents(BASE_PATH . '/' . $config['view_scripts']['base_path'] . '/' . $this->_generateClassName($this->_object_definition->name) . '_' . $example_suffix . '.php', $text);
+                    $file_path = BASE_PATH . '/' . $config['view_scripts']['base_path'] . '/' . $this->_generateClassName($this->_object_definition->name) . '_' . $example_suffix . '.php';
+                    if(!file_exists($file_path) || $config['scaffolder_templates']['overwrite_existing_templates'] == true) {
+                        file_put_contents($file_path, $text);
+                    }
                 }
             }
         } else {

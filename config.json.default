@@ -61,6 +61,7 @@
             "base_path": "examples/views"
         },
         "scaffolder_templates": {
+            "overwrite_existing_templates": false,
             "base_path": "src/Pressmind/ObjectTypeScaffolderTemplates"
         },
         "file_download": {
