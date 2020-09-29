@@ -317,8 +317,18 @@ class ObjectTypeScaffolder
             $property_list
         ];
 
-        $text = str_replace($search, $replace, file_get_contents(__DIR__ . '/ObjectTypeScaffolderTemplates/view_template.txt'));
-        file_put_contents(BASE_PATH . '/' . $config['view_scripts']['base_path'] . '/'  . $this->_generateClassName($this->_object_definition->name) .  '_Example.php', $text);
+        if(isset($config['scaffolder_templates']) && !empty($config['scaffolder_templates']['base_path'])) {
+            foreach (new \DirectoryIterator(HelperFunctions::buildPathString([BASE_PATH, $config['scaffolder_templates']['base_path']])) as $file) {
+                if ($file->isFile()) {
+                    $example_suffix = str_replace('.' . $file->getExtension(), '', $file->getBasename());
+                    $text = str_replace($search, $replace, file_get_contents($file->getRealPath()));
+                    file_put_contents(BASE_PATH . '/' . $config['view_scripts']['base_path'] . '/' . $this->_generateClassName($this->_object_definition->name) . '_' . $example_suffix . '.php', $text);
+                }
+            }
+        } else {
+            $text = str_replace($search, $replace, file_get_contents(__DIR__ . '/ObjectTypeScaffolderTemplates/view_template.txt'));
+            file_put_contents(BASE_PATH . '/' . $config['view_scripts']['base_path'] . '/' . $this->_generateClassName($this->_object_definition->name) . '_Example.php', $text);
+        }
     }
 
     /**

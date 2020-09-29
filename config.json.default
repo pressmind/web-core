@@ -60,6 +60,9 @@
         "view_scripts": {
             "base_path": "examples/views"
         },
+        "scaffolder_templates": {
+            "base_path": "src/Pressmind/ObjectTypeScaffolderTemplates"
+        },
         "file_download": {
             "download_file_path": "assets/downloads"
         },
