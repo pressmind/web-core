@@ -105,7 +105,9 @@ $search = new Search(
         Search\Condition\ObjectType::create(169),
         Search\Condition\Category::create('land_default', ['B9063101-0F6A-2322-83A6-FAF7A0D82827']),
         Search\Condition\Text::create(169, 'Riesengebirge', ['headline_default' => 'LIKE']),
-        Search\Condition\DateRange::create(new DateTime('2020-06-01'), new DateTime('2020-07-31'))
+        Search\Condition\DateRange::create(new DateTime('2020-06-01'), new DateTime('2020-07-31')),
+        Search\Condition\Fulltext::create('Gimignano Pisa Italien', ['fulltext'], 'OR', 'NATURAL LANGUAGE MODE'), //parameters $pProperties, $pLogicOperator and $pMode are optional
+        Search\Condition\Visibility::create([10, 30])
     ],
     [
         'start' => 0,
