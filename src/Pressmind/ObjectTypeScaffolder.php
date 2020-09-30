@@ -69,6 +69,11 @@ class ObjectTypeScaffolder
     private $_tablename;
 
     /**
+     * @var array
+     */
+    private $_var_names = [];
+
+    /**
      * ObjectTypeScaffolder constructor.
      * @param stdClass $pObjectDefinition
      * @param string $pTableName
@@ -109,6 +114,7 @@ class ObjectTypeScaffolder
                     } else if($this->_mysql_type_map[$field_definition->type] == 'relation') {
                         $relation_field_names[] = [$var_name, $field_definition->type];
                     }
+                    $this->_var_names[] = $var_name . '_' . HelperFunctions::human_to_machine($section->name);
                     $definition_fields[] = [$var_name . '_' . HelperFunctions::human_to_machine($section->name), $field_definition->type, $this->_php_type_map[$this->_mysql_type_map[$field_definition->type]]];
                     if(!is_null($section->language) && !in_array($section->language, $languages)) {
                         $languages[] = $section->language;
@@ -123,6 +129,12 @@ class ObjectTypeScaffolder
         $this->_insertTags();
         $this->generateObjectInformationFile();
         $this->generateExampleViewFile();
+        if(!isset($conf['data']['media_types_fulltext_index_fields'])) {
+            $conf['data']['media_types_fulltext_index_fields'] = [];
+        }
+        $conf['data']['media_types_fulltext_index_fields'][$this->_tablename] = $this->getVarNames();
+        Registry::getInstance()->get('config_adapter')->write($conf);
+        Registry::getInstance()->add('config', $conf);
         foreach ($this->_log as $log) {
             Writer::write($log, Writer::OUTPUT_FILE, 'scaffolder.log');
         }
@@ -372,5 +384,9 @@ class ObjectTypeScaffolder
                 }
             }
         }
+    }
+
+    public function getVarNames() {
+        return $this->_var_names;
     }
 }

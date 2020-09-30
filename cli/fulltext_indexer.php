@@ -9,61 +9,32 @@ if(php_sapi_name() == 'cli') {
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-/**
- * @var DB\Adapter\Pdo $db
- */
-$db = Registry::getInstance()->get('db');
+$args = $argv;
+$args[1] = isset($argv[1]) ? $argv[1] : null;
 
-/**@var \Pressmind\ORM\Object\MediaObject[] $media_objects**/
-$media_objects = MediaObject::listAll();
+$media_objects = [];
 
-$fulltext = [];
-
-$db->execute('TRUNCATE pmt2core_fulltext_search');
+switch ($args[1]) {
+    case null:
+        $media_objects = MediaObject::listAll();
+        break;
+    case 'help':
+    case '--help':
+    case '-h':
+        $helptext = "usage: fulltext_indexer.php [<single id or commaseparated list of ids>]\n";
+        $helptext .= "Example usages:\n";
+        $helptext .= "php fulltext_indexer.php\n";
+        $helptext .= "php import.php 123456,78901234 <single or multiple ids allowed>\n";
+        echo $helptext;
+        break;
+    default:
+        $ids =  array_map('trim', explode(',', $args[1]));
+        foreach ($ids as $id) {
+            $media_object = new MediaObject(intval($id));
+            $media_objects[] = $media_object;
+        }
+}
 
 foreach ($media_objects as $media_object) {
-    $fulltext[] = [
-        'var_name' => 'code',
-        'id_media_object' => $media_object->getId(),
-        'fulltext_values' => $media_object->code
-    ];
-    $fulltext[] = [
-        'var_name' => 'name',
-        'id_media_object' => $media_object->getId(),
-        'fulltext_values' => $media_object->name
-    ];
-    $fulltext[] = [
-        'var_name' => 'tags',
-        'id_media_object' => $media_object->getId(),
-        'fulltext_values' => $media_object->tags
-    ];
-    foreach ($media_object->data as $data) {
-        foreach($data->getPropertyDefinitions() as $name => $definition) {
-            if($definition['type'] == 'string') {
-                $fulltext[] = [
-                    'var_name' => $name,
-                    'id_media_object' => $media_object->getId(),
-                    'fulltext_values' => preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name)))
-                ];
-            }
-            if($definition['type'] == 'relation') {
-                $values = [];
-                if($definition['relation']['class'] == '\\Pressmind\\ORM\\Object\\MediaObject\\DataType\\Categorytree') {
-                    foreach ($data->$name as $tree) {
-                        $values[] = $tree->item->name;
-                    }
-                }
-                if(count($values) > 0) {
-                    $fulltext[] = [
-                        'var_name' => $name,
-                        'id_media_object' => $media_object->getId(),
-                        'fulltext_values' => implode(' ', $values)
-                    ];
-                }
-            }
-        }
-    }
-}
-foreach ($fulltext as $fulltext_data) {
-    $db->insert('pmt2core_fulltext_search', $fulltext_data);
+    $media_object->createSearchIndex();
 }

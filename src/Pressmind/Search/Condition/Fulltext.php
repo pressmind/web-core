@@ -28,10 +28,9 @@ class Fulltext implements ConditionInterface
     private $_properties_to_be_queried;
 
     /**
-     * The logic operator that should be used on the query (enum, can be 'AND' or 'OR', defaults to 'OR')
      * @var string
      */
-    private $_logic_operator = 'AND';
+    private $_mode = 'NATURAL LANGUAGE MODE';
 
     /**
      * The values used for a pdo prepared statement
@@ -40,23 +39,24 @@ class Fulltext implements ConditionInterface
     private $_values = [];
 
     /**
-     * @var null
+     * The logic operator that should be used on the query (enum, can be 'AND' or 'OR', defaults to 'OR')
+     * @var string
      */
-    private $_object_type_id;
+    private $_logic_operator;
 
     /**
      * Fulltext constructor.
-     * @param null $pObjectTypeId
-     * @param null $pSearchTerms
-     * @param null $pProperties
+     * @param string $pSearchTerms
+     * @param array $pProperties
      * @param string $pLogicOperator
+     * @param string $pMode
      */
-    public function __construct($pObjectTypeId = null, $pSearchTerms = null, $pProperties = null, $pLogicOperator = 'AND')
+    public function __construct($pSearchTerms, $pProperties = ['fulltext'], $pLogicOperator = 'OR', $pMode = 'NATURAL LANGUAGE MODE')
     {
         $this->_splitSearchTerms($pSearchTerms);
         $this->_properties_to_be_queried = $pProperties;
+        $this->_mode = $pMode;
         $this->_logic_operator = $pLogicOperator;
-        $this->_object_type_id = $pObjectTypeId;
     }
 
     /**
@@ -68,9 +68,12 @@ class Fulltext implements ConditionInterface
         foreach ($this->_properties_to_be_queried as $property_name) {
             $values = [];
             foreach ($this->_search_terms as $search_term) {
-                $values[] = '' . $search_term;
+                if(strtolower($this->_mode) == 'boolean mode') {
+                    $search_term = '+' . $search_term;
+                }
+                $values[] = $search_term;
             }
-            $property_queries[] = "pmt2core_fulltext_search.var_name = '" . $property_name . "' AND MATCH(pmt2core_fulltext_search.fulltext_values) AGAINST (:" . $property_name . " IN BOOLEAN MODE)";
+            $property_queries[] = "pmt2core_fulltext_search.var_name = '" . $property_name . "' AND MATCH(pmt2core_fulltext_search.fulltext_values) AGAINST (:" . $property_name . " IN " . $this->_mode . ")";
             $this->_values[':' . $property_name] = implode(' ', $values);
         }
         $sql = '(' . implode(') ' . $this->_logic_operator . ' (', $property_queries) . ')';
@@ -115,8 +118,15 @@ class Fulltext implements ConditionInterface
         $this->_search_terms = explode(' ', $pSearchTerms);
     }
 
-    public static function create($pObjectTypeId = null, $pSearchTerms = null, $pProperties = null, $pLogicOperator = 'AND') {
-        $object = new self($pObjectTypeId, $pSearchTerms, $pProperties, $pLogicOperator);
+    /**
+     * @param string $pSearchTerms
+     * @param array $pProperties
+     * @param string $pLogicOperator
+     * @param string $pMode
+     * @return Fulltext
+     */
+    public static function create($pSearchTerms, $pProperties = ['fulltext'], $pLogicOperator = 'OR', $pMode = 'NATURAL LANGUAGE MODE') {
+        $object = new self( $pSearchTerms, $pProperties, $pLogicOperator, $pMode);
         return $object;
     }
 

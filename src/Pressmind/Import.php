@@ -364,6 +364,7 @@ class Import
             $db->delete('pmt2core_cheapest_price_speed', ['id_media_object = ?', $media_object->getId()]);
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  Inserting CheapestPriceSpeed entries', Writer::OUTPUT_FILE, 'import.log');
             $media_object->insertCheapestPrice();
+            $media_object->createSearchIndex();
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObject(' . $id_media_object . '):  CheapestPriceSpeed table updated', Writer::OUTPUT_FILE, 'import.log');
             if ($import_error == true) {
                 $this->_revertCurrentImport();

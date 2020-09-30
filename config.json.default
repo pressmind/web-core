@@ -41,6 +41,7 @@
             },
             "media_types": {},
             "media_types_pretty_url": {},
+            "media_types_fulltext_index_fields": {},
             "sections": {
                 "default": "Default",
                 "fallback": "Default",

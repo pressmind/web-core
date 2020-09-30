@@ -611,4 +611,69 @@ class MediaObject extends AbstractObject
         }
         return null;
     }
+
+    public function createSearchIndex()
+    {
+        $config = Registry::getInstance()->get('config');
+        if(isset($config['data']['media_types_fulltext_index_fields'])) {
+            $complete_fulltext = [];
+            $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
+            $fulltext[] = [
+                'var_name' => 'code',
+                'id_media_object' => $this->getId(),
+                'fulltext_values' => $this->code
+            ];
+            $fulltext[] = [
+                'var_name' => 'name',
+                'id_media_object' => $this->getId(),
+                'fulltext_values' => $this->name
+            ];
+            $fulltext[] = [
+                'var_name' => 'tags',
+                'id_media_object' => $this->getId(),
+                'fulltext_values' => $this->tags
+            ];
+            foreach ($this->data as $data) {
+                foreach ($data->getPropertyDefinitions() as $name => $definition) {
+                    $add_to_complete_fulltext = in_array($name, $config['data']['media_types_fulltext_index_fields'][$this->id_object_type]);
+                    if ($definition['type'] == 'string') {
+                        $fulltext[] = [
+                            'var_name' => $name,
+                            'id_media_object' => $this->getId(),
+                            'fulltext_values' => trim(preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name))))
+                        ];
+                        if ($add_to_complete_fulltext) {
+                            $complete_fulltext[] = trim(preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name))));
+                        }
+                    }
+                    if ($definition['type'] == 'relation') {
+                        $values = [];
+                        if ($definition['relation']['class'] == '\\Pressmind\\ORM\\Object\\MediaObject\\DataType\\Categorytree') {
+                            foreach ($data->$name as $tree) {
+                                $values[] = $tree->item->name;
+                            }
+                        }
+                        if (count($values) > 0) {
+                            $fulltext[] = [
+                                'var_name' => $name,
+                                'id_media_object' => $this->getId(),
+                                'fulltext_values' => implode(' ', $values)
+                            ];
+                            if ($add_to_complete_fulltext) {
+                                $complete_fulltext[] = implode(' ', $values);
+                            }
+                        }
+                    }
+                }
+            }
+            $fulltext[] = [
+                'var_name' => 'fulltext',
+                'id_media_object' => $this->getId(),
+                'fulltext_values' => implode(' ', $complete_fulltext)
+            ];
+            foreach ($fulltext as $fulltext_data) {
+                $this->_db->insert('pmt2core_fulltext_search', $fulltext_data);
+            }
+        }
+    }
 }
