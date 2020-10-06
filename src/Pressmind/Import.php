@@ -7,6 +7,7 @@ use Pressmind\DB\Adapter\Pdo;
 use Pressmind\Log\Writer;
 use Pressmind\ORM\Object\AbstractObject;
 use Pressmind\ORM\Object\CategoryTree\Item;
+use Pressmind\ORM\Object\Itinerary\Variant;
 use Pressmind\ORM\Object\MediaObject;
 use Pressmind\ORM\Object\Route;
 use Pressmind\ORM\Object\Touristic\Startingpoint\Option;
@@ -369,6 +370,7 @@ class Import
             if ($import_error == true) {
                 $this->_revertCurrentImport();
             }
+            $this->importItinerary($id_media_object);
             $this->_current_touristic_data_to_import = [];
             $this->_current_media_object_data_to_import = [];
             unset($media_object);
@@ -765,6 +767,50 @@ class Import
             $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObjectTypes(' . implode(',' ,$ids) . '): Sacfolding for ID: ' . $result->id . ' finished', Writer::OUTPUT_FILE, 'import.log');
         }
     }
+
+    /**
+     * @param $id_media_object
+     * @throws Exception
+     */
+    public function importItinerary($id_media_object) {
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importItinerary(' . $id_media_object . '):  Starting import', Writer::OUTPUT_BOTH, 'import.log');
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importItinerary(' . $id_media_object . '):  Deleting existing itinerary_variants', Writer::OUTPUT_FILE, 'import.log');
+        /** @var Variant[] $variants */
+        $variants = Variant::listAll(['id_media_object' => $id_media_object]);
+        foreach ($variants as $variant) {
+            $variant->delete(true);
+        }
+
+        $response = $this->_client->sendRequest('Itinerary', null, ['id_media_object' => (int)$id_media_object]);
+        $this->_checkApiResponse($response);
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importItinerary(' . $id_media_object . '): Found ' . count($response->result) . ' itinerary variants', Writer::OUTPUT_BOTH, 'import.log');
+        foreach ($response->result as $result) {
+            $result->id_media_object = $id_media_object;
+            $id_booking_package = $result->id_booking_packages;
+            $result->id_booking_package = $id_booking_package;
+            unset($result->id_booking_packages);
+            foreach ($result->steps as &$step) {
+                if(is_a($step->document_media_objects, 'stdClass')) {
+                    $step->document_media_objects = [$step->document_media_objects];
+                }
+                foreach ($step->sections as &$section) {
+                    $id_section = $section->id;
+                    $section->id_section = $id_section;
+                    unset($section->id);
+                }
+                foreach ($step->document_media_objects as &$document_media_object) {
+                    unset($document_media_object->urls);
+                }
+            }
+            $variant = new ORM\Object\Itinerary\Variant();
+            $variant->setReadRelations(true);
+            $variant->fromStdClass($result);
+            $variant->create();
+            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importItinerary(' . $id_media_object . '): Variant ' . $variant->getId() . ' created', Writer::OUTPUT_BOTH, 'import.log');
+        }
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importItinerary(' . $id_media_object . '): Import done.', Writer::OUTPUT_BOTH, 'import.log');
+    }
+
 
     private function _revertCurrentImport()
     {

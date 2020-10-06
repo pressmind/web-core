@@ -254,11 +254,48 @@ abstract class AbstractObject implements SplSubject
     {
         $this->_db->delete($this->getDbTableName(), [$this->getDbPrimaryKey() . " = ?", $this->getId()]);
         if(true === $deleteRelations) {
-            $this->_deleteHasManyRelations($deleteRelations);
+            $this->_deleteRelations();
+            /*$this->_deleteHasManyRelations($deleteRelations);
             $this->_deleteHasOneRelations();
-            $this->_deleteManyToManyRelations();
+            $this->_deleteManyToManyRelations();*/
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    private function _deleteRelations() {
+        foreach ($this->_definitions['properties'] as $property_name => $property) {
+            if($property['type'] == 'relation') {
+                switch ($property['relation']['type']) {
+                    case 'hasMany':
+                        $this->_deleteHasManyRelation($property_name);
+                        break;
+                    case 'belongsTo':
+                        $this->_deleteBelongsToRelation($property_name);
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $property_name
+     * @throws Exception
+     */
+    private function _deleteHasManyRelation($property_name) {
+        /** @var AbstractObject[] $relations */
+        $relations = $this->$property_name;
+        foreach ($relations as $relation) {
+            $relation->delete(true);
+        }
+    }
+
+    private function _deleteBelongsToRelation($property_name) {
+        $relation = $this->$property_name;
+        $relation->delete(true);
+    }
+
 
     /**
      * @param bool $deleteRelations
@@ -344,11 +381,11 @@ abstract class AbstractObject implements SplSubject
             if($property['type'] == 'relation') {
                 $objects_to_convert = $this->$property_name;
                 if(!empty($objects_to_convert)) {
-                    if ($property['relation']['type'] == 'hasOne') {
+                    if ($property['relation']['type'] == 'hasOne' || $property['relation']['type'] == 'belongsTo') {
                         $objects_to_convert = [$this->$property_name];
                     }
                     foreach ($objects_to_convert as $object_to_convert) {
-                        if ($property['relation']['type'] == 'hasOne') {
+                        if ($property['relation']['type'] == 'hasOne' || $property['relation']['type'] == 'belongsTo') {
                             $object->$property_name = $object_to_convert->toStdClass();
                         } else {
                             $object->$property_name[] = $object_to_convert->toStdClass();
@@ -396,6 +433,8 @@ abstract class AbstractObject implements SplSubject
             $this->setId($id);
         }
         $this->_createHasManyRelations();
+        //$this->_createHasOneRelations();
+        $this->_createBelongsToRelations();
     }
 
     /**
@@ -406,6 +445,7 @@ abstract class AbstractObject implements SplSubject
         foreach ($this->_definitions['properties'] as $property) {
             if($property['type'] == 'relation' && isset($property['relation']) && $property['relation']['type'] == 'hasMany') {
                 $key = $property['name'];
+                $related_key = $property['relation']['related_id'];
                 if(!empty($this->$key)) {
                     foreach ($this->$key as $object) {
                         /**@var AbstractObject $object**/
@@ -414,8 +454,56 @@ abstract class AbstractObject implements SplSubject
                                 $object->$foreign_property_name = $this->$local_property_name;
                             }
                         }
+                        $object->$related_key = $this->getId();
                         $object->create();
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function _createHasOneRelations() {
+        foreach ($this->_definitions['properties'] as $property) {
+            if ($property['type'] == 'relation' && isset($property['relation']) && $property['relation']['type'] == 'hasOne') {
+                $key = $property['name'];
+                $related_key = $property['relation']['related_id'];
+                if(!empty($this->$key)) {
+                    /**@var AbstractObject $object**/
+                    $object = $this->$key;
+                    print_r($object);
+                    if(isset($property['relation']['on_save_related_properties']) && is_array($property['relation']['on_save_related_properties'])) {
+                        foreach($property['relation']['on_save_related_properties'] as $local_property_name => $foreign_property_name) {
+                            $object->$foreign_property_name = $this->$local_property_name;
+                        }
+                    }
+                    $object->$related_key = $this->getId();
+                    $object->create();
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function _createBelongsToRelations() {
+        foreach ($this->_definitions['properties'] as $property) {
+            if ($property['type'] == 'relation' && isset($property['relation']) && $property['relation']['type'] == 'belongsTo') {
+                $key = $property['name'];
+                $related_key = $property['relation']['related_id'];
+                if(!empty($this->$key)) {
+                    /**@var AbstractObject $object**/
+                    $object = $this->$key;
+                    if(isset($property['relation']['on_save_related_properties']) && is_array($property['relation']['on_save_related_properties'])) {
+                        foreach($property['relation']['on_save_related_properties'] as $local_property_name => $foreign_property_name) {
+                            $object->$foreign_property_name = $this->$local_property_name;
+                        }
+                    }
+                    $object->$related_key = $this->getId();
+                    $object->create();
                 }
             }
         }
@@ -546,7 +634,7 @@ abstract class AbstractObject implements SplSubject
             if(is_a($value, $class)) {
                 return $value;
             }
-            if($property_info['relation']['type'] == 'hasOne') {
+            if($property_info['relation']['type'] == 'hasOne' || $property_info['relation']['type'] == 'belongsTo') {
                 $value = [$value];
             }
             $new_values = [];
@@ -562,7 +650,7 @@ abstract class AbstractObject implements SplSubject
                         $new_values[] = $tmp_value;
                     }
                 }
-                if ($property_info['relation']['type'] == 'hasOne') {
+                if ($property_info['relation']['type'] == 'hasOne' || $property_info['relation']['type'] == 'belongsTo') {
                     return $new_values[0];
                 }
             }
@@ -661,6 +749,8 @@ abstract class AbstractObject implements SplSubject
                             $relation = $this->getRelationHasOne($property_info);
                         } else if ($property_info['relation']['type'] == 'hasMany') {
                             $relation = $this->getRelationHasMany($property_info);
+                        } else if ($property_info['relation']['type'] == 'belongsTo') {
+                            $relation = $this->getRelationBelongsTo($property_info);
                         } else if ($property_info['relation']['type'] == 'ManyToMany') {
                             $relation = $this->getRelationManyToMany($property_info);
                         }
@@ -695,9 +785,44 @@ abstract class AbstractObject implements SplSubject
             $relation_class_name = $property_info['relation']['class'];
             /**@var $relation_object AbstractObject* */
             $relation_object = new $relation_class_name($this->$relation_object_id_name, $this->_read_relations);
+            //$relation_object->read()
             return $relation_object;
         }
         return null;
+    }
+
+    private function getRelationBelongsTo($property_info) {
+        $fieldname = $property_info['name'];
+        if (!empty($this->getId()) && empty($this->$fieldname)) {
+            if(isset($property_info['relation']['from_factory']) && $property_info['relation']['from_factory'] === true) {
+                $factory_class_name = $property_info['relation']['class'];
+                $parameters = [];
+                foreach ($property_info['relation']['factory_parameters'] as $parameter) {
+                    $parameters[] = $this->$parameter;
+                }
+                $relation_object = call_user_func_array([$factory_class_name, $property_info['relation']['factory_method']], $parameters);
+            } else {
+                $relation_class_name = $property_info['relation']['class'];
+                /**@var $relation_object AbstractObject* */
+                $relation_object = new $relation_class_name(null, $this->_read_relations);
+            }
+            $filters = [$property_info['relation']['related_id'] => $this->_getRelationId()];
+            if(isset($property_info['relation']['related_foreign_id'])) {
+                $local_relation_name = $property_info['relation']['related_id'];
+                $filters = [$property_info['relation']['related_foreign_id'] => $this->$local_relation_name];
+            }
+            if (isset($property_info['relation']['filters']) && is_array($property_info['relation']['filters'])) {
+                $filters = array_merge($filters, $property_info['relation']['filters']);
+            }
+            $order = null;
+            if (isset($property_info['relation']['order_columns']) && is_array($property_info['relation']['order_columns'])) {
+                $order = $property_info['relation']['order_columns'];
+            }
+            $array_of_objects = $relation_object->loadAll($filters, $order);
+            return count($array_of_objects) > 0 ? $array_of_objects[0] : null;
+        } else {
+            return null;
+        }
     }
 
     /**

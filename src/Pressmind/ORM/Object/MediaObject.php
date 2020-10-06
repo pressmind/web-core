@@ -9,6 +9,7 @@ use Custom\MediaType\Factory;
 use Pressmind\DB\Adapter\Pdo;
 use Pressmind\HelperFunctions;
 use Pressmind\MVC\View;
+use Pressmind\ORM\Object\Itinerary\Variant;
 use Pressmind\ORM\Object\MediaObject\DataType\Objectlink;
 use Pressmind\ORM\Object\Touristic\Booking\Package;
 use Pressmind\ORM\Object\Touristic\CheapestPrice;
@@ -675,5 +676,34 @@ class MediaObject extends AbstractObject
                 $this->_db->insert('pmt2core_fulltext_search', $fulltext_data);
             }
         }
+    }
+
+    /**
+     * @param string|null $code
+     * @param integer|null $duration
+     * @param integer|null $id_booking_package
+     * @param string|null $type
+     * @return Variant[]
+     * @throws Exception
+     */
+    public function getItineraryVariants($code = null, $duration = null, $id_booking_package = null, $type = null)
+    {
+        $filters = [
+            'id_media_object' => $this->getId()
+        ];
+        if(!is_null($code)) {
+            $filters['code'] = $code;
+        }
+        if(!is_null($duration)) {
+            $filters['booking_package_duration'] = $duration;
+        }
+        if(!is_null($id_booking_package)) {
+            $filters['id_booking_package'] = $id_booking_package;
+        }
+        if(!is_null($type)) {
+            $filters['type'] = $type;
+        }
+        $variants = Variant::listAll($filters);
+        return $variants;
     }
 }

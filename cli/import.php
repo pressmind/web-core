@@ -47,6 +47,23 @@ switch ($args[1]) {
             echo "Missing mediaobject id(s)";
         }
         break;
+    case 'itinerary':
+        if(!empty($args[2])) {
+            $importer = new Import('itinerary');
+            Writer::write('Importing itinerary for Media Object ID(s): ' . $args[2], Writer::OUTPUT_BOTH, 'import.log');
+            $ids = array_map('trim', explode(',', $args[2]));
+            try {
+                foreach ($ids as $id) {
+                    $importer->importItinerary($id);
+                }
+            } catch (Exception $e) {
+                Writer::write($e->getMessage(), Writer::OUTPUT_BOTH, 'import_error.log');
+                echo "WARNING: Import threw errors:\n" . $e->getMessage() . "\nSEE " . Writer::getLogFilePath() . DIRECTORY_SEPARATOR . "import_errors.log for details\n";
+            }
+        } else {
+            echo "Missing mediaobject id(s)";
+        }
+        break;
     case 'objecttypes':
         if(!empty($args[2])) {
             $importer = new Import('objecttypes');
@@ -113,11 +130,12 @@ switch ($args[1]) {
     case '--help':
     case '-h':
     default:
-        $helptext = "usage: import.php [fullimport | mediaobject | objecttypes] [<single id or commaseparated list of ids>]\n";
+        $helptext = "usage: import.php [fullimport | mediaobject | itinerary | objecttypes] [<single id or commaseparated list of ids>]\n";
         $helptext .= "Example usages:\n";
         $helptext .= "php import.php fullimport\n";
         $helptext .= "php import.php mediaobject 123456, 78901234 <single or multiple ids allowed>\n";
         $helptext .= "php import.php objecttypes 123, 456 <singe or multiple ids allowed>\n";
+        $helptext .= "php import.php itinerary 123456 <singe or multiple ids allowed>\n";
         echo $helptext;
 }
 

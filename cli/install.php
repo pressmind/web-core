@@ -57,7 +57,15 @@ if($args[1] != 'only_static') {
         '\Touristic\Startingpoint',
         '\Touristic\Startingpoint\Option',
         '\Touristic\Startingpoint\Option\ZipRange',
-        '\Touristic\Transport'
+        '\Touristic\Transport',
+        '\Itinerary\Variant',
+        '\Itinerary\Variant\Step',
+        '\Itinerary\Variant\Step\Geopoint',
+        '\Itinerary\Variant\Step\DocumentMediaObject',
+        '\Itinerary\Variant\Step\DocumentMediaObject\Derivative',
+        '\Itinerary\Variant\Step\Board',
+        '\Itinerary\Variant\Step\Section',
+        '\Itinerary\Variant\Step\Section\Content'
     ];
 
     foreach ($models as $model) {
