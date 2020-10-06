@@ -34,7 +34,7 @@ class Section extends AbstractObject
                 'title' => 'id',
                 'name' => 'id',
                 'type' => 'integer',
-                'required' => false,
+                'required' => true,
                 'validators' => null,
                 'filters' => null
             ],
