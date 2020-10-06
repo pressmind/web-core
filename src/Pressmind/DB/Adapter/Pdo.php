@@ -123,17 +123,20 @@ class Pdo implements AdapterInterface
      * @param array $where
      * @throws Exception
      */
-    public function update($tableName, $data, $where = [])
+    public function update($tableName, $data, $where = null)
     {
         $columns = [];
-        $values = [];
+        $parameters = [];
         foreach ($data as $column => $value) {
             $columns[] = $column;
-            $values[] = $value;
+            $parameters[] = $value;
         }
-        $values[] = $where[1];
-        $query = "UPDATE " . $this->table_prefix . $tableName . " SET `" . implode("` = ?, `", $columns) . "` = ? WHERE " . $where[0];
-        $this->execute($query, $values);
+        $query = "UPDATE " . $this->table_prefix . $tableName . " SET `" . implode("` = ?, `", $columns) . "` = ?";
+        if(!is_null($where) && is_array($where)) {
+            $parameters[] = $where[1];
+            $query .= " WHERE " . $where[0];
+        }
+        $this->execute($query, $parameters);
     }
 
     /**

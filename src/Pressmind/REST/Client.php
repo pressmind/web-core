@@ -76,7 +76,14 @@ class Client
             $params = ['cache' => 0];
         }
         $get_params = (is_array($params) && count($params) > 0) ? '?' . http_build_query($params) : '';
-        curl_setopt($ch, CURLOPT_URL, $this->_api_endpoint . $this->_api_key . '/' . $controller . '/' . $action . $get_params);
+        $url = $this->_api_endpoint . $this->_api_key;
+        if(!empty($controller)) {
+            $url .=  '/' . $controller;
+        }
+        if(!empty($action)) {
+            $url .= '/' . $action;
+        }
+        curl_setopt($ch, CURLOPT_URL, $url . $get_params);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
