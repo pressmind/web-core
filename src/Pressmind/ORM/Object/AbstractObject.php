@@ -445,7 +445,6 @@ abstract class AbstractObject implements SplSubject
         foreach ($this->_definitions['properties'] as $property) {
             if($property['type'] == 'relation' && isset($property['relation']) && $property['relation']['type'] == 'hasMany') {
                 $key = $property['name'];
-                $related_key = $property['relation']['related_id'];
                 if(!empty($this->$key)) {
                     foreach ($this->$key as $object) {
                         /**@var AbstractObject $object**/
@@ -454,7 +453,6 @@ abstract class AbstractObject implements SplSubject
                                 $object->$foreign_property_name = $this->$local_property_name;
                             }
                         }
-                        $object->$related_key = $this->getId();
                         $object->create();
                     }
                 }
