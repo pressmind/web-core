@@ -31,7 +31,8 @@ mysql> CREATE DATABASE pressmind;
 mysql> GRANT ALL ON pressmind.* TO 'my_database_user'@'localhost' IDENTIFIED BY 'my_database_password' WITH GRANT OPTION;
 ```
 
-* edit the configuration file config.json
+* copy the file config.json.default to config.json
+* edit the file config.json
 * Insert your database information under development.database
 ```json
 //... SNIP config.json
