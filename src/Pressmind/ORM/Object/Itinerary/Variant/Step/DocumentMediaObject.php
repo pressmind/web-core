@@ -109,7 +109,8 @@ class DocumentMediaObject extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_document_media_object',
                     'class' => Derivative::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_document_media_object']
                 ],
                 'required' => false,
                 'validators' => null,

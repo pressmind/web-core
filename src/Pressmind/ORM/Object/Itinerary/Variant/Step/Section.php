@@ -86,7 +86,8 @@ class Section extends AbstractObject
                     'type' => 'belongsTo',
                     'related_id' => 'id_section',
                     'class' => Content::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_section']
                 ],
                 'required' => false,
                 'validators' => null,

@@ -64,7 +64,8 @@ class Step extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_step',
                     'class' => Section::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_step']
                 ],
                 'required' => false,
                 'validators' => null,
@@ -78,7 +79,8 @@ class Step extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_step',
                     'class' => Board::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_step']
                 ],
                 'required' => false,
                 'validators' => null,
@@ -92,7 +94,8 @@ class Step extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_step',
                     'class' => Geopoint::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_step']
                 ],
                 'required' => false,
                 'validators' => null,
@@ -106,7 +109,8 @@ class Step extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_step',
                     'class' => DocumentMediaObject::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_step']
                 ],
                 'required' => false,
                 'validators' => null,

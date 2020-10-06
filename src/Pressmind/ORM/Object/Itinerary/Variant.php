@@ -130,7 +130,8 @@ class Variant extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_variant',
                     'class' => Step::class,
-                    'filters' => null
+                    'filters' => null,
+                    'on_save_related_properties' => ['id' => 'id_variant']
                 ],
                 'required' => false,
                 'validators' => null,
