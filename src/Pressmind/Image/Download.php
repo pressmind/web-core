@@ -40,7 +40,7 @@ class Download
         if($raw === false) {
             throw new Exception('CURL Timeout or other error: ' . curl_error($ch));
         } else {
-            if (file_exists($targetPath . DIRECTORY_SEPARATOR . $targetName)) {
+            if (!empty($targetName) && !is_dir($targetPath . DIRECTORY_SEPARATOR . $targetName) && file_exists($targetPath . DIRECTORY_SEPARATOR . $targetName)) {
                 unlink($targetPath . DIRECTORY_SEPARATOR . $targetName);
             }
             $fp = fopen($targetPath . DIRECTORY_SEPARATOR . $targetName, 'w');
