@@ -236,14 +236,28 @@ class Picture extends AbstractObject
                         $uri = str_replace($path_info['extension'], 'webp', $uri);
                     }
                 }
-                $uri = is_null($this->path) ? $this->tmp_url : $uri;
+                $uri = is_null($this->path) ? $this->getTmpUri($derivativeName) : $uri;
             } else {
-                $uri = is_null($this->path) ? $this->tmp_url : $config['imageprocessor']['image_http_path'] . $this->file_name;
+                $uri = is_null($this->path) ? $this->getTmpUri() : $config['imageprocessor']['image_http_path'] . $this->file_name;
             }
         } else {
-            $uri = is_null($this->path) ? $this->tmp_url : $config['imageprocessor']['image_http_path'] . $this->file_name;
+            $uri = is_null($this->path) ? $this->getTmpUri() : $config['imageprocessor']['image_http_path'] . $this->file_name;
         }
         return $uri;
+    }
+
+    public function getTmpUri($derivativeName = null)
+    {
+        $height = null;
+        $config = Registry::getInstance()->get('config');
+        $parsed_query = [];
+        $parsed_url = parse_url($this->tmp_url);
+        parse_str($parsed_url['query'], $parsed_query);
+        if(!is_null($derivativeName)) {
+            $parsed_query['w'] = $config['imageprocessor']['derivatives'][$derivativeName]['max_width'];
+            $parsed_query['h'] = $config['imageprocessor']['derivatives'][$derivativeName]['max_height'];
+        }
+        return $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . '?' . http_build_query($parsed_query);
     }
 
     private function _hasDerivative($derivativeName)
