@@ -24,7 +24,7 @@ switch ($args[1]) {
         $helptext = "usage: fulltext_indexer.php [<single id or commaseparated list of ids>]\n";
         $helptext .= "Example usages:\n";
         $helptext .= "php fulltext_indexer.php\n";
-        $helptext .= "php import.php 123456,78901234 <single or multiple ids allowed>\n";
+        $helptext .= "php fulltext_indexer.php 123456,78901234 <single or multiple ids allowed>\n";
         echo $helptext;
         break;
     default:
