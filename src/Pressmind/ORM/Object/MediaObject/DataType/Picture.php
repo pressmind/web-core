@@ -228,7 +228,7 @@ class Picture extends AbstractObject
     public function getUri($derivativeName = null) {
         $config = Registry::getInstance()->get('config');
         if(!is_null($derivativeName)) {
-            if($derivative = $this->_hasDerivative($derivativeName)) {
+            if($derivative = $this->hasDerivative($derivativeName)) {
                 $uri = $config['imageprocessor']['image_http_path'] . $derivative->file_name;
                 if($config['imageprocessor']['webp_support'] == true && $config['imageprocessor']['derivatives'][$derivativeName]['webp_create'] == true && defined('WEBP_SUPPORT') && WEBP_SUPPORT === true) {
                     $path_info = pathinfo($uri);
@@ -246,6 +246,10 @@ class Picture extends AbstractObject
         return $uri;
     }
 
+    /**
+     * @param null $derivativeName
+     * @return string
+     */
     public function getTmpUri($derivativeName = null)
     {
         $height = null;
@@ -260,7 +264,11 @@ class Picture extends AbstractObject
         return $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'] . '?' . http_build_query($parsed_query);
     }
 
-    private function _hasDerivative($derivativeName)
+    /**
+     * @param $derivativeName
+     * @return bool|Derivative
+     */
+    public function hasDerivative($derivativeName)
     {
         if(is_null($this->derivatives)) {
             return false;
