@@ -45,6 +45,7 @@ class Ibe extends AbstractController
         }
         $result = [];
         $result['booking_package'] = $booking->getBookingPackage();
+        $result['date'] = $booking->getDate();
         $insurances = $booking->getInsurances();
         $result['available_insurances'] = $insurances;
         $result['available_housing_options'] = $booking->getAvailableHousingOptionsForDate();
