@@ -254,12 +254,14 @@ class Import
     {
         $id_media_object = intval($id_media_object);
         $db = Registry::getInstance()->get('db');
+        $config = Registry::getInstance()->get('config');
         $this->_start_time = microtime(true);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . '--------------------------------------------------------------------------------', Writer::OUTPUT_FILE, 'import.log');
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObject(' . $id_media_object . ')', Writer::OUTPUT_FILE, 'import.log');
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importMediaObject(' . $id_media_object . '): REST Request started', Writer::OUTPUT_BOTH, 'import.log');
         try {
-            $response = $this->_client->sendRequest('Text', 'getById', ['ids' => $id_media_object, 'withTouristicData' => 1, 'withDynamicData' => 1]);
+            $touristicOrigins = isset($config['data']['touristic']['origins']) && !empty($config['data']['touristic']['origins']) ? $config['data']['touristic']['origins'] : [0];
+            $response = $this->_client->sendRequest('Text', 'getById', ['ids' => $id_media_object, 'withTouristicData' => 1, 'withDynamicData' => 1, 'byTouristicOrigin' => implode(',', $touristicOrigins)]);
         } catch (Exception $e) {
             $response = null;
         }
