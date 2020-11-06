@@ -9,7 +9,7 @@ use Pressmind\ORM\Object\CategoryTree\Item;
 use Pressmind\ORM\Object\MediaObject\DataType\Categorytree;
 use Pressmind\Search;
 
-class Category
+class Category implements FilterInterface
 {
 
     /**
@@ -19,7 +19,7 @@ class Category
 
     private $_tree_id;
 
-    public function __construct($tree_id, $search)
+    public function __construct($tree_id = null, $search = null)
     {
         $this->_search = $search;
         $this->_tree_id = $tree_id;
@@ -49,5 +49,17 @@ class Category
             }
         }
         return $list;
+    }
+
+    public static function create($tree_id, $search) {
+        return new self($tree_id, $search);
+    }
+
+    public function setSearch($search) {
+        $this->_search = $search;
+    }
+
+    public function setConfig($config) {
+        $this->_tree_id = $config->tree_id;
     }
 }

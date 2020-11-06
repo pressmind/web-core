@@ -4,9 +4,7 @@
 namespace Pressmind\REST\Controller;
 
 
-class Index
+class Route extends AbstractController
 {
-    public function index() {
 
-    }
 }

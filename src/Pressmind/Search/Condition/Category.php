@@ -40,7 +40,7 @@ class Category implements ConditionInterface
      * @param array $pItemIds
      * @param string $pCombineOperator
      */
-    public function __construct($pVarName, $pItemIds, $pCombineOperator = 'OR')
+    public function __construct($pVarName = null, $pItemIds = null, $pCombineOperator = 'OR')
     {
         $this->var_name = $pVarName;
         $this->item_ids = $pItemIds;

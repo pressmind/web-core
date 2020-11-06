@@ -1033,4 +1033,13 @@ abstract class AbstractObject implements SplSubject
     {
         return $this->_dont_use_autoincrement_on_primary_key;
     }
+
+    public function renderApiOutputTemplate($templateName) {
+        $config = Registry::getInstance()->get('config');
+        $script_path = $config['view_scripts']['base_path'] . DIRECTORY_SEPARATOR . ucfirst($templateName);
+        require_once BASE_PATH . DIRECTORY_SEPARATOR . $script_path . '.php';
+        $classname = ucfirst($templateName);
+        $renderer = new $classname($this);
+        return $renderer->render();
+    }
 }

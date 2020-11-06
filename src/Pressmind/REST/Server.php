@@ -1,13 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: m.graute
- * Date: 20.08.2019
- * Time: 10:29
- */
-
 namespace Pressmind\REST;
-use \stdClass;
+
+error_reporting(1);
+ini_set('display_errors', 1);
+
+use Pressmind\MVC\Request;
+use Pressmind\MVC\Response;
+use Pressmind\MVC\Router;
+use Pressmind\Registry;
 use \Exception;
 /**
  * Class Server
@@ -17,64 +17,24 @@ use \Exception;
 class Server
 {
     /**
-     * @var string
-     */
-    private $_request_method;
-
-    /**
-     * @var array|false
-     */
-    private $_request_headers;
-
-    /**
-     * @var string
-     */
-    private $_raw_request_body;
-
-    /**
-     * @var stdClass
-     */
-    private $_request_body;
-
-    /**
-     * @var array
+     * @var Request
      */
     private $_request;
 
     /**
-     * @var mixed
+     * @var Response
      */
     private $_response;
 
     /**
-     * @var string
+     * @var Router
      */
-    private $_module;
-
-    /**
-     * @var string
-     */
-    private $_controller;
-
-    /**
-     * @var string
-     */
-    private $_action;
+    private $_router;
 
     /**
      * @var array
      */
-    private $_parameters = [];
-
-    /**
-     * @var array
-     */
-    private $_headers = [];
-
-    /**
-     * @var array
-     */
-    private $_output_methods = ['GET', 'PUT', 'DELETE', 'POST'];
+    private $_output_methods = ['GET', 'POST'];
 
     /**
      * @var array
@@ -82,221 +42,88 @@ class Server
     private $_header_methods = ['OPTIONS', 'HEAD'];
 
     /**
-     * @var boolean
+     * Server constructor.
+     * @param null $pApiBaseUrl
      */
-    private $_success = true;
-
-
     public function __construct($pApiBaseUrl = null)
     {
-        $this->_addHeader('Access-Control-Allow-Origin: *');
-        $this->_addHeader('Access-Control-Allow-Headers: *');
-        $this->_request_method = $_SERVER['REQUEST_METHOD'];
-        $this->_request_headers = $this->_apache_request_headers();
-        if(in_array($this->_request_method, $this->_output_methods)) { //We don't need to parse uri and body for OPTIONS and HEAD
-            $this->_parseRequestUri($pApiBaseUrl);
-            $this->_parseRequestBody();
+        $this->_request = new Request($pApiBaseUrl);
+        $this->_response = new Response();
+        $this->_router = new Router();
+        $this->_router->addRoute(new Router\Route('search', 'POST', 'REST\\Controller', 'Search', 'search'));
+        $pieces = (array_map('ucfirst', explode('/', $this->_request->getUri())));
+        if(class_exists('\Pressmind\\REST\\Controller\\' . implode('\\', $pieces))) {
+            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'GET', 'REST\\Controller', implode('\\', $pieces), 'listAll'));
+            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'POST', 'REST\\Controller', implode('\\', $pieces), 'listAll'));
         }
     }
 
-    private function _parseRequestUri($pApiBaseUrl) {
-        $request_uri = $_SERVER['REQUEST_URI'];
-        /**We need to make sure that only module, controller, action and parameters are in the url string**/
-        if(!empty($ApiBaseUrl)) {
-            $pos = strpos($request_uri, $pApiBaseUrl);
-            if ($pos !== false) {
-                $request_uri = substr_replace($request_uri, '', $pos, strlen($pApiBaseUrl));
+    /**
+     * For now the authentication is disabled by always returning true, might change in feature releases
+     * @return bool
+     */
+    private function _checkAuthentication()
+    {
+        $config = Registry::getInstance()->get('config');
+        if($auth = $this->_request->getParsedBasicAuth()) {
+            if ($auth[0] == $config['rest']['server']['api_user'] && $auth[1] == $config['rest']['server']['api_password']) {
+                return true;
             }
         }
-        $this->_request = explode('/', trim($request_uri, '/'));
-        $this->_module = $this->_request[0];
-        $this->_controller = $this->_request[1];
-        $this->_action = $this->_request[2];
-        if (count($this->_request) > 3) {
-            $this->_parameters = $this->_parseParameters(array_slice($this->_request, 4));
-        }
-
+        return true;
     }
 
-    private function _apache_request_headers()
-{
-        if(function_exists('apache_request_headers')) {
-            return apache_request_headers();
+    /**
+     *
+     */
+    public function handle() {
+        if(!in_array($this->_request->getMethod(), array_merge($this->_output_methods, $this->_header_methods))) {
+            $this->_response->setCode(405);
+            $this->_response->send();
+            die();
         }
-        $arh = [];
-        $rx_http = '/\AHTTP_/';
-        foreach($_SERVER as $key => $val) {
-            if( preg_match($rx_http, $key) ) {
-                $arh_key = preg_replace($rx_http, '', $key);
-                // do some nasty string manipulations to restore the original letter case
-                // this should work in most cases
-                $rx_matches = explode('_', $arh_key);
-                if( count($rx_matches) > 0 and strlen($arh_key) > 2 ) {
-                    foreach($rx_matches as $ak_key => $ak_val) $rx_matches[$ak_key] = ucfirst(strtolower($ak_val));
-                    $arh_key = implode('-', $rx_matches);
-                }
-                $arh[$arh_key] = $val;
+        if(in_array($this->_request->getMethod(), $this->_header_methods)) {
+            if($this->_request->getMethod() == 'OPTIONS') {
+                $this->_response->addHeader('Allow', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
+                $this->_response->addHeader('Access-Control-Allow-Origin', '*');
+                $this->_response->addHeader('Access-Control-Allow-Methods', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
+                $this->_response->addHeader('Access-Control-Allow-Headers', 'Content-Type');
+                $this->_response->addHeader('Access-Control-Max-Age', '60');
             }
+            $this->_response->setCode(204);
+            $this->_response->send();
+            die();
         }
-        return( $arh );
-    }
-
-    public function handle()
-    {
-        $this->_response = $this->_handleMethod();
-        foreach ($this->_headers as $header) {
-            header($header);
-        }
-        if(isset($this->_request_headers['content-length']) && strlen($this->_raw_request_body) != $this->_request_headers['content-length'] && ($this->_request_method == 'POST' || $this->_request_method == 'PUT')) {
-            echo json_encode(['success' => false, 'error' => array('code' => '500', 'message' => 'Header "content-length" is not equal to length of request body')]);
-        } else {
-            if (!in_array($this->_request_method, $this->_header_methods)) {
-                $return = array(
-                    'success' => $this->_success,
-                );
-                if (defined('DEBUG') && DEBUG === true) {
-                    $return['request'] = array(
-                        'module' => $this->_module,
-                        'controller' => $this->_controller,
-                        'function' => $this->_action,
-                        'parameters' => $this->_parameters,
-                        'body' => $this->_request_body,
-                        'headers' => $this->_request_headers
-                    );
-                }
-                $return['data'] = $this->_response;
-                echo json_encode(
-                    $return
-                );
-            }
-        }
-    }
-
-    private function _getBearerToken()
-{
-        list($token) = sscanf($this->_request_headers['Authorization'], 'Bearer %s');
-        return $token;
-    }
-
-    private function _addHeader($pHeader) {
-        $this->_headers[] = $pHeader;
-    }
-
-    private function _parseParameters($pArray)
-    {
-        $keys = [];
-        $values = [];
-        foreach ($pArray as $index => $val) {
-            if($index % 2 == 0) {
-                $keys[] = $val;
-            } else {
-                if(empty($val)) $val = null;
-                $values[] = $val;
-            }
-        }
-        if(count($pArray) % 2 == 1) $values[] = null;
-        return array_combine($keys, $values);
-    }
-
-    private function _handleMethod()
-    {
-        switch($this->_request_method) {
-            case 'GET':
-                return $this->_handleGet();
-            case 'POST':
-                return $this->_handlePost();
-            case 'PUT':
-                return $this->_handlePut();
-            case 'DELETE':
-                return $this->_handleDelete();
-            case 'OPTIONS':
-                return $this->_handleOptions();
-            case 'HEAD':
-                return $this->_handleHead();
-            default:
-                return $this->_handleMethodError();
-        }
-    }
-
-    private function _parseRequestBody()
-    {
-        if($this->_request_method == 'POST' || $this->_request_method == 'PUT') {
-            $this->_raw_request_body = file_get_contents('php://input');
-            $this->_request_body = json_decode($this->_raw_request_body);
-        }
-    }
-
-    private function _handleGet()
-    {
-        $this->_addHeader('Content-Type:application/json');
-        return $this->_callFunction();
-    }
-
-    private function _handlePost()
-    {
-        $this->_addHeader('Content-type:application/json');
-        return $this->_callFunction();
-    }
-
-    private function _handlePut()
-    {
-        $this->_addHeader('Content-type:application/json');
-        return $this->_parameters;
-    }
-
-    private function _handleDelete()
-    {
-        $this->_addHeader('Content-type:application/json');
-        return $this->_parameters;
-    }
-
-    private function _handleOptions()
-    {
-        $this->_addHeader('Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE');
-        return null;
-    }
-
-    private function _handleHead()
-    {
-        return null;
-    }
-
-    private function _callFunction()
-    {
-        //print_r($this->_request_body);
-        $settings = isset($this->_request_body['settings']) ? $this->_request_body['settings'] : null;
-        try {
-            $ibe = \PressmindBooking\IBE\Factory::create($this->_request_body['bookingObject'], $settings);
-        } catch (\Exception $e) {
-            $this->_success = false;
-            $code = ($e->getCode() == 0) ? 500 : $e->getCode();
-            return ['code' => $code, 'message' => $e->getMessage(), 'original_message' => $e->getMessage()];
-        }
-        if(method_exists($ibe, $this->_action)) {
-            try {
-                return $ibe->{$this->_action}();
-            } catch (Exception $e) {
-                $this->_success = false;
-                if($e->getCode() == 1) { //This is a wanted Exception used for user notification
-                    return ['code' => '500', 'message' => $e->getMessage(), 'original_message' => $e->getMessage(), 'trace' => null];
-                } else {
-                    $trace = null;
-                    if (defined('DEBUG') && DEBUG === true) {
-                        $trace = $e->getTrace();
+        if($this->_checkAuthentication()) {
+            $this->_response->setContentType('application/json');
+            $this->_response->addHeader('Access-Control-Allow-Origin', '*');
+            if ($route_match = $this->_router->handle($this->_request)) {
+                $classname = '\Pressmind\\' . $route_match['module'] . '\\' . $route_match['controller'];
+                if (class_exists($classname)) {
+                    try {
+                        $class = new $classname();
+                        $method = $route_match['action'];
+                        if(method_exists($class, $method)) {
+                            $return = $class->$method($this->_request->getParameters());
+                            $this->_response->setBody($return);
+                        }
+                    } catch (Exception $e) {
+                        $this->_response->setCode(500);
+                        $this->_response->setBody([
+                            'error' => true,
+                            'msg' => $e->getMessage()
+                        ]);
                     }
-                    return ['code' => '500', 'message' => 'method ' . $this->_action . ' threw error: ' . $e->getMessage(), 'original_message' => $e->getMessage(), 'trace' => $trace];
+                } else {
+                    $this->_response->setCode(500);
                 }
+            } else {
+                $this->_response->setCode(404);
             }
         } else {
-            $this->_success = false;
-            return ['code' => '500', 'message' => 'function  ' . $this->_action . ' does not exist.', 'original_message' => 'function  ' . $this->_action . ' does not exist.'];
+            $this->_response->setCode(403);
         }
+        $this->_response->send();
     }
 
-    private function _handleMethodError()
-    {
-        $this->_addHeader('Content-type:application/json');
-        $this->_success = false;
-        return ['code' => '500', 'message' => 'foo'];
-    }
 }

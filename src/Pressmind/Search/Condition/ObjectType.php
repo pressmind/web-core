@@ -23,7 +23,7 @@ class ObjectType implements ConditionInterface
      */
     private $_object_type_id;
 
-    public function __construct($pObjectTypeId)
+    public function __construct($pObjectTypeId = null)
     {
         $this->_object_type_id = $pObjectTypeId;
     }

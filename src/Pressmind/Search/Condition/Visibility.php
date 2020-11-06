@@ -28,7 +28,7 @@ class Visibility implements ConditionInterface
      * Category constructor.
      * @param $pVisibilities
      */
-    public function __construct($pVisibilities)
+    public function __construct($pVisibilities = [])
     {
         $this->_visibilities = $pVisibilities;
     }
@@ -96,7 +96,7 @@ class Visibility implements ConditionInterface
      */
     public function setConfig($config)
     {
-        $this->_visibilities = $config->_visibilities;
+        $this->_visibilities = $config->visibilities;
     }
 
     /**

@@ -83,6 +83,9 @@ class Response
         foreach ($this->_headers as $header_key => $header_value) {
             header($header_key . ': ' . $header_value);
         }
+        if($this->_content_type == 'application/json') {
+            $this->_body = json_encode($this->_body);
+        }
         echo $this->_body;
     }
 }

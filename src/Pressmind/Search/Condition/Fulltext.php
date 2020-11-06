@@ -51,7 +51,7 @@ class Fulltext implements ConditionInterface
      * @param string $pLogicOperator
      * @param string $pMode
      */
-    public function __construct($pSearchTerms, $pProperties = ['fulltext'], $pLogicOperator = 'OR', $pMode = 'NATURAL LANGUAGE MODE')
+    public function __construct($pSearchTerms = null, $pProperties = ['fulltext'], $pLogicOperator = 'OR', $pMode = 'NATURAL LANGUAGE MODE')
     {
         $this->_splitSearchTerms($pSearchTerms);
         $this->_properties_to_be_queried = $pProperties;
@@ -134,10 +134,10 @@ class Fulltext implements ConditionInterface
      * @param stdClass $config
      */
     public function setConfig($config) {
-        $this->_object_type_id = $config->object_type_id;
         $this->_splitSearchTerms($config->search_terms);
-        $this->_properties_to_be_queried = $config->properties_to_be_queried;
-        $this->_logic_operator = isset($config->logic_operator) ? $config->logic_operator : 'AND';
+        $this->_properties_to_be_queried = isset($config->properties_to_be_queried) ? $config->properties_to_be_queried : ['fulltext'];
+        $this->_logic_operator = isset($config->logic_operator) ? $config->logic_operator : 'OR';
+        $this->_mode = isset($config->mode) ? $config->mode : 'NATURAL LANGUAGE MODE';
     }
 
     /**

@@ -8,7 +8,7 @@ use Exception;
 use Pressmind\Search;
 use Pressmind\ValueObject\Search\Filter\Result\MinMax;
 
-class PriceRange
+class PriceRange implements FilterInterface
 {
     /**
      * @var Search
@@ -16,7 +16,7 @@ class PriceRange
     private $_search;
 
 
-    public function __construct($search)
+    public function __construct($search = null)
     {
         $this->_search = $search;
     }
@@ -52,5 +52,17 @@ class PriceRange
         $min_max_result->min = $prices[0];
         $min_max_result->max = $prices[count($prices)-1];
         return $min_max_result;
+    }
+
+    public static function create($search) {
+        return new self($search);
+    }
+
+    public function setSearch($search) {
+        $this->_search = $search;
+    }
+
+    public function setConfig($config) {
+
     }
 }

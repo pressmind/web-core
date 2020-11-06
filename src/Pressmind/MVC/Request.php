@@ -52,7 +52,7 @@ class Request
     /**
      * @var array
      */
-    private $_parameters;
+    private $_parameters = [];
 
     /**
      * Request constructor.
@@ -90,6 +90,16 @@ class Request
         return ($arh);
     }
 
+    public function getParsedBasicAuth()
+    {
+        if(isset($this->_headers['Authorization']) && !empty($this->_headers['Authorization'])) {
+            if(strpos('Basic ') !== false) {
+                return explode(':', base64_decode(str_replace('Basic ', '', $this->_headers['Authorization'])));
+            }
+        }
+        return false;
+    }
+
     /**
      *
      */
@@ -108,9 +118,11 @@ class Request
         if (strpos($this->_raw_uri, '?') !== false) {
             $request_array = explode('?', $this->_raw_uri);
             $this->_raw_uri = $request_array[0];
-            parse_str($request_array[1], $this->_parameters);
+            if(!empty($request_array[1])) {
+                parse_str($request_array[1], $this->_parameters);
+            }
         }
-        /**We need to make sure that only module, controller, action and parameters are in the url string**/
+
         if (!empty($pBaseUrl)) {
             $pos = strpos($this->_raw_uri, $pBaseUrl);
             if ($pos !== false) {
@@ -119,8 +131,8 @@ class Request
         }
 
         $this->_uri_array = explode('/', $this->_raw_uri);
-
-        $this->_checkAndParseBaseParameters();
+        $this->_uri = $this->_raw_uri;
+        //$this->_checkAndParseBaseParameters();
 
         if (count($this->_uri_array) > 3) {
             $this->_parameters = array_merge($this->_parameters, $this->_parseParameters(array_slice($this->_uri_array, 3)));
@@ -283,6 +295,10 @@ class Request
     public function getParameter($key)
     {
         return isset($this->_parameters[$key]) ? $this->_parameters[$key] : null;
+    }
+
+    public function addParameter($key, $value) {
+        $this->_parameters[$key] = $value;
     }
 
     /**

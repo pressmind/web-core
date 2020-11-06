@@ -19,8 +19,10 @@
                 "api_password": ""
             },
             "server": {
-                "api_endpoint": "/api",
-                "api_key": ""
+                "api_endpoint": "/rest",
+                "api_key": "",
+                "api_user": "",
+                "api_password": ""
             }
         },
         "logging": {

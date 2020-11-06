@@ -4,6 +4,7 @@
 namespace Pressmind\MVC\Router;
 
 
+use Pressmind\HelperFunctions;
 use Pressmind\MVC\Request;
 
 class Route
@@ -24,13 +25,13 @@ class Route
         $this->parse($route);
     }*/
 
-    public function __construct($pModule, $pController, $pAction, $pMethod, $pParams)
+    public function __construct($pRoute, $pMethod, $pModule = null, $pController = null, $pAction = null)
     {
-        $this->_action = $pAction;
-        $this->_controller = $pController;
-        $this->_module = $pModule;
+        $this->_action = is_null($pAction) ? 'index' : $pAction;
+        $this->_controller = is_null($pController) ? 'index' : $pController;
+        $this->_module = is_null($pModule) ? 'standard' : $pModule;
         $this->method = $pMethod;
-        $this->parse($pParams);
+        $this->parse($pRoute);
     }
 
     private function parse($route) {
@@ -69,12 +70,15 @@ class Route
         $request_uri = $pRequest->getUri();
         $request_method = $pRequest->getMethod();
         $request_uri = rtrim($request_uri, '/');
-        if ($request_method == $this->method && $this->_matchMethodModuleControllerAction($pRequest->getParameters()) && preg_match($this->route, $request_uri, $matches)) {
+        //return $params;
+        if($request_method == $this->method && preg_match($this->route, $request_uri, $matches)) {
             foreach ($matches as $key => $match) {
                 if (is_string($key)) {
                     $params[$key] = $match;
+                    $pRequest->addParameter($key, $match);
                 }
             }
+            $this->_params = $params;
             return $params;
         } else {
             return false;
@@ -90,10 +94,18 @@ class Route
     }
 
     /**
+     * @param boolean $stripRouterParams
      * @return array
      */
-    public function getParams()
+    public function getParams($stripRouterParams = false)
     {
+        if(true == $stripRouterParams) {
+            $params = $this->_params;
+            unset($params['module']);
+            unset($params['controller']);
+            unset($params['action']);
+            return $params;
+        }
         return $this->_params;
     }
 }
