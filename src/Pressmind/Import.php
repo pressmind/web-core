@@ -621,6 +621,7 @@ class Import
                     if(!in_array($var_name, $ignore)) {
                         $column_name = $var_name . '_' . HelperFunctions::human_to_machine($section->name);
                         $language = empty($section->language) ? $default_language : $section->language;
+                        $language = strtolower($language);
                         if (!isset($values[$language])) $values[$language] = [];
                         $section_id = $section->id;
                         $value = null;
