@@ -99,6 +99,7 @@ abstract class AbstractObject implements SplSubject
     /**
      * @param string|array $where
      * @param array $order
+     * @param array $limit
      * @return array
      * @throws Exception
      */
