@@ -52,236 +52,203 @@ class MediaObject extends AbstractObject
 
     protected $_dont_use_autoincrement_on_primary_key = true;
     protected $_definitions = [
-        'class' =>
-            [
-                'name' => 'MediaObject',
-                'namespace' => '\Pressmind\ORM\Object'
+        'class' => [
+            'name' => 'MediaObject',
+            'namespace' => '\Pressmind\ORM\Object'
+        ],
+        'database' => [
+            'table_name' => 'pmt2core_media_objects',
+            'primary_key' => 'id',
+        ],
+        'properties' => [
+            'id' => [
+                'title' => 'Id',
+                'name' => 'id',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => NULL,
             ],
-        'database' =>
-            [
-                'table_name' => 'pmt2core_media_objects',
-                'primary_key' => 'id',
+            'id_pool' => [
+                'title' => 'Id_pool',
+                'name' => 'id_pool',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => NULL,
             ],
-        'properties' =>
-            [
-                'id' =>
+            'id_object_type' => [
+                'title' => 'Id_object_type',
+                'name' => 'id_object_type',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Id',
-                        'name' => 'id',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 22,
                     ],
-                'id_pool' =>
+                ],
+                'filters' => NULL,
+            ],
+            'name' => [
+                'title' => 'Name',
+                'name' => 'name',
+                'type' => 'string',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Id_pool',
-                        'name' => 'id_pool',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 255,
                     ],
-                'id_object_type' =>
+                ],
+                'filters' => NULL,
+            ],
+            'code' => [
+                'title' => 'Code',
+                'name' => 'code',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
                     [
-                        'title' => 'Id_object_type',
-                        'name' => 'id_object_type',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 255,
                     ],
-                'name' =>
+                ],
+                'filters' => NULL,
+            ],
+            'tags' => [
+                'title' => 'Tags',
+                'name' => 'tags',
+                'type' => 'string',
+                'required' => false,
+                'validators' => NULL,
+                'filters' => NULL,
+            ],
+            'visibility' => [
+                'title' => 'Visibility',
+                'name' => 'visibility',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Name',
-                        'name' => 'name',
-                        'type' => 'string',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 255,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 11,
                     ],
-                'code' =>
+                ],
+                'filters' => NULL,
+            ],
+            'state' => [
+                'title' => 'State',
+                'name' => 'state',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Code',
-                        'name' => 'code',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 255,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 11,
                     ],
-                'tags' =>
+                ],
+                'filters' => NULL,
+            ],
+            'valid_from' => [
+                'title' => 'Valid_from',
+                'name' => 'valid_from',
+                'type' => 'datetime',
+                'required' => false,
+                'validators' => NULL,
+                'filters' => NULL,
+            ],
+            'valid_to' => [
+                'title' => 'Valid_to',
+                'name' => 'valid_to',
+                'type' => 'datetime',
+                'required' => false,
+                'validators' => NULL,
+                'filters' => NULL,
+            ],
+            'id_client' => [
+                'title' => 'Id_client',
+                'name' => 'id_client',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Tags',
-                        'name' => 'tags',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 22,
                     ],
-                'visibility' =>
+                ],
+                'filters' => NULL,
+            ],
+            'hidden' => [
+                'title' => 'Hidden',
+                'name' => 'hidden',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
                     [
-                        'title' => 'Visibility',
-                        'name' => 'visibility',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 11,
-                                    ],
-                            ],
-                        'filters' => NULL,
+                        'name' => 'maxlength',
+                        'params' => 1,
                     ],
-                'state' =>
-                    [
-                        'title' => 'State',
-                        'name' => 'state',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 11,
-                                    ],
-                            ],
-                        'filters' => NULL,
-                    ],
-                'valid_from' =>
-                    [
-                        'title' => 'Valid_from',
-                        'name' => 'valid_from',
-                        'type' => 'datetime',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ],
-                'valid_to' =>
-                    [
-                        'title' => 'Valid_to',
-                        'name' => 'valid_to',
-                        'type' => 'datetime',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ],
-                'id_client' =>
-                    [
-                        'title' => 'Id_client',
-                        'name' => 'id_client',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ],
-                            ],
-                        'filters' => NULL,
-                    ],
-                'hidden' =>
-                    [
-                        'title' => 'Hidden',
-                        'name' => 'hidden',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            [
-                                0 =>
-                                    [
-                                        'name' => 'maxlength',
-                                        'params' => 1,
-                                    ],
-                            ],
-                        'filters' => NULL,
-                    ],
-                'routes' => [
-                    'title' => 'routes',
-                    'name' => 'routes',
-                    'type' => 'relation',
-                    'relation' => [
-                        'type' => 'hasMany',
-                        'related_id' => 'id_media_object',
-                        'class' => Route::class,
-                    ],
-                    'required' => false,
-                    'validators' => null,
+                ],
+                'filters' => NULL,
+            ],
+            'routes' => [
+                'title' => 'routes',
+                'name' => 'routes',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_media_object',
+                    'class' => Route::class,
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'data' => [
+                'title' => 'data',
+                'name' => 'data',
+                'type' => 'relation',
+                'relation' => [
+                    'from_factory' => true,
+                    'factory_parameters' => array(
+                        'id_object_type'
+                    ),
+                    'factory_method' => 'createById',
+                    'type' => 'hasMany',
+                    'related_id' => 'id_media_object',
+                    'class' => Factory::class,
                     'filters' => null
                 ],
-                'data' => [
-                    'title' => 'data',
-                    'name' => 'data',
-                    'type' => 'relation',
-                    'relation' => [
-                        'from_factory' => true,
-                        'factory_parameters' => array(
-                            'id_object_type'
-                        ),
-                        'factory_method' => 'createById',
-                        'type' => 'hasMany',
-                        'related_id' => 'id_media_object',
-                        'class' => Factory::class,
-                        'filters' => null
-                    ],
-                    'required' => false,
-                    'validators' => null,
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'booking_packages' => [
+                'title' => 'booking_packages',
+                'name' => 'booking_packages',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_media_object',
+                    'class' => Package::class,
                     'filters' => null
                 ],
-                'booking_packages' => [
-                    'title' => 'booking_packages',
-                    'name' => 'booking_packages',
-                    'type' => 'relation',
-                    'relation' => [
-                        'type' => 'hasMany',
-                        'related_id' => 'id_media_object',
-                        'class' => Package::class,
-                        'filters' => null
-                    ],
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ],
-            ]
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+        ]
     ];
 
     /**
@@ -305,24 +272,6 @@ class MediaObject extends AbstractObject
             'media_object' => $media_object,
             'custom_data' => $custom_data
         ]);
-        /*$template_file = HelperFunctions::buildPathString(
-            [
-                BASE_PATH,
-                'src',
-                'Pressmind',
-                'Custom',
-                'Templates',
-                ucfirst($media_type_name) . '_' . ucfirst($template) . '.php'
-            ]
-        );
-        if(!file_exists($template_file)) {
-            throw new Exception('Template file ' . $template_file . ' does not exist');
-        }
-        ob_start();
-        require($template_file);
-        $content = ob_get_contents();
-        ob_end_clean();
-        return $content;*/
     }
 
     /**
@@ -473,7 +422,7 @@ class MediaObject extends AbstractObject
             $values[] = $id_object_type;
         }
         if(!is_null($visibility)) {
-            $sql[] = "AND pmt2core_media_objects.visibility = ?";
+            $sql[] = "AND p2cmo.visibility = ?";
             $values[] = $visibility;
         }
         $result = $db->fetchAll(implode(' ', $sql), $values, GetByPrettyUrl::class);
