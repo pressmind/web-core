@@ -12,11 +12,10 @@ use Pressmind\MVC\View;
 use Pressmind\ORM\Object\Itinerary\Variant;
 use Pressmind\ORM\Object\MediaObject\DataType\Objectlink;
 use Pressmind\ORM\Object\Touristic\Booking\Package;
-use Pressmind\ORM\Object\Touristic\CheapestPrice;
 use Pressmind\ORM\Object\Touristic\Date;
-use Pressmind\ORM\Object\Touristic\Option;
 use Pressmind\ORM\Object\Touristic\Transport;
 use Pressmind\Registry;
+use Pressmind\Search\CheapestPrice;
 use Pressmind\ValueObject\MediaObject\Result\GetByPrettyUrl;
 use stdClass;
 
@@ -287,7 +286,7 @@ class MediaObject extends AbstractObject
     }
 
     /**
-     * @param \Pressmind\Search\CheapestPrice $filters
+     * @param CheapestPrice $filters
      * @return CheapestPriceSpeed
      * @throws Exception
      */
@@ -298,13 +297,12 @@ class MediaObject extends AbstractObject
     }
 
     /**
-     * @param null $filters
+     * @param null|stdClass $filters
      * @return CheapestPriceSpeed[]
      * @throws Exception
      */
     public function getCheapestPrices($filters = null)
     {
-        //print_r($filters);
         $now = new DateTime();
         $where = "id_media_object = " . $this->getId() . " AND price_total > 0 AND date_departure > '" . $now->format('Y-m-d H:i:s') . "'";
         if(!is_null($filters)) {
@@ -320,7 +318,7 @@ class MediaObject extends AbstractObject
             $cheapest_prices = CheapestPriceSpeed::listAll($where . ' AND option_occupancy = 1', ['price_total' => 'ASC', 'date_departure' => 'ASC']);
         }
         if(empty($cheapest_prices)) {
-            $cheapest_prices = CheapestPriceSpeed::listAll($where, ['price_total' => 'ASC', 'date_departure' => 'ASC', 'date_departure' => 'ASC']);
+            $cheapest_prices = CheapestPriceSpeed::listAll($where, ['price_total' => 'ASC', 'date_departure' => 'ASC']);
         }
         return $cheapest_prices;
     }
@@ -402,9 +400,10 @@ class MediaObject extends AbstractObject
     }
 
     /**
-     * @param $route
-     * @param $id_object_type
-     * @param $visibility = 30
+     * @param string $route
+     * @param integer $id_object_type
+     * @param string $language = 'de'
+     * @param null|integer $visibility
      * @return GetByPrettyUrl[]
      * @throws Exception
      */
@@ -446,6 +445,7 @@ class MediaObject extends AbstractObject
                     }
                     $transport_pairs[$transport->code][$transport->way] = $transport;
                 }
+                $options = [];
                 if($booking_package->price_mix == 'date_housing') {
                     $options = $date->getHousingOptions();
                 }
