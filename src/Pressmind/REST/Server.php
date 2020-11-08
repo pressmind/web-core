@@ -51,6 +51,7 @@ class Server
         $this->_response = new Response();
         $this->_router = new Router();
         $this->_router->addRoute(new Router\Route('search', 'POST', 'REST\\Controller', 'Search', 'search'));
+        $this->_router->addRoute(new Router\Route('mediaObject/getByRoute', 'POST', 'REST\\Controller', 'MediaObject', 'getByRoute'));
         $pieces = (array_map('ucfirst', explode('/', $this->_request->getUri())));
         if(class_exists('\Pressmind\\REST\\Controller\\' . implode('\\', $pieces))) {
             $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'GET', 'REST\\Controller', implode('\\', $pieces), 'listAll'));

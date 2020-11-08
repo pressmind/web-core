@@ -6,9 +6,14 @@ namespace Pressmind\REST\Controller;
 
 class MediaObject extends AbstractController
 {
-    public function getByRoute($route)
+    public function getByRoute($params)
     {
-        return \Pressmind\ORM\Object\MediaObject::getByPrettyUrl($route);
+        $readRelations = (isset($params['readRelations']) && boolval($params['readRelations']) == true) ? $params['readRelations'] : false;
+        $routes = \Pressmind\ORM\Object\MediaObject::getByPrettyUrl($params['route'], $params['id_object_type'], isset($params['language']) ? $params['language'] : 'de', $params['visibility']);
+        foreach ($routes as $route) {
+            $media_object = new \Pressmind\ORM\Object\MediaObject($route->id, $readRelations);
+            return $media_object;
+        }
     }
 
     public function getByCode($code)
