@@ -36,6 +36,8 @@ abstract class AbstractController
     public function listAll($parameters) {
         $readRelations = false;
         $apiTemplate = null;
+        $limit = null;
+        $order = null;
         if(isset($parameters['readRelations'])) {
             $readRelations = boolval($parameters['readRelations']);
             unset($parameters['readRelations']);
@@ -44,6 +46,12 @@ abstract class AbstractController
             $apiTemplate = $parameters['apiTemplate'];
             unset($parameters['apiTemplate']);
         }
+        if(isset($parameters['start']) && isset($parameters['limit'])) {
+            $limit = [$parameters['start'], $parameters['limit']];
+            unset($parameters['start']);
+            unset($parameters['limit']);
+        }
+
         if(count($parameters) == 1 && isset($parameters['id'])) {
             return $this->read($parameters['id'], $readRelations, $apiTemplate);
         }
@@ -51,12 +59,12 @@ abstract class AbstractController
         if(count($parameters) == 0) $parameters = null;
         if(!is_null($apiTemplate)) {
             $result = [];
-            foreach($this->orm_class->loadAll($parameters) as $object) {
+            foreach($this->orm_class->loadAll($parameters, $order, $limit) as $object) {
                 $result[] = $object->renderApiOutputTemplate($apiTemplate);
             }
             return $result;
         }
-        return $this->orm_class->loadAll($parameters);
+        return $this->orm_class->loadAll($parameters, $order, $limit);
     }
 
     /**
