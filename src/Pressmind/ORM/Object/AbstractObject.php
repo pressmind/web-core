@@ -418,7 +418,7 @@ abstract class AbstractObject implements SplSubject
     {
         $required_check = $this->checkForRequiredProperties();
         if ($required_check !== true) {
-            throw new Exception('Missing required properties: ' . implode(', ', $required_check));
+            throw new Exception('Missing required properties: ' . implode(', ', $required_check) . ' in ' . get_class($this));
         }
         $fieldlist = $this->getPropertyNames();
         $values = [];
@@ -706,7 +706,7 @@ abstract class AbstractObject implements SplSubject
                     $filter = Filter\Factory::create($filterSpec['name'], $direction, $filterSpec['params']);
                     return $filter->filterValue($value);
                 } catch (Exception $e) {
-                    throw new Exception('Filter for property ' . $name . ' failed: ' . $filter->getErrors());
+                    throw new Exception('Filter for property ' . $name . ' failed for class ' . get_class($this) . ': ' . $filter->getErrors());
                 }
             }
         }
@@ -725,7 +725,7 @@ abstract class AbstractObject implements SplSubject
             foreach ($validatorSpecs as $validatorSpec) {
                 $validator = Validator\Factory::create($validatorSpec);
                 if (!$validator->isValid($value)) {
-                    throw new Exception('Validation for property ' . $name . ' failed: ' . $validator->getError());
+                    throw new Exception('Validation for property ' . $name . ' failed for class ' . get_class($this) . ': ' . $validator->getError());
                 }
             }
         }
