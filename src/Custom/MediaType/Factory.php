@@ -9,9 +9,9 @@ class Factory {
      * @param $pMediaTypeName
      * @return AbstractMediaType
      */
-    public static function create($pMediaTypeName) {
+    public static function create($pMediaTypeName, $pReadRelations = false) {
         $class_name = 'Custom\MediaType\\' . $pMediaTypeName;
-        $object = new $class_name();
+        $object = new $class_name(null, $pReadRelations);
         return $object;
     }
 
@@ -19,9 +19,9 @@ class Factory {
      * @param $pMediaTypeId
      * @return AbstractMediaType
      */
-    public static function createById($pMediaTypeId) {
+    public static function createById($pMediaTypeId, $pReadRelations = false) {
         $config = Registry::getInstance()->get('config');
         $media_type_name = $config['data']['media_types'][$pMediaTypeId];
-        return self::create($media_type_name);
+        return self::create($media_type_name, $pReadRelations);
     }
 }
