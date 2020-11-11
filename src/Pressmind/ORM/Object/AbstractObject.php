@@ -221,7 +221,12 @@ abstract class AbstractObject implements SplSubject
                 " WHERE " . $this->_definitions['database']['primary_key'] .
                 " = ?";
             $dataset = $this->_db->fetchRow($query, [$id]);
-            $this->fromStdClass($dataset);
+            if(!is_null($dataset)) {
+                $this->fromStdClass($dataset);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -288,13 +293,17 @@ abstract class AbstractObject implements SplSubject
         /** @var AbstractObject[] $relations */
         $relations = $this->$property_name;
         foreach ($relations as $relation) {
-            $relation->delete(true);
+            if(!empty($relation)) {
+                $relation->delete(true);
+            }
         }
     }
 
     private function _deleteBelongsToRelation($property_name) {
         $relation = $this->$property_name;
-        $relation->delete(true);
+        if(!empty($relation)) {
+            $relation->delete(true);
+        }
     }
 
 
@@ -839,6 +848,7 @@ abstract class AbstractObject implements SplSubject
                 foreach ($property_info['relation']['factory_parameters'] as $parameter) {
                     $parameters[] = $this->$parameter;
                 }
+                $parameters[] = $this->_read_relations;
                 $relation_object = call_user_func_array([$factory_class_name, $property_info['relation']['factory_method']], $parameters);
             } else {
                 $relation_class_name = $property_info['relation']['class'];
