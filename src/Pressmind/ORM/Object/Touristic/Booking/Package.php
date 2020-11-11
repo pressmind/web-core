@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Pressmind\ORM\Object\AbstractObject;
 use Pressmind\ORM\Object\CheapestPriceSpeed;
+use Pressmind\ORM\Object\Itinerary\Variant;
 use Pressmind\ORM\Object\Touristic\Date;
 use Pressmind\ORM\Object\Touristic\Insurance;
 use Pressmind\ORM\Object\Touristic\Option;
@@ -31,6 +32,7 @@ use Pressmind\ORM\Object\Touristic\SeasonalPeriod;
  * @property Insurance\Group $insurance_group
  * @property Date[] $dates
  * @property SeasonalPeriod[] $seasonal_periods
+ * @property Variant[] $itinerary_variants
  * @property \Pressmind\ORM\Object\Touristic\Housing\Package[] $housing_packages
  * @property Option[] $sightseeings
  * @property Option[] $tickets
@@ -267,12 +269,12 @@ class Package extends AbstractObject
                         'type' => 'hasMany',
                         'related_id' => 'id_booking_package',
                         'class' => Date::class,
-                        'filters' => array(
+                        /*'filters' => array(
                             'departure' => array(
                                 '>',
                                 'CURRENT_DATE'
                             )
-                        ),
+                        ),*/
                         'order_columns' => array(
                             'departure' => 'ASC'
                         )
@@ -289,6 +291,19 @@ class Package extends AbstractObject
                         'type' => 'hasMany',
                         'related_id' => 'id_booking_package',
                         'class' => SeasonalPeriod::class
+                    ),
+                    'required' => false,
+                    'validators' => null,
+                    'filters' => null
+                ),
+                'itinerary_variants' => array(
+                    'title' => 'itinerary_variants',
+                    'name' => 'itinerary_variants',
+                    'type' => 'relation',
+                    'relation' => array(
+                        'type' => 'hasMany',
+                        'related_id' => 'id_booking_package',
+                        'class' => Variant::class
                     ),
                     'required' => false,
                     'validators' => null,
