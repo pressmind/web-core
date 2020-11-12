@@ -66,12 +66,18 @@ class Server
     private function _checkAuthentication()
     {
         $config = Registry::getInstance()->get('config');
-        if($auth = $this->_request->getParsedBasicAuth()) {
-            if ($auth[0] == $config['rest']['server']['api_user'] && $auth[1] == $config['rest']['server']['api_password']) {
-                return true;
+        if(isset($config['rest']['server']['api_user']) && isset($config['rest']['server']['api_password']) && !empty($config['rest']['server']['api_user']) && !empty($config['rest']['server']['api_password'])) {
+            if ($auth = $this->_request->getParsedBasicAuth()) {
+                if ($auth[0] == $config['rest']['server']['api_user'] && $auth[1] == $config['rest']['server']['api_password']) {
+                    return true;
+                }
+            } else {
+                return false;
             }
+        } else {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
