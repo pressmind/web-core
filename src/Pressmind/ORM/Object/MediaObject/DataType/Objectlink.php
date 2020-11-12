@@ -86,8 +86,8 @@ class Objectlink extends AbstractObject
                 'validators' => null,
             ],
             'link_type' => [
-                'title' => 'var_name',
-                'name' => 'var_name',
+                'title' => 'link_type',
+                'name' => 'link_type',
                 'type' => 'string',
                 'required' => true,
                 'filters' => null,

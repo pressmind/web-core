@@ -8,6 +8,7 @@ namespace Pressmind\ORM\Object;
  * @property integer $id
  * @property integer $id_media_object
  * @property string $var_name
+ * @property string $language
  * @property string $fulltext_values
  */
 class FulltextSearch extends AbstractObject
@@ -60,9 +61,22 @@ class FulltextSearch extends AbstractObject
                 ],
                 'filters' => NULL,
             ],
+            'language' => [
+                'title' => 'Variable Name',
+                'name' => 'language',
+                'type' => 'varchar',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => NULL,
+            ],
             'fulltext_values' => [
                 'title' => 'Variable Name',
-                'name' => 'var_name',
+                'name' => 'fulltext_values',
                 'type' => 'longtext',
                 'required' => false,
                 'filters' => NULL,

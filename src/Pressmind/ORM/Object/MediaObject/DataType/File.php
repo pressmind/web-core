@@ -130,7 +130,7 @@ class File extends AbstractObject
             ],
             'download_url'  => [
                 'title' => 'download',
-                'name' => 'download',
+                'name' => 'download_url',
                 'type' => 'string',
                 'required' => false,
                 'filters' => null,

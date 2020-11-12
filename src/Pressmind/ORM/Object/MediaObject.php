@@ -11,6 +11,8 @@ use Pressmind\HelperFunctions;
 use Pressmind\MVC\View;
 use Pressmind\ORM\Object\Itinerary\Variant;
 use Pressmind\ORM\Object\MediaObject\DataType\Objectlink;
+use Pressmind\ORM\Object\MediaObject\MyContent;
+use Pressmind\ORM\Object\Touristic\Base;
 use Pressmind\ORM\Object\Touristic\Booking\Package;
 use Pressmind\ORM\Object\Touristic\Date;
 use Pressmind\ORM\Object\Touristic\Transport;
@@ -34,6 +36,8 @@ use stdClass;
  * @property integer $id_client
  * @property integer $hidden
  * @property AbstractMediaType[] $data
+ * @property MyContent[] $my_contents
+ * @property Base $touristic_base
  * @property Package[] $booking_packages
  * @property Route[] $routes
  */
@@ -227,6 +231,34 @@ class MediaObject extends AbstractObject
                     'type' => 'hasMany',
                     'related_id' => 'id_media_object',
                     'class' => Factory::class,
+                    'filters' => null
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'my_contents' => [
+                'title' => 'my_contents',
+                'name' => 'my_contents',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_media_object',
+                    'class' => MyContent::class,
+                    'filters' => null
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'touristic_base' => [
+                'title' => 'touristic_base',
+                'name' => 'touristic_base',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'belongsTo',
+                    'related_id' => 'id_media_object',
+                    'class' => Base::class,
                     'filters' => null
                 ],
                 'required' => false,
@@ -589,11 +621,12 @@ class MediaObject extends AbstractObject
                     if ($definition['type'] == 'string') {
                         $fulltext[] = [
                             'var_name' => $name,
+                            'language' => $data->language,
                             'id_media_object' => $this->getId(),
                             'fulltext_values' => trim(preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name))))
                         ];
                         if ($add_to_complete_fulltext) {
-                            $complete_fulltext[] = trim(preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name))));
+                            $complete_fulltext[$data->language][] = trim(preg_replace('/\s+/', ' ', strip_tags(str_replace('>', '> ', $data->$name))));
                         }
                     }
                     if ($definition['type'] == 'relation') {
@@ -606,21 +639,25 @@ class MediaObject extends AbstractObject
                         if (count($values) > 0) {
                             $fulltext[] = [
                                 'var_name' => $name,
+                                'language' => $data->language,
                                 'id_media_object' => $this->getId(),
                                 'fulltext_values' => implode(' ', $values)
                             ];
                             if ($add_to_complete_fulltext) {
-                                $complete_fulltext[] = implode(' ', $values);
+                                $complete_fulltext[$data->language][] = implode(' ', $values);
                             }
                         }
                     }
                 }
             }
-            $fulltext[] = [
-                'var_name' => 'fulltext',
-                'id_media_object' => $this->getId(),
-                'fulltext_values' => implode(' ', $complete_fulltext)
-            ];
+            foreach ($complete_fulltext as $language => $values) {
+                $fulltext[] = [
+                    'var_name' => 'fulltext',
+                    'language' => $language,
+                    'id_media_object' => $this->getId(),
+                    'fulltext_values' => implode(' ', $values)
+                ];
+            }
             foreach ($fulltext as $fulltext_data) {
                 $this->_db->insert('pmt2core_fulltext_search', $fulltext_data);
             }

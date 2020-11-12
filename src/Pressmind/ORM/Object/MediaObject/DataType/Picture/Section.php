@@ -126,8 +126,8 @@ class Section extends Picture
                 'validators' => null,
             ],
             'mime_type' => [
-                'title' => 'type',
-                'name' => 'type',
+                'title' => 'mime_type',
+                'name' => 'mime_type',
                 'type' => 'string',
                 'required' => false,
                 'filters' => null,

@@ -20,7 +20,7 @@ class Description extends AbstractObject
     protected $_definitions = array(
         'class' =>
             array(
-                'name' => 'TouristicOptionDescription',
+                'name' => 'Touristic\Option\Description',
             ),
         'database' =>
             array(

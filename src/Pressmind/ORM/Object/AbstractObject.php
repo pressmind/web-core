@@ -4,6 +4,8 @@ namespace Pressmind\ORM\Object;
 
 use \Exception;
 use Pressmind\DB\Adapter\AdapterInterface;
+use Pressmind\DB\Adapter\Pdo;
+use Pressmind\DB\Typemapper\Mysql;
 use Pressmind\Import\Mapper\Factory;
 use Pressmind\Registry;
 use Pressmind\ORM\Filter;
@@ -1052,5 +1054,37 @@ abstract class AbstractObject implements SplSubject
         $classname = ucfirst($templateName);
         $renderer = new $classname($this);
         return $renderer->render();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function checkStorageIntegrity()
+    {
+        /**@var Pdo $db**/
+        $db = Registry::getInstance()->get('db');
+        $type_mapper = new Mysql();
+        $table = $db->fetchAll('DESCRIBE ' . $this->getDbTableName());
+        $database_table_info = [];
+        $differences = [];
+        foreach ($table as $field) {
+            $database_table_info[$field->Field] = $field;
+        }
+        foreach ($this->getPropertyDefinitions() as $definition) {
+            if($definition['type'] != 'relation') {
+                $column_type = $type_mapper->mapTypeFromORMToMysqlWithPropertyDefinition($definition);
+                $column_name = $definition['name'];
+                if (!is_null($column_type)) {
+                    if(isset($database_table_info[$column_name])) {
+                        if($column_type != $database_table_info[$column_name]->Type) {
+                            $differences[] = ['action' => 'alter_column_type', 'column_name' => $column_name, 'column_type' => $column_type, 'msg' => get_class($this) . ': database column ' . $column_name . ' has different type and needs to be altered from ' . $database_table_info[$column_name]->Type . ' to ' . strtolower($column_type)];
+                        }
+                    } else {
+                        $differences[] = ['action' => 'create_column', 'column_name' => $column_name, 'column_type' => $column_type, 'msg' => get_class($this) . ': database column ' . $column_name . ' does not exist in database and needs to be created'];
+                    }
+                }
+            }
+        }
+        return count($differences) > 0 ? $differences : true;
     }
 }
