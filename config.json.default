@@ -39,7 +39,8 @@
             "touristic": {
                 "origins": [
                     "0"
-                ]
+                ],
+                "my_content_class_map": {}
             },
             "media_types": {},
             "media_types_pretty_url": {},
