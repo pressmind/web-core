@@ -9,7 +9,7 @@ use Pressmind\ORM\Object\AbstractObject;
 /**
  * Class Base
  * @package Pressmind\ORM\Object\Touristic
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
  * @property integer $id_season_set
  * @property boolean $booking_on_request
@@ -32,12 +32,12 @@ class Base extends AbstractObject
             'id' => [
                 'title' => 'ID',
                 'name' => 'id',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => true,
                 'validators' => [
                     [
                         'name' => 'maxlength',
-                        'params' => 22,
+                        'params' => 32,
                     ],
                 ],
                 'filters' => NULL

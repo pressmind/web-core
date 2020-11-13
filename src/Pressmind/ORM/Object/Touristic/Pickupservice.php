@@ -13,6 +13,8 @@ use Pressmind\ORM\Object\AbstractObject;
  */
 class Pickupservice extends AbstractObject
 {
+    protected $_dont_use_autoincrement_on_primary_key = true;
+
     protected $_definitions = array(
         'class' =>
             array(
@@ -29,14 +31,14 @@ class Pickupservice extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 11,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

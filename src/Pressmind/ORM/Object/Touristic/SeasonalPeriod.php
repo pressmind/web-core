@@ -7,9 +7,9 @@ use \DateTime;
 
 /**
  * Class SeasonalPeriod
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
- * @property integer $id_booking_package
+ * @property string $id_booking_package
  * @property DateTime $season_begin
  * @property DateTime $season_end
  * @property string $info
@@ -32,10 +32,10 @@ use \DateTime;
  * @property integer $pax_min
  * @property integer $pax
  * @property string $code_ibe
- * @property integer $id_touristic_early_birds
+ * @property string $id_touristic_early_birds
  * @property string $link_pib
  * @property string $code
- * @property integer $id_starting_point
+ * @property string $id_starting_point
  * @property integer $guaranteed
  * @property integer $saved
  * @property string $touroperator
@@ -62,14 +62,14 @@ class SeasonalPeriod extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -94,14 +94,14 @@ class SeasonalPeriod extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -377,14 +377,14 @@ class SeasonalPeriod extends AbstractObject
                     array(
                         'title' => 'Id_touristic_early_bird',
                         'name' => 'id_touristic_early_bird',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => false,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -418,14 +418,14 @@ class SeasonalPeriod extends AbstractObject
                     array(
                         'title' => 'Id_starting_point',
                         'name' => 'id_starting_point',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => false,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

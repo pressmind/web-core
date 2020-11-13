@@ -6,13 +6,15 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class TouristicStartingpointOptionsZipRange
- * @property integer $id_zip_ranges
- * @property integer $id_option
+ * @property string $id_zip_ranges
+ * @property string $id_option
  * @property string $from
  * @property string $to
  */
 class ZipRange extends AbstractObject
 {
+    protected $_dont_use_autoincrement_on_primary_key = true;
+
     protected $_definitions = array(
         'class' =>
             array(
@@ -29,14 +31,14 @@ class ZipRange extends AbstractObject
                     array(
                         'title' => 'Id_zip_ranges',
                         'name' => 'id_zip_ranges',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -45,14 +47,14 @@ class ZipRange extends AbstractObject
                     array(
                         'title' => 'Id_option',
                         'name' => 'id_option',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

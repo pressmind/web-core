@@ -6,7 +6,7 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class TouristicHousingDetailDescription
- * @property integer $id_housing_package
+ * @property string $id_housing_package
  * @property integer $id_media_object
  * @property integer $id_media_object_housing_description
  */
@@ -28,14 +28,14 @@ class DetailDescription extends AbstractObject
                     array(
                         'title' => 'Id_housing_package',
                         'name' => 'id_housing_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -60,14 +60,14 @@ class DetailDescription extends AbstractObject
                     array(
                         'title' => 'Id_media_object_housing_description',
                         'name' => 'id_media_object_housing_description',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

@@ -6,8 +6,8 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class PriceTable
- * @property integer $id
- * @property integer $id_insurance
+ * @property string $id
+ * @property string $id_insurance
  * @property string $code
  * @property float $price_per_person
  * @property string $price_type
@@ -46,14 +46,14 @@ class PriceTable extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -62,14 +62,14 @@ class PriceTable extends AbstractObject
                     array(
                         'title' => 'Id_insurance',
                         'name' => 'id_insurance',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

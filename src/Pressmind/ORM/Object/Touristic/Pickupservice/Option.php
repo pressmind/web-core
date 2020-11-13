@@ -6,7 +6,7 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class TouristicPickupserviceOption
- * @property integer $id
+ * @property string $id
  * @property string $id_pickupservice
  * @property integer $zip
  * @property string $code
@@ -17,6 +17,8 @@ use Pressmind\ORM\Object\AbstractObject;
  */
 class Option extends AbstractObject
 {
+    protected $_dont_use_autoincrement_on_primary_key = true;
+
     protected $_definitions = array(
         'class' =>
             array(
@@ -33,14 +35,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -56,7 +58,7 @@ class Option extends AbstractObject
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 45,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

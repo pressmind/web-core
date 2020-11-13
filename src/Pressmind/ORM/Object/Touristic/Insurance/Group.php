@@ -7,7 +7,7 @@ use Pressmind\ORM\Object\Touristic\Insurance;
 
 /**
  * Class TouristicInsuranceGroup
- * @property integer $id
+ * @property string $id
  * @property string $name
  * @property string $description
  * @property integer $active
@@ -33,14 +33,14 @@ class Group extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -96,7 +96,7 @@ class Group extends AbstractObject
                     'relation' =>
                         array (
                             'type' => 'ManyToMany',
-                            'class' => '\\Pressmind\\ORM\\Object\\Touristic\\Insurance',
+                            'class' => Insurance::class,
                             'relation_table' => 'pmt2core_touristic_insurance_to_group',
                             'related_id' => 'id_insurance_group',
                             'target_id' => 'id_insurance'

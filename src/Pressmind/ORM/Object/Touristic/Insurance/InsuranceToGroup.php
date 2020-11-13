@@ -26,14 +26,14 @@ class InsuranceToGroup extends AbstractObject
                     array(
                         'title' => 'Insurance ID',
                         'name' => 'id_insurance',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -42,14 +42,14 @@ class InsuranceToGroup extends AbstractObject
                     array(
                         'title' => 'Group ID',
                         'name' => 'id_insurance_group',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => false,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

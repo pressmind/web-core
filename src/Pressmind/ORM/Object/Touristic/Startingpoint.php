@@ -7,7 +7,7 @@ use \Pressmind\ORM\Object\Touristic\Startingpoint\Option;
 
 /**
  * Class TouristicStartingpoint
- * @property integer $id
+ * @property string $id
  * @property string $code
  * @property string $name
  * @property string $text
@@ -36,14 +36,14 @@ class Startingpoint extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 11,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

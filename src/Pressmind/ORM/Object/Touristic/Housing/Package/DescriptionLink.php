@@ -10,15 +10,15 @@ use Pressmind\ORM\Object\MediaObject;
 /**
  * Class DescriptionLink
  * @package Pressmind\ORM\Object\Touristic\Housing\Package
- * @property integer $id
- * @property integer $id_housing_package
+ * @property string $id
+ * @property string $id_housing_package
  * @property integer $id_media_object
  * @property integer $sort
  * @property MediaObject $media_object
  */
 class DescriptionLink extends AbstractObject
 {
-    protected $_dont_use_autoincrement_on_primary_key = false;
+    protected $_dont_use_autoincrement_on_primary_key = true;
 
     protected $_definitions = array(
         'class' => [
@@ -32,12 +32,12 @@ class DescriptionLink extends AbstractObject
             'id' => [
                 'title' => 'ID',
                 'name' => 'id',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => true,
                 'validators' => [
                     [
                         'name' => 'maxlength',
-                        'params' => 22,
+                        'params' => 32,
                     ],
                 ],
                 'filters' => NULL,
@@ -45,12 +45,12 @@ class DescriptionLink extends AbstractObject
             'id_housing_package' => [
                 'title' => 'ID Housing Package',
                 'name' => 'id_housing_package',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => true,
                 'validators' => [
                     [
                         'name' => 'maxlength',
-                        'params' => 22,
+                        'params' => 32,
                     ],
                 ],
                 'filters' => NULL,

@@ -11,9 +11,9 @@ use Pressmind\ORM\Object\Touristic\Option;
 
 /**
  * Class Package
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
- * @property integer $id_booking_package
+ * @property string $id_booking_package
  * @property string $name
  * @property string $code
  * @property integer $nights
@@ -43,14 +43,14 @@ class Package extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -75,14 +75,14 @@ class Package extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

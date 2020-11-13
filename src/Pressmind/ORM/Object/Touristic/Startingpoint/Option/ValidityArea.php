@@ -6,12 +6,15 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class TouristicStartingpointOptionsValidityArea
- * @property integer $id_startingpoint_option
+ * @property string $id_startingpoint_option
  * @property string $zip
  * @property integer $id_startingpoint
  */
 class ValidityArea extends AbstractObject
 {
+
+    protected $_dont_use_autoincrement_on_primary_key = true;
+
     protected $_definitions = array(
         'class' =>
             array(
@@ -28,14 +31,14 @@ class ValidityArea extends AbstractObject
                     array(
                         'title' => 'Id_startingpoint_option',
                         'name' => 'id_startingpoint_option',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

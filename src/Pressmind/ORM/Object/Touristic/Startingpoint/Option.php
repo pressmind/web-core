@@ -6,8 +6,8 @@ use Pressmind\ORM\Object\AbstractObject;
 use \DateTime;
 /**
  * Class TouristicStartingpointOption
- * @property integer $id
- * @property integer $id_startingpoint
+ * @property string $id
+ * @property string $id_startingpoint
  * @property string $zip
  * @property string $code
  * @property string $name
@@ -51,14 +51,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -67,14 +67,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id_startingpoint',
                         'name' => 'id_startingpoint',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

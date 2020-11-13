@@ -15,7 +15,7 @@ use Pressmind\ORM\Object\Touristic\SeasonalPeriod;
 
 /**
  * Class TouristicBookingPackage
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
  * @property string $name
  * @property float $duration
@@ -59,14 +59,14 @@ class Package extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

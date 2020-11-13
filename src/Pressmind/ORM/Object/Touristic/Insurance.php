@@ -9,14 +9,14 @@ use Pressmind\ORM\Object\Touristic\Insurance\PriceTable;
 
 /**
  * Class TouristicInsurance
- * @property integer $id
- * @property  $active
+ * @property string $id
+ * @property boolean $active
  * @property string $name
  * @property string $description
  * @property string $description_long
  * @property integer $duration_max_days
- * @property  $worldwide
- * @property  $is_additional_insurance
+ * @property boolean $worldwide
+ * @property boolean $is_additional_insurance
  * @property string $urlinfo
  * @property string $urlproduktinfo
  * @property string $urlagb
@@ -44,14 +44,14 @@ class Insurance extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -62,14 +62,7 @@ class Insurance extends AbstractObject
                         'name' => 'active',
                         'type' => 'boolean',
                         'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 1,
-                                    ),
-                            ),
+                        'validators' => null,
                         'filters' => NULL,
                     ),
                 'name' =>
@@ -127,14 +120,7 @@ class Insurance extends AbstractObject
                         'name' => 'worldwide',
                         'type' => 'boolean',
                         'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 1,
-                                    ),
-                            ),
+                        'validators' => NULL,
                         'filters' => NULL,
                     ),
                 'is_additional_insurance' =>
@@ -143,14 +129,7 @@ class Insurance extends AbstractObject
                         'name' => 'is_additional_insurance',
                         'type' => 'boolean',
                         'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 1,
-                                    ),
-                            ),
+                        'validators' => NULL,
                         'filters' => NULL,
                     ),
                 'urlinfo' =>

@@ -8,10 +8,10 @@ use Pressmind\ORM\Object\Touristic\Housing\Package;
 
 /**
  * Class Option
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
- * @property integer $id_booking_package
- * @property integer $id_housing_package
+ * @property string $id_booking_package
+ * @property string $id_housing_package
  * @property string $type
  * @property string $season
  * @property string $code
@@ -42,8 +42,8 @@ use Pressmind\ORM\Object\Touristic\Housing\Package;
  * @property integer $max_pax
  * @property DateTime $reservation_date_from
  * @property DateTime $reservation_date_to
- * @property  $age_from
- * @property  $age_to
+ * @property integer $age_from
+ * @property integer $age_to
  * @property string $selection_type
  * @property integer $use_earlybird
  * @property string $request_code
@@ -72,14 +72,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -104,14 +104,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -120,14 +120,14 @@ class Option extends AbstractObject
                     array(
                         'title' => 'Id_housing_package',
                         'name' => 'id_housing_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

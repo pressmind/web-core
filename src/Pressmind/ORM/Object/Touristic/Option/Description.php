@@ -6,7 +6,7 @@ use Pressmind\ORM\Object\AbstractObject;
 
 /**
  * Class TouristicOptionDescription
- * @property integer $id_booking_package
+ * @property string $id_booking_package
  * @property integer $id_media_object
  * @property string $type
  * @property string $name
@@ -33,14 +33,14 @@ class Description extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

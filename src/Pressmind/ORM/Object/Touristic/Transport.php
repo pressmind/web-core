@@ -7,10 +7,10 @@ use Pressmind\System\I18n;
 
 /**
  * Class Transport
- * @property integer $id
- * @property integer $id_date
+ * @property string $id
+ * @property string $id_date
  * @property integer $id_media_object
- * @property integer $id_booking_package
+ * @property string $id_booking_package
  * @property string $code
  * @property string $description
  * @property string $type
@@ -49,14 +49,14 @@ class Transport extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -65,14 +65,14 @@ class Transport extends AbstractObject
                     array(
                         'title' => 'Id_date',
                         'name' => 'id_date',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -97,14 +97,14 @@ class Transport extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,

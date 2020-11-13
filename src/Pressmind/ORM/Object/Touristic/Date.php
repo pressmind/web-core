@@ -9,10 +9,10 @@ use Pressmind\ORM\Object\Touristic\Transport;
 
 /**
  * Class Date
- * @property integer $id
+ * @property string $id
  * @property integer $id_media_object
- * @property integer $id_booking_package
- * @property integer $id_starting_point
+ * @property string $id_booking_package
+ * @property string $id_starting_point
  * @property string $code
  * @property DateTime $departure
  * @property DateTime $arrival
@@ -53,14 +53,14 @@ class Date extends AbstractObject
                     array(
                         'title' => 'Id',
                         'name' => 'id',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -85,14 +85,14 @@ class Date extends AbstractObject
                     array(
                         'title' => 'Id_booking_package',
                         'name' => 'id_booking_package',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => true,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
@@ -101,14 +101,14 @@ class Date extends AbstractObject
                     array(
                         'title' => 'Id_starting_point',
                         'name' => 'id_starting_point',
-                        'type' => 'integer',
+                        'type' => 'string',
                         'required' => false,
                         'validators' =>
                             array(
                                 0 =>
                                     array(
                                         'name' => 'maxlength',
-                                        'params' => 22,
+                                        'params' => 32,
                                     ),
                             ),
                         'filters' => NULL,
