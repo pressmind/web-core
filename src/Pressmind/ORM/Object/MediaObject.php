@@ -25,7 +25,9 @@ use stdClass;
  * Class MediaObject
  * @property integer $id
  * @property integer $id_pool
+ * @property integer $id_brand
  * @property integer $id_object_type
+ * @property integer id_season
  * @property string $name
  * @property string $code
  * @property string $tags
@@ -35,6 +37,10 @@ use stdClass;
  * @property DateTime $valid_to
  * @property integer $id_client
  * @property integer $hidden
+ * @property boolean $is_reference
+ * @property integer $reference_media_object
+ * @property DateTime $different_season_from
+ * @property DateTime $different_season_to
  * @property AbstractMediaType[] $data
  * @property MyContent[] $my_contents
  * @property Base $touristic_base
@@ -93,6 +99,45 @@ class MediaObject extends AbstractObject
             'id_object_type' => [
                 'title' => 'Id_object_type',
                 'name' => 'id_object_type',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => NULL,
+            ],
+            'id_client' => [
+                'title' => 'Id_client',
+                'name' => 'id_client',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => NULL,
+            ],
+            'id_brand' => [
+                'title' => 'id_brand',
+                'name' => 'id_brand',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => NULL,
+            ],
+            'id_season' => [
+                'title' => 'id_season',
+                'name' => 'id_season',
                 'type' => 'integer',
                 'required' => true,
                 'validators' => [
@@ -179,11 +224,27 @@ class MediaObject extends AbstractObject
                 'validators' => NULL,
                 'filters' => NULL,
             ],
-            'id_client' => [
-                'title' => 'Id_client',
-                'name' => 'id_client',
-                'type' => 'integer',
+            'hidden' => [
+                'title' => 'Hidden',
+                'name' => 'hidden',
+                'type' => 'boolean',
                 'required' => true,
+                'validators' => null,
+                'filters' => NULL,
+            ],
+            'is_reference' => [
+                'title' => 'is_reference',
+                'name' => 'is_reference',
+                'type' => 'boolean',
+                'required' => false,
+                'validators' => NULL,
+                'filters' => NULL,
+            ],
+            'reference_media_object' => [
+                'title' => 'reference_media_object',
+                'name' => 'reference_media_object',
+                'type' => 'integer',
+                'required' => false,
                 'validators' => [
                     [
                         'name' => 'maxlength',
@@ -192,17 +253,20 @@ class MediaObject extends AbstractObject
                 ],
                 'filters' => NULL,
             ],
-            'hidden' => [
-                'title' => 'Hidden',
-                'name' => 'hidden',
-                'type' => 'integer',
-                'required' => true,
-                'validators' => [
-                    [
-                        'name' => 'maxlength',
-                        'params' => 1,
-                    ],
-                ],
+            'different_season_from' => [
+                'title' => 'different_season_from',
+                'name' => 'different_season_from',
+                'type' => 'datetime',
+                'required' => false,
+                'validators' => NULL,
+                'filters' => NULL,
+            ],
+            'different_season_to' => [
+                'title' => 'different_season_to',
+                'name' => 'different_season_to',
+                'type' => 'datetime',
+                'required' => false,
+                'validators' => NULL,
                 'filters' => NULL,
             ],
             'routes' => [

@@ -3,11 +3,13 @@
 namespace Pressmind;
 
 use Pressmind\DB\Adapter\Pdo;
+use Pressmind\Import\Brand;
 use Pressmind\Import\CategoryTree;
 use Pressmind\Import\ImportInterface;
 use Pressmind\Import\Itinerary;
 use Pressmind\Import\MediaObjectData;
 use Pressmind\Import\MyContent;
+use Pressmind\Import\Season;
 use Pressmind\Import\StartingPointOptions;
 use Pressmind\Import\TouristicData;
 use Pressmind\Log\Writer;
@@ -217,18 +219,6 @@ class Import
                 }
             }
 
-            if(isset($config['data']['touristic']['my_content_class_map']) && isset($response[0]->my_contents_to_media_object) && is_array($response[0]->my_contents_to_media_object)) {
-                foreach($response[0]->my_contents_to_media_object as $my_content) {
-                    if(isset($config['data']['touristic']['my_content_class_map'][$my_content->id_my_content])) {
-                        $touristic_class_name = $config['data']['touristic']['my_content_class_map'][$my_content->id_my_content];
-                        $my_content->import_id = 'ABC';
-                        /** @var ImportInterface $custom_importer */
-                        $custom_importer = new $touristic_class_name($my_content);
-                        $custom_importer->import();
-                    }
-                }
-            }
-
             if(is_array($response[0]->my_contents_to_media_object)) {
                 $my_content_importer = new MyContent($response[0]->my_contents_to_media_object);
                 $my_content_importer->import();
@@ -253,11 +243,28 @@ class Import
                 }
             }
 
+            $brands_importer = new Brand();
+            $brands_importer->import();
+
+            $seasons_importer = new Season();
+            $seasons_importer->import();
+
             $media_object_importer = new \Pressmind\Import\MediaObject();
             $media_object_importer->import($response[0]);
 
             $itinerary_importer = new Itinerary($id_media_object);
             $itinerary_importer->import();
+
+            if(isset($config['data']['touristic']['my_content_class_map']) && isset($response[0]->my_contents_to_media_object) && is_array($response[0]->my_contents_to_media_object)) {
+                foreach($response[0]->my_contents_to_media_object as $my_content) {
+                    if(isset($config['data']['touristic']['my_content_class_map'][$my_content->id_my_content])) {
+                        $touristic_class_name = $config['data']['touristic']['my_content_class_map'][$my_content->id_my_content];
+                        /** @var ImportInterface $custom_importer */
+                        $custom_importer = new $touristic_class_name($my_content, $id_media_object);
+                        $custom_importer->import();
+                    }
+                }
+            }
 
             unset($response);
             unset($old_object);

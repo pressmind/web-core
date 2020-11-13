@@ -25,7 +25,9 @@ class MediaObject extends AbstractImport
         $media_object->id = $data->id_media_object;
         $media_object->id_pool = $data->id_pool;
         $media_object->id_object_type = $data->id_media_objects_data_type;
-        $media_object->id_client = 348;
+        $media_object->id_client = 0;
+        $media_object->id_season = $data->id_saison;
+        $media_object->id_brand = $data->id_brand;
         $media_object->name = $data->name;
         $media_object->code = $data->code;
         $media_object->tags = $data->tags;
@@ -33,6 +35,10 @@ class MediaObject extends AbstractImport
         $media_object->state = $data->state;
         $media_object->valid_from = $data->valid_from;
         $media_object->valid_to = $data->valid_to;
+        $media_object->is_reference = $data->is_reference;
+        $media_object->reference_media_object = $data->reference_media_object;
+        $media_object->different_season_from = $data->diffent_saison_from;
+        $media_object->different_season_to = $data->different_saison_to;
         try {
             $old_media_object = new \Pressmind\ORM\Object\MediaObject();
             $old_media_object->read($data->id_media_object);
