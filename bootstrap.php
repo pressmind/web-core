@@ -60,6 +60,9 @@ $db_config = DB\Config\Pdo::create(
  */
 try {
     $db = new Pdo($db_config);
+    if(strtolower($config['database']['engine'] == 'mysql')) {
+        $db->execute('SET SESSION sql_mode = "NO_ENGINE_SUBSTITUTION"');
+    }
 } catch (\Exception $e) {
 
     if (
