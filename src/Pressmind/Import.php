@@ -139,7 +139,7 @@ class Import
         foreach ($dir as $file_info) {
             if (!$file_info->isDot()) {
                 $id_media_object = $file_info->getFilename();
-                if ($this->importMediaObject($id_media_object)) {
+                if ($this->importMediaObject($id_media_object, false)) {
                     unlink($file_info->getPathname());
                     $this->_imported_ids[] = $id_media_object;
                 }
