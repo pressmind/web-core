@@ -9,6 +9,7 @@
     * ext-curl
     * ext-bcmath
     * ext-pdo
+    * ext-mbstring
 * a pressmind® License ;-)
 
 ### pressmind® API Credentials
