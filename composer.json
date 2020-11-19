@@ -15,7 +15,8 @@
         "ext-curl": "*",
         "ext-bcmath": "*",
         "ext-pdo": "*",
-        "ext-readline": "*"
+        "ext-readline": "*",
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {
