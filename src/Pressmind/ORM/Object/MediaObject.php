@@ -662,24 +662,27 @@ class MediaObject extends AbstractObject
     {
         $config = Registry::getInstance()->get('config');
         if(isset($config['data']['media_types_fulltext_index_fields'])) {
-            $complete_fulltext = [];
-            $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
-            $fulltext[] = [
-                'var_name' => 'code',
-                'id_media_object' => $this->getId(),
-                'fulltext_values' => $this->code
-            ];
-            $fulltext[] = [
-                'var_name' => 'name',
-                'id_media_object' => $this->getId(),
-                'fulltext_values' => $this->name
-            ];
-            $fulltext[] = [
-                'var_name' => 'tags',
-                'id_media_object' => $this->getId(),
-                'fulltext_values' => $this->tags
-            ];
             foreach ($this->data as $data) {
+                $complete_fulltext = [];
+                $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
+                $fulltext[] = [
+                    'var_name' => 'code',
+                    'language' => $data->language,
+                    'id_media_object' => $this->getId(),
+                    'fulltext_values' => $this->code
+                ];
+                $fulltext[] = [
+                    'var_name' => 'name',
+                    'language' => $data->language,
+                    'id_media_object' => $this->getId(),
+                    'fulltext_values' => $this->name
+                ];
+                $fulltext[] = [
+                    'var_name' => 'tags',
+                    'language' => $data->language,
+                    'id_media_object' => $this->getId(),
+                    'fulltext_values' => $this->tags
+                ];
                 foreach ($data->getPropertyDefinitions() as $name => $definition) {
                     $add_to_complete_fulltext = in_array($name, $config['data']['media_types_fulltext_index_fields'][$this->id_object_type]);
                     if ($definition['type'] == 'string') {

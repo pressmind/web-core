@@ -65,7 +65,7 @@ class FulltextSearch extends AbstractObject
                 'title' => 'Variable Name',
                 'name' => 'language',
                 'type' => 'varchar',
-                'required' => true,
+                'required' => false,
                 'validators' => [
                     [
                         'name' => 'maxlength',
