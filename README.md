@@ -50,6 +50,8 @@ mysql> GRANT ALL ON pressmind.* TO 'my_database_user'@'localhost' IDENTIFIED BY 
 }
 //... SNAP
 ```
+* When you use MariaDB instead of MySQL as a database server, set "database"->"engine" to "mariadb"
+
 * Insert your pressmind API credentials under development.rest.client (credentials are provided by pressmind)
 ```json
 //... SNIP config.json
