@@ -2,6 +2,7 @@
 namespace Custom\MediaType;
 
 use Custom\AbstractMediaType;
+use Pressmind\HelperFunctions;
 use Pressmind\Registry;
 
 class Factory {
@@ -21,7 +22,7 @@ class Factory {
      */
     public static function createById($pMediaTypeId, $pReadRelations = false) {
         $config = Registry::getInstance()->get('config');
-        $media_type_name = $config['data']['media_types'][$pMediaTypeId];
+        $media_type_name = ucfirst(HelperFunctions::human_to_machine($config['data']['media_types'][$pMediaTypeId]));
         return self::create($media_type_name, $pReadRelations);
     }
 }
