@@ -28,13 +28,13 @@ class Mysql
     );
 
     private $_pressmind_mapping_table = array(
-        'text' => 'longtext',
+        'text' => 'text',
         'integer' => 'int',
         'int' => 'int',
         'table' => 'relation',
         'date' => 'datetime',
-        'plaintext' => 'longtext',
-        'wysiwyg' => 'longtext',
+        'plaintext' => 'text',
+        'wysiwyg' => 'text',
         'picture' => 'relation',
         'objectlink' => 'relation',
         'file' => 'relation',

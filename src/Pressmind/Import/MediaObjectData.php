@@ -61,7 +61,7 @@ class MediaObjectData extends AbstractImport implements ImportInterface
 
         $category_tree_ids = [];
         $conf =  Registry::getInstance()->get('config');
-        $default_language = $conf['languages']['default'];
+        $default_language = $conf['data']['languages']['default'];
         $this->_log[] = ' MediaObjectData::import(' . $this->_id_media_object . '): Importing media object data';
         $values = [];
         $linked_media_object_ids = [];
@@ -70,7 +70,11 @@ class MediaObjectData extends AbstractImport implements ImportInterface
                 foreach ($data_field->sections as $section) {
                     $var_name = HelperFunctions::human_to_machine($data_field->var_name);
                     if(!in_array($var_name, $this->_var_names_to_be_ignored)) {
-                        $column_name = $var_name . '_' . HelperFunctions::human_to_machine($section->name);
+                        $section_name = $section->name;
+                        if(isset($conf['data']['sections']['replace']) && !empty($conf['data']['sections']['replace']['regular_expression'])) {
+                            $section_name = preg_replace($conf['data']['sections']['replace']['regular_expression'], $conf['data']['sections']['replace']['replacement'], $section_name);
+                        }
+                        $column_name = $var_name . '_' . HelperFunctions::human_to_machine($section_name);
                         $language = empty($section->language) ? $default_language : $section->language;
                         if (!isset($values[$language])) $values[$language] = [];
                         $section_id = $section->id;
@@ -92,7 +96,7 @@ class MediaObjectData extends AbstractImport implements ImportInterface
                                 $linked_media_object_ids[] = $linked_media_object_id;
                             }
                         }
-                        $values[$language]['language'] = $language;
+                        $values[$language]['language'] = strtolower($language);
                         $values[$language]['id_media_object'] = $this->_id_media_object;
                         $values[$language][$column_name] = $value;
                     }

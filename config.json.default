@@ -46,14 +46,24 @@
             "media_types_pretty_url": {},
             "media_types_fulltext_index_fields": {},
             "sections": {
+                "allowed": [
+                    "Default"
+                ],
                 "default": "Default",
                 "fallback": "Default",
-                "fallback_on_empty_values": true
+                "fallback_on_empty_values": true,
+                "replace": {
+                    "regular_expression": null,
+                    "replacement": null
+                }
+            },
+            "languages": {
+                "allowed": [
+                    "de"
+                ]
+                "default": "de"
             },
             "preview_url": "examples/detail.php?id={{id_media_object}}&preview={{preview}}"
-        },
-        "languages": {
-            "default": "de"
         },
         "cache": {
             "enabled": false,

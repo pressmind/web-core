@@ -27,6 +27,12 @@ class Mysql
      */
     private $_log = [];
 
+    private $_columns_to_be_altered_after_create = [];
+
+    private $_maximum_columns_to_be_created_in_one_statement = 40;
+
+    private $_database_table_allready_exists = false;
+
     /**
      * Mysql constructor.
      * @param AbstractObject $ormObject
@@ -34,6 +40,15 @@ class Mysql
     public function __construct($ormObject)
     {
         $this->_orm_object = $ormObject;
+        /**@var AdapterInterface $db**/
+        $db = Registry::getInstance()->get('db');
+        $this->_database_table_allready_exists = $db->fetchRow("SHOW TABLES like '" . $this->_orm_object->getDbTableName() . "'") != null ? true : false;
+        if($this->_database_table_allready_exists) {
+            $is_object_ok = $this->_orm_object->checkStorageIntegrity();
+            if($is_object_ok !== true) {
+                print_r($is_object_ok);
+            }
+        }
     }
 
     public function getLog()
@@ -54,7 +69,25 @@ class Mysql
         }
         $sql = $this->_parseTableInfoToSQL($this->_orm_object->getPropertyDefinitions());
         $db->execute($sql);
+        $this->_addAdditionalColumns();
         $this->_log[] = 'Table ' . $this->_orm_object->getDbTableName() . ' created';
+    }
+
+    private function _addAdditionalColumns() {
+        if(count($this->_columns_to_be_altered_after_create) > 0) {
+            /**@var AdapterInterface $db**/
+            $sql = 'DESCRIBE ' . $this->_orm_object->getDbTableName();
+            $db = Registry::getInstance()->get('db');
+            $existing_columns = [];
+            foreach ($db->fetchAll($sql) as $existing_column) {
+                $existing_columns[] = $existing_column->Field;
+            }
+            foreach ($this->_columns_to_be_altered_after_create as $column_name => $sql) {
+                if(!in_array($column_name, $existing_columns)) {
+                    $db->execute($sql);
+                }
+            }
+        }
     }
 
     /**
@@ -72,11 +105,12 @@ class Mysql
         $unique = array();
         $index = array();
         $i = 0;
+        $column_counter = 0;
         foreach ($pFields as $fieldName => $fieldInfo) {
             if ($fieldInfo['type'] != 'relation') {
                 $additional_sql = array();
                 $null_allowed = '';
-                if(isset($fieldInfo['encrypt']) && $fieldInfo['encrypt'] == true) {
+                if (isset($fieldInfo['encrypt']) && $fieldInfo['encrypt'] == true) {
                     $fieldInfo['type'] = 'encrypted';
                     $fieldInfo['unique'] = false;
                     $fieldInfo['length'] = null;
@@ -89,7 +123,7 @@ class Mysql
                 if (isset($fieldInfo['unique']) && TRUE == $fieldInfo['unique']) {
                     $unique[] = $fieldName;
                 }
-                if(isset($fieldInfo['index']) && is_array($fieldInfo['index'])) {
+                if (isset($fieldInfo['index']) && is_array($fieldInfo['index'])) {
                     foreach ($fieldInfo['index'] as $index_type) {
                         $index[$index_type][] = $fieldName;
                     }
@@ -104,8 +138,13 @@ class Mysql
                     }
                     $sql .= "ADD COLUMN $fieldName " . $this->_mapDbFieldType($fieldName, $fieldInfo) . " " . implode(" ", $additional_sql);
                 } else {
-                    $sql .= "`$fieldName` " . $this->_mapDbFieldType($fieldName, $fieldInfo) . " " . implode(" ", $additional_sql) . ",";
+                    if ($column_counter < $this->_maximum_columns_to_be_created_in_one_statement) {
+                        $sql .= "`$fieldName` " . $this->_mapDbFieldType($fieldName, $fieldInfo) . " " . implode(" ", $additional_sql) . ",";
+                    }  else {
+                        $this->_columns_to_be_altered_after_create[$fieldName] = "ALTER TABLE " . $this->_orm_object->getDbTableName() . " ADD `$fieldName` " . $this->_mapDbFieldType($fieldName, $fieldInfo) . " " . implode(" ", $additional_sql);
+                    }
                 }
+                $column_counter++;
             }
             $i++;
         }

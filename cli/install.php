@@ -80,3 +80,5 @@ if($args[1] == 'with_static' || $args[1] == 'only_static') {
     Writer::write('Necessary static data has not been dumped. Dump static data by calling "install.php with_static" or "install.php only_static"', Writer::OUTPUT_BOTH, 'install.log');
     Writer::write('You can also dump the data by hand. Data resides here: ' . HelperFunctions::buildPathString([dirname(__DIR__), 'src', 'data']), Writer::OUTPUT_BOTH, 'install.log');
 }
+
+echo '!!!ATTENTION: Please have a look at the CHANGES.md file, there might be important information on breaking changes!!!!' . "\n";

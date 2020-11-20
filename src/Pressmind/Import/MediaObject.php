@@ -78,8 +78,18 @@ class MediaObject extends AbstractImport
         /**@var Pdo $db**/
         $db->delete('pmt2core_cheapest_price_speed', ['id_media_object = ?', $media_object->getId()]);
         $this->_log[] = ' Importer::importMediaObject(' . $media_object->getId() . '):  Inserting CheapestPriceSpeed entries';
-        $media_object->insertCheapestPrice();
-        $media_object->createSearchIndex();
+        try {
+            $media_object->insertCheapestPrice();
+        } catch (Exception $e) {
+            $this->_log[] = ' Importer::importMediaObject(' . $media_object->getId() . '):  Creating cheapest price failed: ' . $e->getMessage();
+            $this->_errors[] = 'Importer::importMediaObject(' . $media_object->getId() . '):  Creating cheapest price failed: ' . $e->getMessage();
+        }
+        try {
+            $media_object->createSearchIndex();
+        } catch (Exception $e) {
+            $this->_log[] = ' Importer::importMediaObject(' . $media_object->getId() . '):  Creating search index failed: ' . $e->getMessage();
+            $this->_errors[] = 'Importer::importMediaObject(' . $media_object->getId() . '):  Creating search index failed: ' . $e->getMessage();
+        }
         $this->_log[] = ' Importer::importMediaObject(' . $media_object->getId() . '):  CheapestPriceSpeed table updated';
     }
 }

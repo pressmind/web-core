@@ -11,7 +11,7 @@ class AbstractMediaType extends AbstractObject
     {
         if(is_null($pLanguage)) {
             $conf = Registry::getInstance()->get('config');
-            $pLanguage = $conf['languages']['default'];
+            $pLanguage = $conf['data']['languages']['default'];
         }
         if ($pIdMediaObject != 0 && !empty($pIdMediaObject)) {
             $query = "SELECT * FROM " .

@@ -353,9 +353,12 @@ class MediaObject extends AbstractObject
      * @return false|string
      * @throws Exception
      */
-    public function render($template, $language = 'de', $custom_data = null) {
+    public function render($template, $language = null, $custom_data = null) {
         $config = Registry::getInstance()->get('config');
-        $media_type_name = $config['data']['media_types'][$this->id_object_type];
+        if(is_null($language)) {
+            $language = $config['data']['languages']['default'];
+        }
+        $media_type_name = ucfirst(HelperFunctions::human_to_machine($config['data']['media_types'][$this->id_object_type]));
         $data = HelperFunctions::findObjectInArray($this->data, 'language', $language);
         $booking_packages = $this->booking_packages;
         $media_object = $this;
@@ -662,9 +665,9 @@ class MediaObject extends AbstractObject
     {
         $config = Registry::getInstance()->get('config');
         if(isset($config['data']['media_types_fulltext_index_fields'])) {
+            $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
             foreach ($this->data as $data) {
                 $complete_fulltext = [];
-                $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
                 $fulltext[] = [
                     'var_name' => 'code',
                     'language' => $data->language,

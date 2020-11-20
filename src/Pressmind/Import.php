@@ -8,6 +8,7 @@ use Pressmind\Import\CategoryTree;
 use Pressmind\Import\ImportInterface;
 use Pressmind\Import\Itinerary;
 use Pressmind\Import\MediaObjectData;
+use Pressmind\Import\MediaObjectType;
 use Pressmind\Import\MyContent;
 use Pressmind\Import\Season;
 use Pressmind\Import\StartingPointOptions;
@@ -415,18 +416,8 @@ class Import
     public function importMediaObjectTypes($ids)
     {
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObjectTypes(' . implode(',' ,$ids) . '): Starting import', Writer::OUTPUT_FILE, 'import.log');
-        $response = $this->_client->sendRequest('ObjectType', 'getById', ['ids' => implode(',', $ids)]);
-        $this->_checkApiResponse($response);
-        foreach ($response->result as $result) {
-            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObjectTypes(' . implode(',' ,$ids) . '): Starting scaffolding for ID: ' . $result->id, Writer::OUTPUT_FILE, 'import.log');
-            $table_name = $result->id;
-            $scaffolder = new ObjectTypeScaffolder($result, $table_name);
-            $scaffolder->parse();
-            if($scaffolder->hasErrors()) {
-                echo ("WARNING: Importer::importMediaObjectTypes(" . implode(',' ,$ids) . ") threw errors:\n" . implode("\n", $scaffolder->getErrors())) . "\nSEE " . Writer::getLogFilePath() . DIRECTORY_SEPARATOR . "scaffolder_errors.log for details\n";
-            }
-            $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::importMediaObjectTypes(' . implode(',' ,$ids) . '): Sacfolding for ID: ' . $result->id . ' finished', Writer::OUTPUT_FILE, 'import.log');
-        }
+        $media_object_type_importer = new MediaObjectType($ids);
+        $media_object_type_importer->import();
     }
 
     /**

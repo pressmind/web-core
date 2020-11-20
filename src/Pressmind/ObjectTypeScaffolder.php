@@ -5,6 +5,7 @@ namespace Pressmind;
 
 use \Exception;
 use Pressmind\Log\Writer;
+use Pressmind\ORM\Object\AbstractObject;
 use Pressmind\ORM\Object\ObjectdataTag;
 use stdClass;
 
@@ -90,17 +91,12 @@ class ObjectTypeScaffolder
     public function parse()
     {
         $conf = Registry::getInstance()->get('config');
-        $database_fields = [
-            'id bigint(22) not null auto_increment',
-            'language varchar(255)',
-            'id_media_object bigint(22) not null'
-        ];
         $definition_fields = [
             ['id', 'integer', 'integer'],
             ['id_media_object', 'integer', 'integer'],
             ['language', 'longtext', 'string'],
         ];
-        $languages = [$conf['languages']['default']];
+
         unset($this->_object_definition->fields[0]);
         unset($this->_object_definition->fields[1]);
         unset($this->_object_definition->fields[2]);
@@ -108,24 +104,22 @@ class ObjectTypeScaffolder
         foreach($this->_object_definition->fields as $field_definition) {
             if(isset($field_definition->sections) && is_array($field_definition->sections)) {
                 foreach($field_definition->sections as $section) {
-                    $var_name = HelperFunctions::human_to_machine($field_definition->var_name);
-                    if(isset($this->_mysql_type_map[$field_definition->type]) && $this->_mysql_type_map[$field_definition->type] != 'relation') {
-                        $database_fields[] = $var_name . '_' . HelperFunctions::human_to_machine($section->name) . ' ' . $this->_mysql_type_map[$field_definition->type];
-                    } else if($this->_mysql_type_map[$field_definition->type] == 'relation') {
-                        $relation_field_names[] = [$var_name, $field_definition->type];
+                    $section_name = $section->name;
+                    if(isset($conf['data']['sections']['replace']) && !empty($conf['data']['sections']['replace']['regular_expression'])) {
+                        $section_name = preg_replace($conf['data']['sections']['replace']['regular_expression'], $conf['data']['sections']['replace']['replacement'], $section_name);
                     }
-                    $this->_var_names[] = $var_name . '_' . HelperFunctions::human_to_machine($section->name);
-                    $definition_fields[] = [$var_name . '_' . HelperFunctions::human_to_machine($section->name), $field_definition->type, $this->_php_type_map[$this->_mysql_type_map[$field_definition->type]]];
-                    if(!is_null($section->language) && !in_array($section->language, $languages)) {
-                        $languages[] = $section->language;
-                    }
+                    $field_name = HelperFunctions::human_to_machine($field_definition->var_name . '_' . $section_name);
+                    $this->_var_names[$field_name] = $field_name;
+                    $definition_fields[$field_name] = [$field_name, $field_definition->type, $this->_php_type_map[$this->_mysql_type_map[$field_definition->type]]];
                 }
             }
 
         }
-        $sql = 'CREATE TABLE IF NOT EXISTS objectdata_' . HelperFunctions::human_to_machine($this->_tablename) . '(' . implode(',', $database_fields) . ', PRIMARY KEY (id), INDEX (language), UNIQUE (id_media_object))';
         $this->generateORMFile($definition_fields);
-        $this->_insertDatabaseTable($sql);
+        $class_name = '\\Custom\\MediaType\\' . $this->_generateClassName($this->_object_definition->name);
+        $test = new $class_name();
+        $mysql_scaffolder = new DB\Scaffolder\Mysql($test);
+        $mysql_scaffolder->run();
         $this->_insertTags();
         $this->generateObjectInformationFile();
         $this->generateExampleViewFile();
@@ -188,6 +182,17 @@ class ObjectTypeScaffolder
                 'validators' => null,
                 'filters' => null
             ];
+            if($definitionField[0] == 'id_media_object' || $definitionField[0] == 'language') {
+                $property['index'] = ['index'];
+            }
+            if($definitionField[0] == 'language') {
+                $property['validators'] = [
+                    [
+                    'name' => 'maxlength',
+                    'params' => 255,
+                    ]
+                ];
+            }
             if($definitionField[2] == 'relation') {
                 $property['relation'] = [
                     'type' => 'hasMany',
@@ -226,40 +231,6 @@ class ObjectTypeScaffolder
             echo $export;
         }
         return null;
-    }
-
-    /**
-     * @param string $sql
-     */
-    private function _insertDatabaseTable($pSql)
-    {
-        /**@var DB\Adapter\AdapterInterface $db*/
-        $db = Registry::getInstance()->get('db');
-        $database_tables_property_name = 'Tables_in_' . Registry::getInstance()->get('config')['database']['dbname'];
-        $exists = false;
-        try {
-            $tables = $db->fetchAll('Show Tables');
-            foreach ($tables as $table) {
-                if(isset($table->$database_tables_property_name) && $table->$database_tables_property_name == 'objectdata_' . HelperFunctions::human_to_machine($this->_tablename)) {
-                    $exists = true;
-                    $integrityCheck = new ObjectIntegrityCheck($this->_object_definition, 'objectdata_' . HelperFunctions::human_to_machine($this->_tablename));
-                }
-            }
-        } catch (Exception $e) {
-            $this->_log[] = $e->getMessage();
-            $this->_errors[] = $e->getMessage();
-        }
-        if($exists == false) {
-            try {
-                $db->execute($pSql);
-                $this->_log[] = $pSql;
-            } catch (Exception $e) {
-                $this->_log[] = 'Database error: ' . $e->getMessage();
-                $this->_errors[] = 'Database error: ' . $e->getMessage();
-            }
-        } else {
-            $this->_log[] = 'Database table objectdata_' . HelperFunctions::human_to_machine($this->_tablename) . ' exists';
-        }
     }
 
     public function generateObjectInformationFile()
