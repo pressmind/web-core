@@ -1,4 +1,5 @@
 <?php
 require_once dirname(__DIR__) . '/bootstrap.php';
-$server = new \Pressmind\REST\Server(str_replace(BASE_PATH, '', __DIR__));
+$config = \Pressmind\Registry::getInstance()->get('config');
+$server = new \Pressmind\REST\Server($config['rest']['server']['api_endpoint']);
 $server->handle();
