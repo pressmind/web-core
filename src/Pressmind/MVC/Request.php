@@ -76,8 +76,9 @@ class Request
         }
         $arh = [];
         $rx_http = '/\AHTTP_/';
+        $additional_headers = ['CONTENT_TYPE'];
         foreach ($_SERVER as $key => $val) {
-            if (preg_match($rx_http, $key)) {
+            if (preg_match($rx_http, $key) || in_array($key, $additional_headers)) {
                 $arh_key = preg_replace($rx_http, '', $key);
                 $rx_matches = explode('_', $arh_key);
                 if (count($rx_matches) > 0 and strlen($arh_key) > 2) {
