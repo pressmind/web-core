@@ -60,7 +60,7 @@
             "languages": {
                 "allowed": [
                     "de"
-                ]
+                ],
                 "default": "de"
             },
             "preview_url": "examples/detail.php?id={{id_media_object}}&preview={{preview}}"
