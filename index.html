@@ -1,294 +1,330 @@
 
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>pressmind® web-core SDK API Reference</title>
 
     <style>
-      .highlight table td { padding: 5px; }
-.highlight table pre { margin: 0; }
-.highlight .gh {
-  color: #999999;
-}
-.highlight .sr {
-  color: #f6aa11;
-}
-.highlight .go {
-  color: #888888;
-}
-.highlight .gp {
-  color: #555555;
-}
-.highlight .gs {
-}
-.highlight .gu {
-  color: #aaaaaa;
-}
-.highlight .nb {
-  color: #f6aa11;
-}
-.highlight .cm {
-  color: #75715e;
-}
-.highlight .cp {
-  color: #75715e;
-}
-.highlight .c1 {
-  color: #75715e;
-}
-.highlight .cs {
-  color: #75715e;
-}
-.highlight .c, .highlight .cd {
-  color: #75715e;
-}
-.highlight .err {
-  color: #960050;
-}
-.highlight .gr {
-  color: #960050;
-}
-.highlight .gt {
-  color: #960050;
-}
-.highlight .gd {
-  color: #49483e;
-}
-.highlight .gi {
-  color: #49483e;
-}
-.highlight .ge {
-  color: #49483e;
-}
-.highlight .kc {
-  color: #66d9ef;
-}
-.highlight .kd {
-  color: #66d9ef;
-}
-.highlight .kr {
-  color: #66d9ef;
-}
-.highlight .no {
-  color: #66d9ef;
-}
-.highlight .kt {
-  color: #66d9ef;
-}
-.highlight .mf {
-  color: #ae81ff;
-}
-.highlight .mh {
-  color: #ae81ff;
-}
-.highlight .il {
-  color: #ae81ff;
-}
-.highlight .mi {
-  color: #ae81ff;
-}
-.highlight .mo {
-  color: #ae81ff;
-}
-.highlight .m, .highlight .mb, .highlight .mx {
-  color: #ae81ff;
-}
-.highlight .sc {
-  color: #ae81ff;
-}
-.highlight .se {
-  color: #ae81ff;
-}
-.highlight .ss {
-  color: #ae81ff;
-}
-.highlight .sd {
-  color: #e6db74;
-}
-.highlight .s2 {
-  color: #e6db74;
-}
-.highlight .sb {
-  color: #e6db74;
-}
-.highlight .sh {
-  color: #e6db74;
-}
-.highlight .si {
-  color: #e6db74;
-}
-.highlight .sx {
-  color: #e6db74;
-}
-.highlight .s1 {
-  color: #e6db74;
-}
-.highlight .s {
-  color: #e6db74;
-}
-.highlight .na {
-  color: #a6e22e;
-}
-.highlight .nc {
-  color: #a6e22e;
-}
-.highlight .nd {
-  color: #a6e22e;
-}
-.highlight .ne {
-  color: #a6e22e;
-}
-.highlight .nf {
-  color: #a6e22e;
-}
-.highlight .vc {
-  color: #ffffff;
-}
-.highlight .nn {
-  color: #ffffff;
-}
-.highlight .nl {
-  color: #ffffff;
-}
-.highlight .ni {
-  color: #ffffff;
-}
-.highlight .bp {
-  color: #ffffff;
-}
-.highlight .vg {
-  color: #ffffff;
-}
-.highlight .vi {
-  color: #ffffff;
-}
-.highlight .nv {
-  color: #ffffff;
-}
-.highlight .w {
-  color: #ffffff;
-}
-.highlight {
-  color: #ffffff;
-}
-.highlight .n, .highlight .py, .highlight .nx {
-  color: #ffffff;
-}
-.highlight .ow {
-  color: #f92672;
-}
-.highlight .nt {
-  color: #f92672;
-}
-.highlight .k, .highlight .kv {
-  color: #f92672;
-}
-.highlight .kn {
-  color: #f92672;
-}
-.highlight .kp {
-  color: #f92672;
-}
-.highlight .o {
-  color: #f92672;
-}
+        .highlight table td { padding: 5px; }
+        .highlight table pre { margin: 0; }
+        .highlight .gh {
+            color: #999999;
+        }
+        .highlight .sr {
+            color: #f6aa11;
+        }
+        .highlight .go {
+            color: #888888;
+        }
+        .highlight .gp {
+            color: #555555;
+        }
+        .highlight .gs {
+        }
+        .highlight .gu {
+            color: #aaaaaa;
+        }
+        .highlight .nb {
+            color: #f6aa11;
+        }
+        .highlight .cm {
+            color: #75715e;
+        }
+        .highlight .cp {
+            color: #75715e;
+        }
+        .highlight .c1 {
+            color: #75715e;
+        }
+        .highlight .cs {
+            color: #75715e;
+        }
+        .highlight .c, .highlight .cd {
+            color: #75715e;
+        }
+        .highlight .err {
+            color: #960050;
+        }
+        .highlight .gr {
+            color: #960050;
+        }
+        .highlight .gt {
+            color: #960050;
+        }
+        .highlight .gd {
+            color: #49483e;
+        }
+        .highlight .gi {
+            color: #49483e;
+        }
+        .highlight .ge {
+            color: #49483e;
+        }
+        .highlight .kc {
+            color: #66d9ef;
+        }
+        .highlight .kd {
+            color: #66d9ef;
+        }
+        .highlight .kr {
+            color: #66d9ef;
+        }
+        .highlight .no {
+            color: #66d9ef;
+        }
+        .highlight .kt {
+            color: #66d9ef;
+        }
+        .highlight .mf {
+            color: #ae81ff;
+        }
+        .highlight .mh {
+            color: #ae81ff;
+        }
+        .highlight .il {
+            color: #ae81ff;
+        }
+        .highlight .mi {
+            color: #ae81ff;
+        }
+        .highlight .mo {
+            color: #ae81ff;
+        }
+        .highlight .m, .highlight .mb, .highlight .mx {
+            color: #ae81ff;
+        }
+        .highlight .sc {
+            color: #ae81ff;
+        }
+        .highlight .se {
+            color: #ae81ff;
+        }
+        .highlight .ss {
+            color: #ae81ff;
+        }
+        .highlight .sd {
+            color: #e6db74;
+        }
+        .highlight .s2 {
+            color: #e6db74;
+        }
+        .highlight .sb {
+            color: #e6db74;
+        }
+        .highlight .sh {
+            color: #e6db74;
+        }
+        .highlight .si {
+            color: #e6db74;
+        }
+        .highlight .sx {
+            color: #e6db74;
+        }
+        .highlight .s1 {
+            color: #e6db74;
+        }
+        .highlight .s {
+            color: #e6db74;
+        }
+        .highlight .na {
+            color: #a6e22e;
+        }
+        .highlight .nc {
+            color: #a6e22e;
+        }
+        .highlight .nd {
+            color: #a6e22e;
+        }
+        .highlight .ne {
+            color: #a6e22e;
+        }
+        .highlight .nf {
+            color: #a6e22e;
+        }
+        .highlight .vc {
+            color: #ffffff;
+        }
+        .highlight .nn {
+            color: #ffffff;
+        }
+        .highlight .nl {
+            color: #ffffff;
+        }
+        .highlight .ni {
+            color: #ffffff;
+        }
+        .highlight .bp {
+            color: #ffffff;
+        }
+        .highlight .vg {
+            color: #ffffff;
+        }
+        .highlight .vi {
+            color: #ffffff;
+        }
+        .highlight .nv {
+            color: #ffffff;
+        }
+        .highlight .w {
+            color: #ffffff;
+        }
+        .highlight {
+            color: #ffffff;
+        }
+        .highlight .n, .highlight .py, .highlight .nx {
+            color: #ffffff;
+        }
+        .highlight .ow {
+            color: #f92672;
+        }
+        .highlight .nt {
+            color: #f92672;
+        }
+        .highlight .k, .highlight .kv {
+            color: #f92672;
+        }
+        .highlight .kn {
+            color: #f92672;
+        }
+        .highlight .kp {
+            color: #f92672;
+        }
+        .highlight .o {
+            color: #f92672;
+        }
     </style>
-    <link href="stylesheets/screen-37cdb511.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/screen-e75d51c1.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-bccf8c07.css" rel="stylesheet" media="print" />
-      <script src="javascripts/all-c5541673.js"></script>
-  </head>
+    <script src="javascripts/all-c5541673.js"></script>
+</head>
 
-  <body class="index" data-languages="[&quot;php&quot;]">
-    <a href="#" id="nav-button">
+<body class="index" data-languages="[&quot;php&quot;]">
+<a href="#" id="nav-button">
       <span>
         NAV
         <img src="images/navbar-cad8cdcb.png" alt="Navbar" />
       </span>
-    </a>
-    <div class="toc-wrapper">
-      <div class="logo-wrapper">
+</a>
+<div class="toc-wrapper">
+    <div class="logo-wrapper">
         <img src="images/logo-a34120ef.svg" class="logo" alt="Logo" />
         <h3>pressmind®<br>web-core<br>SDK</h3>
-      </div>
-        <div class="lang-selector">
-              <a href="#" data-language-name="php">Example Code</a>
-        </div>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <ul id="toc" class="toc-list-h1">
-          <li>
-            <a href="#pressmind-web-core-sdk" class="toc-h1 toc-link" data-title="pressmind® web-core SDK">pressmind® web-core SDK</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#system-requirements" class="toc-h2 toc-link" data-title="System Requirements">System Requirements</a>
-                  </li>
-                  <li>
-                    <a href="#quickstart" class="toc-h2 toc-link" data-title="Quickstart">Quickstart</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-            <a href="#the-restfull-api" class="toc-h1 toc-link" data-title="The RESTfull API">The RESTfull API</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#api-result-templates" class="toc-h2 toc-link" data-title="API Result Templates">API Result Templates</a>
-                  </li>
-                  <li>
-                    <a href="#general-api-calls-and-error-handling" class="toc-h2 toc-link" data-title="General API Calls and Error Handling">General API Calls and Error Handling</a>
-                  </li>
-                  <li>
-                    <a href="#mediaobject" class="toc-h2 toc-link" data-title="MediaObject">MediaObject</a>
-                  </li>
-                  <li>
-                    <a href="#categorytree" class="toc-h2 toc-link" data-title="CategoryTree">CategoryTree</a>
-                  </li>
-                  <li>
-                    <a href="#route" class="toc-h2 toc-link" data-title="Route">Route</a>
-                  </li>
-              </ul>
-          </li>
-      </ul>
-        <ul class="toc-footer">
-            <li><a href='https://pressmind.io'>&copy; 2020 pressmind </a></li>
-        </ul>
     </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
+    <div class="lang-selector">
+        <a href="#" data-language-name="php">Example Code</a>
+    </div>
+    <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+    </div>
+    <ul class="search-results"></ul>
+    <ul id="toc" class="toc-list-h1">
+        <li>
+            <a href="#pressmind-web-core-sdk" class="toc-h1 toc-link" data-title="pressmind® web-core SDK">pressmind® web-core SDK</a>
+            <ul class="toc-list-h2">
+                <li>
+                    <a href="#system-requirements" class="toc-h2 toc-link" data-title="System Requirements">System Requirements</a>
+                </li>
+                <li>
+                    <a href="#quickstart" class="toc-h2 toc-link" data-title="Quickstart">Quickstart</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#the-restfull-api" class="toc-h1 toc-link" data-title="The RESTfull API">The RESTfull API</a>
+            <ul class="toc-list-h2">
+                <li>
+                    <a href="#api-result-templates" class="toc-h2 toc-link" data-title="API Result Templates">API Result Templates</a>
+                </li>
+                <li>
+                    <a href="#general-api-calls-and-error-handling" class="toc-h2 toc-link" data-title="General API Calls and Error Handling">General API Calls and Error Handling</a>
+                </li>
+                <li>
+                    <a href="#mediaobject" class="toc-h2 toc-link" data-title="MediaObject">MediaObject</a>
+                </li>
+                <li>
+                    <a href="#categorytree" class="toc-h2 toc-link" data-title="CategoryTree">CategoryTree</a>
+                </li>
+                <li>
+                    <a href="#route" class="toc-h2 toc-link" data-title="Route">Route</a>
+                </li>
+                <li>
+                    <a href="#search" class="toc-h2 toc-link" data-title="Search">Search</a>
+                </li>
+                <li>
+                    <a href="#search-gt-limiting" class="toc-h2 toc-link" data-title="Search &gt; Limiting">Search &gt; Limiting</a>
+                </li>
+                <li>
+                    <a href="#search-gt-pagination" class="toc-h2 toc-link" data-title="Search &gt; Pagination">Search &gt; Pagination</a>
+                </li>
+                <li>
+                    <a href="#search-gt-sorting" class="toc-h2 toc-link" data-title="Search &gt; Sorting">Search &gt; Sorting</a>
+                </li>
+                <li>
+                    <a href="#search-gt-conditions" class="toc-h2 toc-link" data-title="Search &gt; Conditions">Search &gt; Conditions</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-pricerange" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; PriceRange">Search &gt; Condition &gt; PriceRange</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-daterange" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; DateRange">Search &gt; Condition &gt; DateRange</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-durationrange" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; DurationRange">Search &gt; Condition &gt; DurationRange</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-visibility" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; Visibility">Search &gt; Condition &gt; Visibility</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-objecttype" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; ObjectType">Search &gt; Condition &gt; ObjectType</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-transport" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; Transport">Search &gt; Condition &gt; Transport</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-category" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; Category">Search &gt; Condition &gt; Category</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="toc-footer">
+        <li><a href='https://pressmind.io'>&copy; 2020 pressmind </a></li>
+    </ul>
+</div>
+<div class="page-wrapper">
+    <div class="dark-box"></div>
+    <div class="content">
         <h1 id='pressmind-web-core-sdk'>pressmind® web-core SDK</h1><h2 id='system-requirements'>System Requirements</h2>
-<ul>
-<li>PHP 7.*</li>
-<li>MySQL or MariaDB</li>
-<li>ImageMagick (PHP-Extension) or GD-Lib</li>
-<li>cURL</li>
-<li>a pressmind® License ;-)</li>
-</ul>
-<h3 id='pressmind-api-credentials'>pressmind® API Credentials</h3>
-<p>You need a pressmind® REST API Access. (API Key, User, Password)
-Ask your pressmind® Integration-Manager.</p>
-<h2 id='quickstart'>Quickstart</h2>
-<blockquote>
-<p>Clone the repo</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="gp">$ </span>git clone https://github.com/pressmind/web-core.git
+        <ul>
+            <li>PHP 7.*</li>
+            <li>MySQL or MariaDB</li>
+            <li>ImageMagick (PHP-Extension) or GD-Lib</li>
+            <li>cURL</li>
+            <li>a pressmind® License ;-)</li>
+        </ul>
+        <h3 id='pressmind-api-credentials'>pressmind® API Credentials</h3>
+        <p>You need a pressmind® REST API Access. (API Key, User, Password)
+            Ask your pressmind® Integration-Manager.</p>
+        <h2 id='quickstart'>Quickstart</h2>
+        <blockquote>
+            <p>Clone the repo</p>
+        </blockquote>
+        <pre class="highlight shell tab-shell"><code><span class="gp">$ </span>git clone https://github.com/pressmind/web-core.git
 </code></pre>
-<blockquote>
-<p>Install a database and add a user</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="gp">$ </span>mysql -u root -p;
+        <blockquote>
+            <p>Install a database and add a user</p>
+        </blockquote>
+        <pre class="highlight shell tab-shell"><code><span class="gp">$ </span>mysql -u root -p;
 <span class="gp">mysql&gt; </span>CREATE DATABASE pressmind CHARACTER SET utf8;
 <span class="gp">mysql&gt; </span>GRANT ALL ON pressmind.<span class="k">*</span> TO <span class="s1">'username'</span>@<span class="s1">'localhost'</span> IDENTIFIED BY <span class="s1">'password'</span> WITH GRANT OPTION;
 </code></pre>
-<blockquote>
-<p>Add database credentials in config.json</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="err">//...</span><span class="w"> </span><span class="err">SNIP</span><span class="w"> </span><span class="err">config.json</span><span class="w">
-</span><span class="p">{</span><span class="w"> 
+        <blockquote>
+            <p>Add database credentials in config.json</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="err">//...</span><span class="w"> </span><span class="err">SNIP</span><span class="w"> </span><span class="err">config.json</span><span class="w">
+</span><span class="p">{</span><span class="w">
     </span><span class="s2">"development"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"database"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yourusername"</span><span class="p">,</span><span class="w">
@@ -301,10 +337,10 @@ Ask your pressmind® Integration-Manager.</p>
 </span><span class="p">}</span><span class="w">
 </span><span class="err">//...</span><span class="w"> </span><span class="err">SNAP</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>Add pressmind API credentials in config.json</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="err">&gt;</span><span class="w"> </span><span class="err">A</span><span class="w"> </span><span class="err">search</span><span class="w"> </span><span class="err">condition</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">generally</span><span class="w"> </span><span class="err">instatiated</span><span class="w"> </span><span class="err">like</span><span class="w"> </span><span class="err">this</span><span class="p">:</span><span class="w">
+        <blockquote>
+            <p>Add pressmind API credentials in config.json</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="err">&gt;</span><span class="w"> </span><span class="err">A</span><span class="w"> </span><span class="err">search</span><span class="w"> </span><span class="err">condition</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">generally</span><span class="w"> </span><span class="err">instatiated</span><span class="w"> </span><span class="err">like</span><span class="w"> </span><span class="err">this</span><span class="p">:</span><span class="w">
 </span><span class="err">//...</span><span class="w"> </span><span class="err">SNIP</span><span class="w"> </span><span class="err">config.json</span><span class="w">
 </span><span class="p">{</span><span class="w">
     </span><span class="s2">"development"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -320,48 +356,48 @@ Ask your pressmind® Integration-Manager.</p>
 </span><span class="p">}</span><span class="w">
 </span><span class="err">//...</span><span class="w"> </span><span class="err">SNAP</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>Run the install script</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php install.php
+        <blockquote>
+            <p>Run the install script</p>
+        </blockquote>
+        <pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php install.php
 </code></pre><h3 id='1-installation'>1. Installation</h3>
-<ul>
-<li>clone the repository </li>
-<li>create a MySQL database</li>
-<li>edit the configuration file config.json</li>
-<li>insert your database information under development.database</li>
-<li>save the config.json file</li>
-<li>on a console move to folder cli and execute install.php</li>
-</ul>
+        <ul>
+            <li>clone the repository </li>
+            <li>create a MySQL database</li>
+            <li>edit the configuration file config.json</li>
+            <li>insert your database information under development.database</li>
+            <li>save the config.json file</li>
+            <li>on a console move to folder cli and execute install.php</li>
+        </ul>
 
-<p>This will install the necessary database tables and generate the needed model-definitions for the media object types.<br>
-Additionally some basic example php files that show the use of Views are generated in the folder examples/views as well as some html files with information on the installed media object types. You can find these under docs/objecttypes</p>
+        <p>This will install the necessary database tables and generate the needed model-definitions for the media object types.<br>
+            Additionally some basic example php files that show the use of Views are generated in the folder examples/views as well as some html files with information on the installed media object types. You can find these under docs/objecttypes</p>
 
-<blockquote>
-<p>Fullimport</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php import.php fullimport
+        <blockquote>
+            <p>Fullimport</p>
+        </blockquote>
+        <pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php import.php fullimport
 </code></pre>
-<blockquote>
-<p>Single media object</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php import.php mediaobject 123456
+        <blockquote>
+            <p>Single media object</p>
+        </blockquote>
+        <pre class="highlight shell tab-shell"><code><span class="gp">your-project-folder/cli$ </span>php import.php mediaobject 123456
 </code></pre><h3 id='2-import-data-from-pressmind'>2. Import data from pressmind®</h3>
-<p>To import data from pressmind run the script cli/import.php<br>
-To do a fullimport (which is recommended after a fresh install) add the argument fullimport<br>
-If You just want to test if everything is working as expected you can import a single media object by adding the argument mediaobject, followed by the media objects ID</p>
+        <p>To import data from pressmind run the script cli/import.php<br>
+            To do a fullimport (which is recommended after a fresh install) add the argument fullimport<br>
+            If You just want to test if everything is working as expected you can import a single media object by adding the argument mediaobject, followed by the media objects ID</p>
 
-<p>Depending on the amount of data that is stored in pressmind, the fullimport can last a while.<br>
-For each media object all descriptive and touristic data will be imported into the database. Additionally all related files and images will be downloaded to the folder /assets.</p>
-<h3 id='3-search-and-display-data'>3. Search and Display Data</h3>
-<p>After the install.php script has been executed, some example files can be found in the examples folder:<br>
-The index.php file demonstrates a simple search and will display a list of found data-sets with a link to the detail.php which demonstrates how a media_object can be rendered.<br>
-The detail.php will render the information based on the view scripts that can be found in the examples/views folder.</p>
-<h1 id='the-restfull-api'>The RESTfull API</h1><h2 id='api-result-templates'>API Result Templates</h2>
-<blockquote>
-<p>Sample script for a template for MediaObjects (examples/views/MediaObjectDetail.php)</p>
-</blockquote>
-<pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+        <p>Depending on the amount of data that is stored in pressmind, the fullimport can last a while.<br>
+            For each media object all descriptive and touristic data will be imported into the database. Additionally all related files and images will be downloaded to the folder /assets.</p>
+        <h3 id='3-search-and-display-data'>3. Search and Display Data</h3>
+        <p>After the install.php script has been executed, some example files can be found in the examples folder:<br>
+            The index.php file demonstrates a simple search and will display a list of found data-sets with a link to the detail.php which demonstrates how a media_object can be rendered.<br>
+            The detail.php will render the information based on the view scripts that can be found in the examples/views folder.</p>
+        <h1 id='the-restfull-api'>The RESTfull API</h1><h2 id='api-result-templates'>API Result Templates</h2>
+        <blockquote>
+            <p>Sample script for a template for MediaObjects (examples/views/MediaObjectDetail.php)</p>
+        </blockquote>
+        <pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 <span class="k">use</span> <span class="nx">Pressmind\Search\AbstractTemplate</span><span class="p">;</span>
 
 <span class="sd">/**
@@ -371,17 +407,17 @@ The detail.php will render the information based on the view scripts that can be
 <span class="k">class</span> <span class="nc">MediaObjectDetail</span> <span class="k">extends</span> <span class="nx">AbstractTemplate</span> <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">render</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">[</span>
-            <span class="s1">'code'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_object</span><span class="o">-&gt;</span><span class="na">code</span><span class="p">,</span> 
+            <span class="s1">'code'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_object</span><span class="o">-&gt;</span><span class="na">code</span><span class="p">,</span>
             <span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_object</span><span class="o">-&gt;</span><span class="na">getId</span><span class="p">(),</span>
             <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">_object</span><span class="o">-&gt;</span><span class="na">name</span>
         <span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-<blockquote>
-<p>GET http://example.com/rest/mediaObject?apiTemplate=MediaObjectDetail will produce the following output:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+        <blockquote>
+            <p>GET http://example.com/rest/mediaObject?apiTemplate=MediaObjectDetail will produce the following output:</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DWSSCH"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">531896</span><span class="p">,</span><span class="w">
@@ -405,63 +441,68 @@ The detail.php will render the information based on the view scripts that can be
     </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<p>For every API Request it is possible to define a result template. This Template is just a PHP class that has to exist in the Templates Folder as configured in config.json
-This template will have the desired Object as the private property _object
-You can define as many Templates as you desire, each Teamplate has to extend the class <code>Pressmind\Search\AbstractTemplate</code> and implement a function called <code>render()</code>that returns the desired output. </p>
+        <p>For every API Request it is possible to define a result template. This Template is just a PHP class that has to exist in the Templates Folder as configured in config.json
+            This template will have the desired Object as the private property _object
+            You can define as many Templates as you desire, each Teamplate has to extend the class <code>Pressmind\Search\AbstractTemplate</code> and implement a function called <code>render()</code>that returns the desired output. </p>
 
-<p>If no apiTemplate is requested, the object will be return as it is defined by the ORM Class.</p>
-<h2 id='general-api-calls-and-error-handling'>General API Calls and Error Handling</h2>
-<blockquote>
-<p>Example call for media objects with filters:</p>
-</blockquote>
-<pre class="highlight shell"><code>GET http://example.com/rest/mediaObject?visibility<span class="o">=</span>10&amp;id_object_type<span class="o">=</span>607
+        <p>If no apiTemplate is requested, the object will be return as it is defined by the ORM Class.</p>
+        <h2 id='general-api-calls-and-error-handling'>General API Calls and Error Handling</h2>
+        <blockquote>
+            <p>Example call for media objects with filters:</p>
+        </blockquote>
+        <pre class="highlight shell"><code>GET http://example.com/rest/mediaObject?visibility<span class="o">=</span>10&amp;id_object_type<span class="o">=</span>607
 
 will <span class="k">return </span>only media objects with visibility of 10 and an object <span class="nb">type </span>id of 607
 </code></pre>
-<p>every call can have four standard parameters: </p>
+        <p>every call can have four standard parameters: </p>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>apiTemplate</td>
-<td>null</td>
-<td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
-</tr>
-<tr>
-<td>readRelations</td>
-<td>null</td>
-<td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-</tr>
-<tr>
-<td>start</td>
-<td>null</td>
-<td>start parameter for the query</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>null</td>
-<td>limit parameter for the query</td>
-</tr>
-</tbody></table>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>properties</td>
+            <td>[]</td>
+            <td>array of properties of the requested object that should be returned (can only be set with POST request)</td>
+        </tr>
+        </tbody></table>
 
-<aside class="warning">start and limit will only work if both are set  </aside>
+        <aside class="warning">start and limit will only work if both are set  </aside>
 
-<p>Additionally, all properties of the requested object can be passed as a parameter to filter the result</p>
-<h2 id='mediaobject'>MediaObject</h2>
-<blockquote>
-<p>Request</p>
-</blockquote>
-<pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/mediaObject'</span>
+        <p>Additionally, all properties of the requested object can be passed as a parameter to filter the result</p>
+        <h2 id='mediaobject'>MediaObject</h2>
+        <blockquote>
+            <p>Request</p>
+        </blockquote>
+        <pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/mediaObject'</span>
 </code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">545946</span><span class="p">,</span><span class="w">
         </span><span class="s2">"id_pool"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393</span><span class="p">,</span><span class="w">
@@ -511,78 +552,78 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre><h3 id='http-request'>HTTP Request</h3>
-<p><code>GET\POST http://example.com/rest/mediaObject</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>apiTemplate</td>
-<td>null</td>
-<td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
-</tr>
-<tr>
-<td>readRelations</td>
-<td>null</td>
-<td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-</tr>
-<tr>
-<td>start</td>
-<td>null</td>
-<td>start parameter for the query</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>null</td>
-<td>limit parameter for the query</td>
-</tr>
-<tr>
-<td>id</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>id_pool</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>id_object_type</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>name</td>
-<td>null</td>
-<td>type: string</td>
-</tr>
-<tr>
-<td>code</td>
-<td>null</td>
-<td>type: string</td>
-</tr>
-<tr>
-<td>visibility</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>state</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-</tbody></table>
+        <p><code>GET\POST http://example.com/rest/mediaObject</code></p>
+        <h3 id='query-parameters'>Query Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>id_pool</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>id_object_type</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>null</td>
+            <td>type: string</td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>null</td>
+            <td>type: string</td>
+        </tr>
+        <tr>
+            <td>visibility</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        </tbody></table>
 
-<p><code>POST http://example.com/rest/mediaObject</code></p>
-<h3 id='raw-body'>Raw Body</h3>
-<blockquote>
-<p>Example Body for POST Request</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+        <p><code>POST http://example.com/rest/mediaObject</code></p>
+        <h3 id='raw-body'>Raw Body</h3>
+        <blockquote>
+            <p>Example Body for POST Request</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"apiTemplate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MediaObjectDetail"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id_pool"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
@@ -593,56 +634,56 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>all parameters can also be posted in the requests body as raw json</p>
-<h3 id='get-media-object-by-route'>Get Media Object By Route</h3>
-<p><code>POST http://pmt2lib.local/rest/mediaObject/getByRoute</code></p>
-<h3 id='query-parameters-2'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>route</td>
-<td>required</td>
-<td>Type: string</td>
-</tr>
-<tr>
-<td>id_object_type</td>
-<td>null</td>
-<td>Type: integer</td>
-</tr>
-<tr>
-<td>language</td>
-<td>null</td>
-<td>Type: string</td>
-</tr>
-<tr>
-<td>visibility</td>
-<td>null</td>
-<td>Type: integer</td>
-</tr>
-<tr>
-<td>readRelations</td>
-<td>null</td>
-<td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-</tr>
-</tbody></table>
+        <p>all parameters can also be posted in the requests body as raw json</p>
+        <h3 id='get-media-object-by-route'>Get Media Object By Route</h3>
+        <p><code>POST http://pmt2lib.local/rest/mediaObject/getByRoute</code></p>
+        <h3 id='query-parameters-2'>Query Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>route</td>
+            <td>required</td>
+            <td>Type: string</td>
+        </tr>
+        <tr>
+            <td>id_object_type</td>
+            <td>null</td>
+            <td>Type: integer</td>
+        </tr>
+        <tr>
+            <td>language</td>
+            <td>null</td>
+            <td>Type: string</td>
+        </tr>
+        <tr>
+            <td>visibility</td>
+            <td>null</td>
+            <td>Type: integer</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        </tbody></table>
 
-<blockquote>
-<p>POST Body Example</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+        <blockquote>
+            <p>POST Body Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"route"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/reise/magisches-schottland/"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"readRelations"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1018820</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id_pool"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id_object_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">607</span><span class="p">,</span><span class="w">
@@ -699,15 +740,15 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="err">...</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre><h2 id='categorytree'>CategoryTree</h2>
-<blockquote>
-<p>Request</p>
-</blockquote>
-<pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/categoryTree'</span>
+        <blockquote>
+            <p>Request</p>
+        </blockquote>
+        <pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/categoryTree'</span>
 </code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1203</span><span class="p">,</span><span class="w">
         </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Optionen"</span><span class="w">
@@ -719,10 +760,10 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<blockquote>
-<p>Detailed Request for one Tree with parameter readRelations set to true</p>
-</blockquote>
-<pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/categoryTree?id=1207&amp;readRelations=1'</span>
+        <blockquote>
+            <p>Detailed Request for one Tree with parameter readRelations set to true</p>
+        </blockquote>
+        <pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/categoryTree?id=1207&amp;readRelations=1'</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1204</span><span class="p">,</span><span class="w">
@@ -765,69 +806,69 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre><h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET\POST http://example.com/rest/categoryTree</code></p>
-<h3 id='query-parameters-3'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>apiTemplate</td>
-<td>null</td>
-<td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
-</tr>
-<tr>
-<td>readRelations</td>
-<td>null</td>
-<td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-</tr>
-<tr>
-<td>start</td>
-<td>null</td>
-<td>start parameter for the query</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>null</td>
-<td>limit parameter for the query</td>
-</tr>
-<tr>
-<td>id</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>name</td>
-<td>null</td>
-<td>type: string</td>
-</tr>
-</tbody></table>
+        <p><code>GET\POST http://example.com/rest/categoryTree</code></p>
+        <h3 id='query-parameters-3'>Query Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>null</td>
+            <td>type: string</td>
+        </tr>
+        </tbody></table>
 
-<p><code>POST http://example.com/rest/mediaObject</code></p>
-<h3 id='raw-body-2'>Raw Body</h3>
-<blockquote>
-<p>Example Body for POST Request</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+        <p><code>POST http://example.com/rest/mediaObject</code></p>
+        <h3 id='raw-body-2'>Raw Body</h3>
+        <blockquote>
+            <p>Example Body for POST Request</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"apiTemplate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MediaObjectDetail"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Optionen"</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>all parameters can also be posted in the requests body as raw json</p>
-<h2 id='route'>Route</h2>
-<blockquote>
-<p>Request</p>
-</blockquote>
-<pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/route'</span>
+        <p>all parameters can also be posted in the requests body as raw json</p>
+        <h2 id='route'>Route</h2>
+        <blockquote>
+            <p>Request</p>
+        </blockquote>
+        <pre class="highlight shell"><code>curl --location --request GET <span class="s1">'http://pmt2lib.local/rest/route'</span>
 </code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">284</span><span class="p">,</span><span class="w">
         </span><span class="s2">"route"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/reise/magisches-schottland/"</span><span class="p">,</span><span class="w">
@@ -852,68 +893,68 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre><h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET\POST http://example.com/rest/route</code></p>
-<h3 id='query-parameters-4'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>apiTemplate</td>
-<td>null</td>
-<td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
-</tr>
-<tr>
-<td>readRelations</td>
-<td>null</td>
-<td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-</tr>
-<tr>
-<td>start</td>
-<td>null</td>
-<td>start parameter for the query</td>
-</tr>
-<tr>
-<td>limit</td>
-<td>null</td>
-<td>limit parameter for the query</td>
-</tr>
-<tr>
-<td>id</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>route</td>
-<td>null</td>
-<td>type: string</td>
-</tr>
-<tr>
-<td>id_media_object</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>id_object_type</td>
-<td>null</td>
-<td>type: integer</td>
-</tr>
-<tr>
-<td>language</td>
-<td>null</td>
-<td>type: string</td>
-</tr>
-</tbody></table>
+        <p><code>GET\POST http://example.com/rest/route</code></p>
+        <h3 id='query-parameters-4'>Query Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>route</td>
+            <td>null</td>
+            <td>type: string</td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>id_object_type</td>
+            <td>null</td>
+            <td>type: integer</td>
+        </tr>
+        <tr>
+            <td>language</td>
+            <td>null</td>
+            <td>type: string</td>
+        </tr>
+        </tbody></table>
 
-<p><code>POST http://example.com/rest/mediaObject</code></p>
-<h3 id='raw-body-3'>Raw Body</h3>
-<blockquote>
-<p>Example Body for POST Request</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+        <p><code>POST http://example.com/rest/mediaObject</code></p>
+        <h3 id='raw-body-3'>Raw Body</h3>
+        <blockquote>
+            <p>Example Body for POST Request</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
     </span><span class="s2">"route"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Optionen"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="mi">1234567</span><span class="p">,</span><span class="w">
@@ -921,14 +962,487 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="s2">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"de"</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>all parameters can also be posted in the requests body as raw json</p>
+        <p>all parameters can also be posted in the requests body as raw json</p>
+        <h2 id='search'>Search</h2>
+        <blockquote>
+            <p>Example for a search body</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"apiTemplate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MediaObjectDetail"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"return_filters_only"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sort"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"property"</span><span class="p">:</span><span class="w"> </span><span class="s2">"price"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"direction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ASC"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"limit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"pageSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"currentPage"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"priceRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"priceRange"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"priceFrom"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"priceTo"</span><span class="p">:</span><span class="w"> </span><span class="mi">3300</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"dateRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dateRange"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-28-02 00:00:00"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2030-12-10 00:00:00"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"tree_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1207</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>The search endpoint is only available via the POST method. The content type has to be &quot;application/json&quot; an the body has to be raw, valid json.</p>
+        <h3 id='http-request-4'>HTTP Request</h3>
+        <p><code>POST http://example.com/rest/search</code></p>
 
-      </div>
-      <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="php">Example Code</a>
-          </div>
-      </div>
+        <p>Possible elements:</p>
+
+        <table><thead>
+        <tr>
+            <th>Element/Object</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>where to start the limiting process (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>return_filters_only</td>
+            <td>boolean</td>
+            <td>return only the filters not the mediaobjects in the result (defaults to false)</td>
+        </tr>
+        <tr>
+            <td>sort</td>
+            <td>object</td>
+            <td>length of the resultset (<a href="#search-gt-sorting">See Sorting</a>)</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>object</td>
+            <td>length of the resultset (<a href="#ssearch-gt-limiting">See Limiting</a>)</td>
+        </tr>
+        <tr>
+            <td>pagination</td>
+            <td>object</td>
+            <td>length of the resultset (<a href="#search-gt-pagination">See Pagination</a>)</td>
+        </tr>
+        <tr>
+            <td>conditions</td>
+            <td>object</td>
+            <td>length of the resultset (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>filters</td>
+            <td>object</td>
+            <td>length of the resultset (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-limiting'>Search &gt; Limiting</h2>
+        <blockquote>
+            <p>Limiting</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"limit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"start"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>To limit a search a &quot;limit&quot; object has to be posted in the body of the request</p>
+
+        <table><thead>
+        <tr>
+            <th>Property</th>
+            <th>Default</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>start</td>
+            <td>required</td>
+            <td>integer</td>
+            <td>where to start the limiting process</td>
+        </tr>
+        <tr>
+            <td>length</td>
+            <td>required</td>
+            <td>integer</td>
+            <td>length of the resultset</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-pagination'>Search &gt; Pagination</h2>
+        <blockquote>
+            <p>Pagination</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"pageSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"currentPage"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>A search result can be paginated by posting a &quot;pagination&quot; object in the body of the request</p>
+
+        <table><thead>
+        <tr>
+            <th>Property</th>
+            <th>Default</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>pageSize</td>
+            <td>required</td>
+            <td>integer</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        <tr>
+            <td>currentPage</td>
+            <td>required</td>
+            <td>integer</td>
+            <td>the number of the page to be returned (pages start at 1)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-sorting'>Search &gt; Sorting</h2>
+        <blockquote>
+            <p>Sorting</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"sort"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"property"</span><span class="p">:</span><span class="w"> </span><span class="s2">"price"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"direction"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ASC"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>A search result can be sorted by posting a &quot;sort&quot; object in the body of the request</p>
+
+        <table><thead>
+        <tr>
+            <th>Property</th>
+            <th>Default</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>property</td>
+            <td>required</td>
+            <td>string</td>
+            <td>the property to be sorted after</td>
+        </tr>
+        <tr>
+            <td>direction</td>
+            <td>required</td>
+            <td>string</td>
+            <td>Possible values: &quot;ASC&quot;, &quot;DESC&quot;, &quot;RAND()&quot;</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-conditions'>Search &gt; Conditions</h2>
+        <blockquote>
+            <p>Conditions Example </p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"conditions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"priceRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"priceRange"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"priceFrom"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"priceTo"</span><span class="p">:</span><span class="w"> </span><span class="mi">3300</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"dateRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dateRange"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-28-02 00:00:00"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2030-12-10 00:00:00"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"tripTypes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"var_name"</span><span class="p">:</span><span class="s2">"reiseart_default"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"item_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"576a757e2813da3f70f7279583ff859f"</span><span class="p">],</span><span class="w">
+                </span><span class="s2">"combine_operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OR"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"tripDestinations"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"var_name"</span><span class="p">:</span><span class="s2">"zielgebiet_default"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"item_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"576a757e2813da3f70f7279583ff859f"</span><span class="p">,</span><span class="s2">"90716219c64126c31da31e33d3593585"</span><span class="p">],</span><span class="w">
+                </span><span class="s2">"combine_operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AND"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>A search can conatin multiple conditions: These Conditions have to be added to the &quot;conditions&quot; property of the saerch with a unique identifier, the type of the condition and a configurations object.<br>
+            The following conditions can be added:</p>
+
+        <table><thead>
+        <tr>
+            <th>Condition</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td><a href="#search-gt-condition-gt-pricerange">PriceRange</a></td>
+            <td>The range of prices the media objects cheapest prices may be in</td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-daterange">DateRange</a></td>
+            <td>the range of dates the departure time of the media objects touristic packeges is in</td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-durationrange">DurationRange</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-visibility">Visibility</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-objecttype">Objecttype</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-transport">Transport</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-condition-gt-category">Category</a></td>
+            <td></td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-pricerange'>Search &gt; Condition &gt; PriceRange</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PriceRange"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"priceFrom"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"priceTo"</span><span class="p">:</span><span class="w"> </span><span class="mi">3300</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>priceFrom</td>
+            <td>float</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        <tr>
+            <td>priceTo</td>
+            <td>float</td>
+            <td>the number of the page to be returned (pages start at 1)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-daterange'>Search &gt; Condition &gt; DateRange</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DateRange"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-28-02 00:00:00"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2030-12-10 00:00:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>dateFrom</td>
+            <td>float</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        <tr>
+            <td>dateTo</td>
+            <td>float</td>
+            <td>the number of the page to be returned (pages start at 1)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-durationrange'>Search &gt; Condition &gt; DurationRange</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DurationRange"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"durationFrom"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"durationTo"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>durationFrom</td>
+            <td>float</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        <tr>
+            <td>durationTo</td>
+            <td>float</td>
+            <td>the number of the page to be returned (pages start at 1)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-visibility'>Search &gt; Condition &gt; Visibility</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Visibility"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"visibilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>visibilities</td>
+            <td>array</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-objecttype'>Search &gt; Condition &gt; ObjectType</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ObjectType"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"object_type_id"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">607</span><span class="p">,</span><span class="w"> </span><span class="mi">608</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>object_type_id</td>
+            <td>array</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-transport'>Search &gt; Condition &gt; Transport</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Transport"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"transport_types"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"BUS"</span><span class="p">,</span><span class="w"> </span><span class="s2">"FLUG"</span><span class="p">,</span><span class="w"> </span><span class="s2">"PKW"</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>transport_types</td>
+            <td>enaum</td>
+            <td>Posible values: &quot;BUS&quot;, &quot;FLUG&quot;, &quot;PKW&quot;, &quot;SCHIFF&quot;</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-category'>Search &gt; Condition &gt; Category</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"var_name"</span><span class="p">:</span><span class="s2">"reiseart_default"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"item_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"576a757e2813da3f70f7279583ff859f"</span><span class="p">],</span><span class="w">
+        </span><span class="s2">"combine_operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OR"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>var_name</td>
+            <td>string</td>
+            <td>the pagesize of the paginated result (how many results per page)</td>
+        </tr>
+        <tr>
+            <td>item_ids</td>
+            <td>array</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>combine_operator</td>
+            <td>enum</td>
+            <td>Possible values: &quot;AND&quot;, &quot;OR&quot;. Defaults to &quot;AND&quot;</td>
+        </tr>
+        </tbody></table>
+
     </div>
-  </body>
+    <div class="dark-box">
+        <div class="lang-selector">
+            <a href="#" data-language-name="php">Example Code</a>
+        </div>
+    </div>
+</div>
+</body>
 </html>
