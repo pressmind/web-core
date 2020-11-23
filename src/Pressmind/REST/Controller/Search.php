@@ -21,6 +21,7 @@ class Search
         $search_conditions = $searchparameters->conditions;
         $search_sort = isset($searchparameters->sort) ? $searchparameters->sort : null;
         $search_limit = isset($searchparameters->limit) ? $searchparameters->limit : null;
+        $return_filters_only = isset($searchparameters->return_filters_only) ? boolval($searchparameters->return_filters_only) : false;
         $conditions = [];
 
         foreach($search_conditions as $search_condition) {
@@ -49,13 +50,15 @@ class Search
             return $result;
         }
 
-        $result['media_objects'] = [];
+        if($return_filters_only === false) {
+            $result['media_objects'] = [];
 
-        foreach ($trips as $trip) {
-            if(isset($searchparameters->apiTemplate) && !empty($searchparameters->apiTemplate)) {
-                $result['media_objects'][] = $trip->renderApiOutputTemplate($searchparameters->apiTemplate);
-            } else {
-                $result['media_objects'][] = $trip;
+            foreach ($trips as $trip) {
+                if(isset($searchparameters->apiTemplate) && !empty($searchparameters->apiTemplate)) {
+                    $result['media_objects'][] = $trip->renderApiOutputTemplate($searchparameters->apiTemplate);
+                } else {
+                    $result['media_objects'][] = $trip;
+                }
             }
         }
 
