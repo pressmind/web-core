@@ -2,6 +2,7 @@
 namespace Pressmind;
 
 use Autoloader;
+use Exception;
 use Pressmind\DB\Adapter\Pdo;
 
 /**
@@ -60,10 +61,10 @@ $db_config = DB\Config\Pdo::create(
  */
 try {
     $db = new Pdo($db_config);
-    if(strtolower($config['database']['engine'] == 'mysql')) {
+    if(strtolower($config['database']['engine']) == 'mysql') {
         $db->execute('SET SESSION sql_mode = "NO_ENGINE_SUBSTITUTION"');
     }
-} catch (\Exception $e) {
+} catch (Exception $e) {
 
     if (
         empty($config['database']['host']) || empty($config['database']['dbname']) ||
