@@ -39,6 +39,7 @@ if($args[1] != 'only_static') {
         $config = Registry::getInstance()->get('config');
         $media_types = [];
         $media_types_pretty_url = [];
+        $media_types_allowed_visibilities = [];
         foreach ($response->result as $item) {
             $media_types[$item->id_type] = $item->type_name;
             $ids[] = $item->id_type;
@@ -49,9 +50,11 @@ if($args[1] != 'only_static') {
                 'suffix' => '/'
             ];
             $media_types_pretty_url[$item->id_type] = $pretty_url;
+            $media_types_allowed_visibilities[$item->id_type] = [30];
         }
         $config['data']['media_types'] = $media_types;
         $config['data']['media_types_pretty_url'] = $media_types_pretty_url;
+        $config['data']['media_types_allowed_visibilities'] = $media_types_allowed_visibilities;
         Registry::getInstance()->get('config_adapter')->write($config);
         Registry::getInstance()->add('config', $config);
         $importer->importMediaObjectTypes($ids);

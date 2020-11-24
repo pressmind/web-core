@@ -94,13 +94,21 @@ class Import
         $conf = Registry::getInstance()->get('config');
         $allowed_object_types = array_keys($conf['data']['media_types']);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::import()', Writer::OUTPUT_FILE, 'import.log');
-        $params = [
-            'id_media_object_type' => implode(',', $allowed_object_types)
-        ];
-        if (!is_null($id_pool)) {
-            $params['id_pool'] = intval($id_pool);
+        foreach ($allowed_object_types as $allowed_object_type) {
+            $allowed_visibilities = $conf['data']['media_types_allowed_visibilities'][$allowed_object_type];
+            if(is_array($allowed_visibilities)) {
+                foreach ($allowed_visibilities as $allowed_visibility) {
+                    $params = [
+                        'id_media_object_type' => $allowed_object_type,
+                        'visibility' => $allowed_visibility
+                    ];
+                    if (!is_null($id_pool)) {
+                        $params['id_pool'] = intval($id_pool);
+                    }
+                    $this->_importIds(0, $params);
+                }
+            }
         }
-        $this->_importIds(0, $params);
         $this->_importMediaObjectsFromFolder();
         $this->removeOrphans();
     }
@@ -113,7 +121,11 @@ class Import
      */
     private function _importIds($startIndex, $params, $numItems = 50)
     {
-        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importIds()', Writer::OUTPUT_FILE, 'import.log');
+        $log_params = 'id_media_object_type=' . $params['id_media_object_type']. ', visibility=' . $params['visibility'];
+        if(isset( $params['id_pool'])) {
+            $log_params .= ', id_pool=' .  $params['id_pool'];
+        }
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::_importIds(' . $log_params . ')', Writer::OUTPUT_FILE, 'import.log');
         $params['startIndex'] = $startIndex;
         $params['numItems'] = $numItems;
         $response = $this->_client->sendRequest('Text', 'search', $params);
@@ -250,9 +262,6 @@ class Import
             $seasons_importer = new Season();
             $seasons_importer->import();
 
-            $media_object_importer = new \Pressmind\Import\MediaObject();
-            $media_object_importer->import($response[0]);
-
             $itinerary_importer = new Itinerary($id_media_object);
             $itinerary_importer->import();
 
@@ -266,6 +275,9 @@ class Import
                     }
                 }
             }
+
+            $media_object_importer = new \Pressmind\Import\MediaObject();
+            $media_object_importer->import($response[0]);
 
             unset($response);
             unset($old_object);
