@@ -104,6 +104,8 @@ class Server
         if($this->_checkAuthentication()) {
             $this->_response->setContentType('application/json');
             $this->_response->addHeader('Access-Control-Allow-Origin', '*');
+            $this->_response->addHeader('Access-Control-Allow-Methods', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
+            $this->_response->addHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, Cache-Control, Pragma, Expires');
             if ($route_match = $this->_router->handle($this->_request)) {
                 $classname = '\Pressmind\\' . $route_match['module'] . '\\' . $route_match['controller'];
                 if (class_exists($classname)) {
