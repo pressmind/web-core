@@ -42,7 +42,7 @@ class Brand extends AbstractObject
                 'title' => 'name',
                 'name' => 'name',
                 'type' => 'string',
-                'required' => true,
+                'required' => false,
                 'filters' => null,
                 'validators' => [
                     [
@@ -55,7 +55,7 @@ class Brand extends AbstractObject
                 'title' => 'tags',
                 'name' => 'tags',
                 'type' => 'string',
-                'required' => true,
+                'required' => false,
                 'filters' => null,
                 'validators' => null
             ],
@@ -63,7 +63,7 @@ class Brand extends AbstractObject
                 'title' => 'description',
                 'name' => 'description',
                 'type' => 'string',
-                'required' => true,
+                'required' => false,
                 'filters' => null,
                 'validators' => null
             ],
