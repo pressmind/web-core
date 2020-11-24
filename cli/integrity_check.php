@@ -25,6 +25,9 @@ foreach ($models as $model_name) {
             echo $line . "\n";
             foreach ($check as $difference) {
                 switch($difference['action']) {
+                    case 'alter_column_null':
+                        modifyDatabaseTableNull($object->getDbTableName(), $difference['column_name'], $difference['column_type'], $difference['column_null']);
+                        break;
                     case 'alter_column_type':
                         modifyDatabaseTableColumn($object->getDbTableName(), $difference['column_name'], $difference['column_type']);
                         break;
@@ -89,14 +92,21 @@ try {
 echo '!!!ATTENTION: Please have a look at the CHANGES.md file, there might be important information on breaking changes!!!!' . "\n";
 
 function modifyDatabaseTableColumn($tableName, $columnName, $type) {
-    $sql = 'ALTER TABLE ' . $tableName . ' MODIFY ' . $columnName . ' ' . $type . ' null';
+    $sql = 'ALTER TABLE ' . $tableName . ' MODIFY ' . $columnName . ' ' . $type . ' NULL';
     $db = Registry::getInstance()->get('db');
     echo $sql . "\n";
     $db->execute($sql);
 }
 
 function addDatabaseTableColumn($tableName, $columnName, $type) {
-    $sql = 'ALTER TABLE ' . $tableName . ' ADD ' . $columnName . ' ' . $type . ' null';
+    $sql = 'ALTER TABLE ' . $tableName . ' ADD ' . $columnName . ' ' . $type . ' NULL';
+    $db = Registry::getInstance()->get('db');
+    echo $sql . "\n";
+    $db->execute($sql);
+}
+
+function modifyDatabaseTableNull($tableName, $columnName, $type, $is_null) {
+    $sql = 'ALTER TABLE ' . $tableName . ' MODIFY ' . $columnName . ' ' . $type . ' ' . $is_null;
     $db = Registry::getInstance()->get('db');
     echo $sql . "\n";
     $db->execute($sql);
