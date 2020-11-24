@@ -94,7 +94,7 @@ class Server
                 $this->_response->addHeader('Allow', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
                 $this->_response->addHeader('Access-Control-Allow-Origin', '*');
                 $this->_response->addHeader('Access-Control-Allow-Methods', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
-                $this->_response->addHeader('Access-Control-Allow-Headers', 'Content-Type');
+                $this->_response->addHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, Cache-Control, Pragma, Expires');
                 $this->_response->addHeader('Access-Control-Max-Age', '60');
             }
             $this->_response->setCode(204);
