@@ -390,6 +390,20 @@ class MediaObject extends AbstractObject
     }
 
     /**
+     * @param null $language
+     * @return mixed
+     */
+    public function getDataForLanguage($language = null) {
+        $config = Registry::getInstance()->get('config');
+        if(is_null($language)) {
+            $language = $config['data']['languages']['default'];
+        }
+        $this->data;
+        $data = HelperFunctions::findObjectInArray($this->data, 'language', $language);
+        return $data;
+    }
+
+    /**
      * @param string $template
      * @param string $language
      * @param object $custom_data

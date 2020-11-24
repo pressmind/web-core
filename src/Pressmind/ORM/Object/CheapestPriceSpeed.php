@@ -9,12 +9,12 @@ use DateTime;
  * Class CheapestPriceSpeed
  * @package Pressmind\ORM\Object
  * @property integer $id_media_object
- * @property integer $id_booking_package
- * @property integer $id_housing_package
- * @property integer $id_date
- * @property integer $id_option
- * @property integer $id_transport_1
- * @property integer $id_transport_2
+ * @property string $id_booking_package
+ * @property string $id_housing_package
+ * @property string $id_date
+ * @property string $id_option
+ * @property string $id_transport_1
+ * @property string $id_transport_2
  * @property integer $duration
  * @property DateTime $date_departure
  * @property DateTime $date_arrival
@@ -46,9 +46,9 @@ use DateTime;
  * @property DateTime $earlybird_discount_date_to_f
  * @property integer $id_option_auto_book
  * @property integer $id_option_required_group
- * @property integer $id_start_point_option
+ * @property string $id_start_point_option
  * @property integer $id_origin
- * @property integer $id_startingpoint
+ * @property string $id_startingpoint
  */
 class CheapestPriceSpeed extends AbstractObject
 {
@@ -74,58 +74,93 @@ class CheapestPriceSpeed extends AbstractObject
             'id_media_object' => [
                 'name' => 'id_media_object',
                 'title' => 'id_media_object',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_booking_package' => [
                 'name' => 'id_booking_package',
                 'title' => 'id_booking_package',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_housing_package' => [
                 'name' => 'id_housing_package',
                 'title' => 'id_housing_package',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_date' => [
                 'name' => 'id_date',
                 'title' => 'id_date',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_option' => [
                 'name' => 'id_option',
                 'title' => 'id_option',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_transport_1' => [
                 'name' => 'id_transport_1',
                 'title' => 'id_transport_1',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_transport_2' => [
                 'name' => 'id_transport_2',
                 'title' => 'id_transport_2',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'duration' => [
                 'name' => 'duration',
@@ -378,10 +413,15 @@ class CheapestPriceSpeed extends AbstractObject
             'id_start_point_option' => [
                 'name' => 'id_start_point_option',
                 'title' => 'id_start_point_option',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ],
             'id_origin' => [
                 'name' => 'id_origin',
@@ -394,10 +434,15 @@ class CheapestPriceSpeed extends AbstractObject
             'id_startingpoint' => [
                 'name' => 'id_startingpoint',
                 'title' => 'id_startingpoint',
-                'type' => 'integer',
+                'type' => 'string',
                 'required' => false,
                 'filters' => null,
-                'validators' => null
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 32,
+                    ]
+                ]
             ]
         ]
     ];

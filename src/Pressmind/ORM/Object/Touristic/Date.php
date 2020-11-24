@@ -354,7 +354,7 @@ class Date extends AbstractObject
     public function getHousingOptions()
     {
         $housing_options = [];
-        $housingOptions = Option::listAll("id_booking_package = " . $this->id_booking_package . " AND type = 'housing_option' AND season = '" . $this->season . "'");
+        $housingOptions = Option::listAll("id_booking_package = '" . $this->id_booking_package . "' AND type = 'housing_option' AND season = '" . $this->season . "'");
         foreach ($housingOptions as $housing_option) {
             $housing_options[] = $housing_option;
         }
@@ -368,7 +368,7 @@ class Date extends AbstractObject
     public function getSightseeings()
     {
         $sightseeings = [];
-        $sightseeings_list = Option::listAll("id_booking_package = " . $this->id_booking_package . " AND type = 'sightseeing' AND season = '" . $this->season . "'");
+        $sightseeings_list = Option::listAll("id_booking_package = '" . $this->id_booking_package . "' AND type = 'sightseeing' AND season = '" . $this->season . "'");
         foreach ($sightseeings_list as $sightseeing) {
             $sightseeings[] = $sightseeing;
         }
@@ -382,7 +382,7 @@ class Date extends AbstractObject
     public function getExtras()
     {
         $extras = [];
-        $extras_list = Option::listAll("id_booking_package = " . $this->id_booking_package . " AND type = 'extra' AND season = '" . $this->season . "'");
+        $extras_list = Option::listAll("id_booking_package = '" . $this->id_booking_package . "' AND type = 'extra' AND season = '" . $this->season . "'");
         foreach ($extras_list as $extra) {
             $extras[] = $extra;
         }
@@ -396,7 +396,7 @@ class Date extends AbstractObject
     public function getTickets()
     {
         $tickets = [];
-        $tickets_list = Option::listAll("id_booking_package = " . $this->id_booking_package . " AND type = 'ticket' AND season = '" . $this->season . "'");
+        $tickets_list = Option::listAll("id_booking_package = '" . $this->id_booking_package . "' AND type = 'ticket' AND season = '" . $this->season . "'");
         foreach ($tickets_list as $ticket) {
             $tickets[] = $ticket;
         }
