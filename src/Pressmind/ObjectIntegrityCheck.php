@@ -28,6 +28,7 @@ class ObjectIntegrityCheck
     {
         /**@var Pdo $db**/
         $db = Registry::getInstance()->get('db');
+        $conf = Registry::getInstance()->get('config');
         $table = $db->fetchAll('DESCRIBE ' . $databaseTableName);
         foreach ($table as $field) {
             $this->_database_table_info[$field->Field] = $field;
@@ -36,7 +37,11 @@ class ObjectIntegrityCheck
         foreach ($objectDefinition->fields as $field) {
             if(isset($field->sections)) {
                 foreach ($field->sections as $section) {
-                    $column_name = HelperFunctions::human_to_machine($field->var_name) . '_' . HelperFunctions::human_to_machine($section->name);
+                    $section_name = $section->name;
+                    if(isset($conf['data']['sections']['replace']) && !empty($conf['data']['sections']['replace']['regular_expression'])) {
+                        $section_name = preg_replace($conf['data']['sections']['replace']['regular_expression'], $conf['data']['sections']['replace']['replacement'], $section_name);
+                    }
+                    $column_name = HelperFunctions::human_to_machine($field->var_name) . '_' . HelperFunctions::human_to_machine($section_name);
                     $column_type = $type_mapper->mapTypeFromPressMindToMysql($field->type);
                     if (!is_null($column_type)) {
                         if (isset($this->_database_table_info[$column_name])) {
