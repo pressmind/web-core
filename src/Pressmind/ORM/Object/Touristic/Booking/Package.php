@@ -43,335 +43,308 @@ class Package extends AbstractObject
 
     protected $_dont_use_autoincrement_on_primary_key = true;
 
-    protected $_definitions = array(
-        'class' =>
-            array(
-                'name' => self::class,
-            ),
-        'database' =>
-            array(
-                'table_name' => 'pmt2core_touristic_booking_packages',
-                'primary_key' => 'id',
-            ),
-        'properties' =>
-            array(
-                'id' =>
-                    array(
-                        'title' => 'Id',
-                        'name' => 'id',
-                        'type' => 'string',
-                        'required' => true,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 32,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'id_media_object' =>
-                    array(
-                        'title' => 'Id_media_object',
-                        'name' => 'id_media_object',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'name' =>
-                    array(
-                        'title' => 'Name',
-                        'name' => 'name',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ),
-                'duration' =>
-                    array(
-                        'title' => 'Duration',
-                        'name' => 'duration',
-                        'type' => 'float',
-                        'required' => true,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ),
-                'order' =>
-                    array(
-                        'title' => 'Order',
-                        'name' => 'order',
-                        'type' => 'integer',
-                        'required' => true,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 11,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'url' =>
-                    array(
-                        'title' => 'Url',
-                        'name' => 'url',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ),
-                'text' =>
-                    array(
-                        'title' => 'Text',
-                        'name' => 'text',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' => NULL,
-                        'filters' => NULL,
-                    ),
-                'price_mix' =>
-                    array(
-                        'title' => 'Price_mix',
-                        'name' => 'price_mix',
-                        'type' => 'string',
-                        'required' => true,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 255,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'id_pickupservice' =>
-                    array(
-                        'title' => 'Id_pickupservice',
-                        'name' => 'id_pickupservice',
-                        'type' => 'integer',
-                        'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'id_insurance_group' =>
-                    array(
-                        'title' => 'Id_insurance_group',
-                        'name' => 'id_insurance_group',
-                        'type' => 'integer',
-                        'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'ibe_type' =>
-                    array(
-                        'title' => 'Ibe_type',
-                        'name' => 'ibe_type',
-                        'type' => 'integer',
-                        'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 11,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'product_type_ibe' =>
-                    array(
-                        'title' => 'Product_type_ibe',
-                        'name' => 'product_type_ibe',
-                        'type' => 'string',
-                        'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 255,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'id_origin' =>
-                    array(
-                        'title' => 'Id_origin',
-                        'name' => 'id_origin',
-                        'type' => 'integer',
-                        'required' => false,
-                        'validators' =>
-                            array(
-                                0 =>
-                                    array(
-                                        'name' => 'maxlength',
-                                        'params' => 22,
-                                    ),
-                            ),
-                        'filters' => NULL,
-                    ),
-                'pickupservice' => array(
-                    'title' => 'Pickupservice',
-                    'name' => 'pickupservice',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasOne',
-                        'related_id' => 'id_pickupservice',
-                        'class' => Pickupservice::class
-                    ),
-                    'required' => false,
-                    'validators' => null,
+    protected $_definitions = [
+        'class' => [
+            'name' => self::class,
+        ],
+        'database' => [
+            'table_name' => 'pmt2core_touristic_booking_packages',
+            'primary_key' => 'id',
+        ],
+        'properties' => [
+            'id' =>
+                array(
+                    'title' => 'Id',
+                    'name' => 'id',
+                    'type' => 'string',
+                    'required' => true,
+                    'validators' => [
+                        [
+                            'name' => 'maxlength',
+                            'params' => 32,
+                        ]
+                    ],
                     'filters' => null
                 ),
-                'insurance_group' => array(
-                    'title' => 'Insurance Group',
-                    'name' => 'insurance_group',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasOne',
-                        'related_id' => 'id_insurance_group',
-                        'class' => Insurance\Group::class
-                    ),
-                    'required' => false,
-                    'validators' => null,
+            'id_media_object' =>
+                array(
+                    'title' => 'Id_media_object',
+                    'name' => 'id_media_object',
+                    'type' => 'integer',
+                    'required' => true,
+                    'validators' => [
+                        [
+                            'name' => 'maxlength',
+                            'params' => 22,
+                        ],
+                    ],
                     'filters' => null
                 ),
-                'dates' => array(
-                    'title' => 'Dates',
-                    'name' => 'dates',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => Date::class,
-                        /*'filters' => array(
-                            'departure' => array(
-                                '>',
-                                'CURRENT_DATE'
-                            )
-                        ),*/
-                        'order_columns' => array(
-                            'departure' => 'ASC'
+            'name' => [
+                'title' => 'Name',
+                'name' => 'name',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'duration' => [
+                'title' => 'Duration',
+                'name' => 'duration',
+                'type' => 'float',
+                'required' => true,
+                'validators' => null,
+                'filters' => null
+            ],
+            'order' => [
+                'title' => 'Order',
+                'name' => 'order',
+                'type' => 'integer',
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 11,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'url' => [
+                'title' => 'Url',
+                'name' => 'url',
+                'type' => 'string',
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'text' => [
+                'title' => 'Text',
+                'name' => 'text',
+                'type' => 'string',
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'price_mix' => [
+                    'title' => 'Price_mix',
+                    'name' => 'price_mix',
+                    'type' => 'string',
+                    'required' => true,
+                    'validators' => [
+                        [
+                            'name' => 'maxlength',
+                            'params' => 255,
+                        ],
+                    ],
+                    'filters' => null
+                ],
+            'id_pickupservice' => array(
+                    'title' => 'Id_pickupservice',
+                    'name' => 'id_pickupservice',
+                    'type' => 'integer',
+                    'required' => false,
+                    'validators' => [
+                        [
+                            'name' => 'maxlength',
+                            'params' => 22,
+                        ],
+                    ],
+                    'filters' => null
+                ),
+            'id_insurance_group' => [
+                'title' => 'Id_insurance_group',
+                'name' => 'id_insurance_group',
+                'type' => 'integer',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'ibe_type' => [
+                'title' => 'Ibe_type',
+                'name' => 'ibe_type',
+                'type' => 'integer',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 11,
+                    ]
+                ],
+                'filters' => null
+            ],
+            'product_type_ibe' => [
+                'title' => 'Product_type_ibe',
+                'name' => 'product_type_ibe',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'id_origin' => [
+                'title' => 'Id_origin',
+                'name' => 'id_origin',
+                'type' => 'integer',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 22,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'pickupservice' => [
+                'title' => 'Pickupservice',
+                'name' => 'pickupservice',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasOne',
+                    'related_id' => 'id_pickupservice',
+                    'class' => Pickupservice::class
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'insurance_group' => [
+                'title' => 'Insurance Group',
+                'name' => 'insurance_group',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasOne',
+                    'related_id' => 'id_insurance_group',
+                    'class' => Insurance\Group::class
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'dates' => [
+                'title' => 'Dates',
+                'name' => 'dates',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => Date::class,
+                    /*'filters' => array(
+                        'departure' => array(
+                            '>',
+                            'CURRENT_DATE'
                         )
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'seasonal_periods' => array(
-                    'title' => 'seasonal_periods',
-                    'name' => 'seasonal_periods',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => SeasonalPeriod::class
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'itinerary_variants' => array(
-                    'title' => 'itinerary_variants',
-                    'name' => 'itinerary_variants',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => Variant::class
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'housing_packages' => array(
-                    'title' => 'Housing Packages',
-                    'name' => 'housing_packages',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => '\\Pressmind\\ORM\\Object\\Touristic\\Housing\\Package'
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'sightseeings' => array(
-                    'title' => 'sightseeings',
-                    'name' => 'sightseeings',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => '\\Pressmind\\ORM\\Object\\Touristic\\Option',
-                        'filters' => array(
-                            'type' => 'sightseeing'
-                        )
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'tickets' => array(
-                    'title' => 'tickets',
-                    'name' => 'tickets',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => '\\Pressmind\\ORM\\Object\\Touristic\\Option',
-                        'filters' => array(
-                            'type' => 'ticket'
-                        )
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-                'extras' => array(
-                    'title' => 'extras',
-                    'name' => 'extras',
-                    'type' => 'relation',
-                    'relation' => array(
-                        'type' => 'hasMany',
-                        'related_id' => 'id_booking_package',
-                        'class' => '\\Pressmind\\ORM\\Object\\Touristic\\Option',
-                        'filters' => array(
-                            'type' => 'extra'
-                        )
-                    ),
-                    'required' => false,
-                    'validators' => null,
-                    'filters' => null
-                ),
-            ),
-    );
+                    ),*/
+                    'order_columns' => [
+                        'departure' => 'ASC'
+                    ]
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'seasonal_periods' => [
+                'title' => 'seasonal_periods',
+                'name' => 'seasonal_periods',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => SeasonalPeriod::class
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'itinerary_variants' => [
+                'title' => 'itinerary_variants',
+                'name' => 'itinerary_variants',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => Variant::class
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'housing_packages' => [
+                'title' => 'Housing Packages',
+                'name' => 'housing_packages',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => \Pressmind\ORM\Object\Touristic\Housing\Package::class
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'sightseeings' => [
+                'title' => 'sightseeings',
+                'name' => 'sightseeings',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => Option::class,
+                    'filters' => [
+                        'type' => 'sightseeing'
+                    ]
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'tickets' => [
+                'title' => 'tickets',
+                'name' => 'tickets',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => Option::class,
+                    'filters' => [
+                        'type' => 'ticket'
+                    ]
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ],
+            'extras' => [
+                'title' => 'extras',
+                'name' => 'extras',
+                'type' => 'relation',
+                'relation' => [
+                    'type' => 'hasMany',
+                    'related_id' => 'id_booking_package',
+                    'class' => Option::class,
+                    'filters' => [
+                        'type' => 'extra'
+                    ]
+                ],
+                'required' => false,
+                'validators' => null,
+                'filters' => null
+            ]
+        ]
+    ];
 
     /**
      * @return mixed
@@ -380,7 +353,7 @@ class Package extends AbstractObject
     public function getCheapestPrice()
     {
         $now = new DateTime();
-        $where = "id_booking_package = " . $this->getId() . " AND price_total > 0 AND date_departure > '" . $now->format('Y-m-d H:i:s') . "'";
+        $where = "id_booking_package = '" . $this->getId() . "' AND price_total > 0 AND date_departure > '" . $now->format('Y-m-d H:i:s') . "'";
         $cheapest_price = CheapestPriceSpeed::listAll($where . ' AND option_occupancy = 2', ['price_total' => 'ASC']);
         if(empty($cheapest_price)) {
             $cheapest_price = CheapestPriceSpeed::listAll($where . ' AND option_occupancy = 1', ['price_total' => 'ASC']);
