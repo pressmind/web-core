@@ -286,6 +286,21 @@
                 <li>
                     <a href="#search-gt-condition-gt-category" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; Category">Search &gt; Condition &gt; Category</a>
                 </li>
+                <li>
+                    <a href="#search-gt-filters" class="toc-h2 toc-link" data-title="Search &gt; Filters">Search &gt; Filters</a>
+                </li>
+                <li>
+                    <a href="#search-gt-filter-gt-category" class="toc-h2 toc-link" data-title="Search &gt; Filter &gt; Category">Search &gt; Filter &gt; Category</a>
+                </li>
+                <li>
+                    <a href="#search-gt-filter-gt-duration" class="toc-h2 toc-link" data-title="Search &gt; Filter &gt; Duration">Search &gt; Filter &gt; Duration</a>
+                </li>
+                <li>
+                    <a href="#search-gt-filter-gt-pricerange" class="toc-h2 toc-link" data-title="Search &gt; Filter &gt; PriceRange">Search &gt; Filter &gt; PriceRange</a>
+                </li>
+                <li>
+                    <a href="#search-gt-filter-gt-departuredate" class="toc-h2 toc-link" data-title="Search &gt; Filter &gt; DepartureDate">Search &gt; Filter &gt; DepartureDate</a>
+                </li>
             </ul>
         </li>
     </ul>
@@ -1436,6 +1451,177 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
             <td>Possible values: &quot;AND&quot;, &quot;OR&quot;. Defaults to &quot;AND&quot;</td>
         </tr>
         </tbody></table>
+        <h2 id='search-gt-filters'>Search &gt; Filters</h2>
+        <blockquote>
+            <p>Filters Example </p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"priceRange"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"priceRange"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"departureDate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"departureDate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"tripDestinations"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"tree_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1207</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>A search can conatin multiple filters: These filters will help you building up search filters for a search page or dynamic navigations. A filter passed to a search will return the possible values for that filter depending on the search results.<br>
+            When you search with a priceRange-condition of 100 to 1500 and add a filter for the duration range, the filter will return the available durations for all found trips within the given price range.<br>
+            Following filters are available</p>
+
+        <table><thead>
+        <tr>
+            <th>Filter</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td><a href="#search-gt-filter-gt-pricerange">PriceRange</a></td>
+            <td>The range of prices the media objects cheapest prices may be in</td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-filter-gt-departuredate">DepartureDate</a></td>
+            <td>the range of dates the departure time of the media objects touristic packeges is in</td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-filter-gt-duration">Duration</a></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><a href="#search-gt-filter-gt-category">Category</a></td>
+            <td></td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-filter-gt-category'>Search &gt; Filter &gt; Category</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"tree_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1207</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <blockquote>
+            <p>Return Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"61BED676-FDDA-A7A9-F6BB-5EC49C1CDEEC"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"61BED676-FDDA-A7A9-F6BB-5EC49C1CDEEC"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_tree"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1207"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mittelamerika"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dynamic_values"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort"</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"kE03E0735-31D5-F0D3-CD04-DF9477FCFD43"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kE03E0735-31D5-F0D3-CD04-DF9477FCFD43"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_parent"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_tree"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1207"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europa"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EU"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dynamic_values"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>tree_id</td>
+            <td>integer</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-filter-gt-duration'>Search &gt; Filter &gt; Duration</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Duration"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <blockquote>
+            <p>Return Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>This filter has no configuration options</p>
+        <h2 id='search-gt-filter-gt-pricerange'>Search &gt; Filter &gt; PriceRange</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PriceRange"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <blockquote>
+            <p>Return Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"min"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"max"</span><span class="p">:</span><span class="w"> </span><span class="mi">1400</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>This filter has no configuration options</p>
+        <h2 id='search-gt-filter-gt-departuredate'>Search &gt; Filter &gt; DepartureDate</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DepartureDate"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <blockquote>
+            <p>Return Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"from"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-04-02 00:00:00.000000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe/Berlin"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"to"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2030-12-10 00:00:00.000000"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone_type"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe/Berlin"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <p>This filter has no configuration options</p>
 
     </div>
     <div class="dark-box">
