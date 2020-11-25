@@ -91,6 +91,7 @@ class ObjectTypeScaffolder
     public function parse()
     {
         $conf = Registry::getInstance()->get('config');
+        $db = Registry::getInstance()->get('db');
         $definition_fields = [
             ['id', 'integer', 'integer'],
             ['id_media_object', 'integer', 'integer'],
@@ -117,9 +118,11 @@ class ObjectTypeScaffolder
         }
         $this->generateORMFile($definition_fields);
         $class_name = '\\Custom\\MediaType\\' . $this->_generateClassName($this->_object_definition->name);
+        /** @var AbstractObject $test */
         $test = new $class_name();
         $mysql_scaffolder = new DB\Scaffolder\Mysql($test);
         $mysql_scaffolder->run();
+        $db->execute("ALTER TABLE " . $test->getDbTableName() . " ROW_FORMAT=DYNAMIC;");
         $this->_insertTags();
         $this->generateObjectInformationFile();
         $this->generateExampleViewFile();
