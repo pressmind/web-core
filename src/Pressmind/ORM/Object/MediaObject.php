@@ -485,8 +485,6 @@ class MediaObject extends AbstractObject
      */
     public function buildPrettyUrls()
     {
-        /** @var Pdo $db */
-        $db = Registry::getInstance()->get('db');
         $config = Registry::getInstance()->get('config');
         $field = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['field']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['field'] : ['name' => 'name'];
         $strategy = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['strategy']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['strategy'] : 'unique';
@@ -523,27 +521,35 @@ class MediaObject extends AbstractObject
         $suffix = isset($config['data']['media_types_pretty_url'][$this->id_object_type]['suffix']) ? $config['data']['media_types_pretty_url'][$this->id_object_type]['suffix'] : '';
         $final_url = $prefix . preg_replace('/\W+/', '-', $url) . $suffix;
         if($strategy == 'unique' || $strategy == 'count-up') {
-            /** @var Route[] $existing_routes */
-            $existing_routes = $db->fetchAll("SELECT * FROM pmt2core_routes WHERE SUBSTR(REPLACE(route, '" . $suffix . "', ''),1 , LENGTH(REPLACE(route, '$suffix', '')) - 1) = '" . str_replace($suffix, '', $final_url) . "' OR route = '" . $final_url . "'", null, Route::class);
-            if(count($existing_routes) > 0) {
+            if($this->_doesRouteExist($final_url)) {
                 if($strategy == 'unique') {
                     throw new Exception('Route with url ' . $final_url . ' already exists and route-building strategy is set to unique in config.json.');
                 }
-                /*if($strategy == 'count-up') {
-                    $counter = 1;
-                    foreach ($existing_routes as $existing_route) {
-                        if (substr(str_replace($suffix, '', $existing_route->route), 0, -2) == $final_url || $existing_route->route == $final_url) {
-                            //echo $existing_route->id_media_object . ': ' . substr(str_replace($suffix, '', $existing_route->route), 0, -2) . '-' . $counter . $suffix . "\n";
-                            $new_route = str_replace($suffix, '', $existing_route->route) . '-' . count($existing_routes) . $suffix;
-                            $existing_route->route = $new_route;
-                            $existing_route->update();
-                            $counter++;
+                if($strategy == 'count-up') {
+                    for ($i = 1; $i < 1000; $i++) {
+                        $check_url = $prefix . preg_replace('/\W+/', '-', $url) . '-' . str_pad($i, 3, '0', STR_PAD_LEFT) . $suffix;
+                        if ($this->_doesRouteExist($check_url) == false) {
+                            $final_url = $check_url;
+                            break;
                         }
                     }
-                }*/
+                }
             }
         }
         return [$final_url];
+    }
+
+    /**
+     * @param $route
+     * @return bool
+     * @throws Exception
+     */
+    private function _doesRouteExist($route) {
+        $existing_routes = Route::listAll(['route' => $route]);
+        if(count($existing_routes) > 0) {
+            return true;
+        }
+        return false;
     }
 
     public function getPrettyUrl()
@@ -616,7 +622,7 @@ class MediaObject extends AbstractObject
                 }
                 foreach ($options as $option) {
                     foreach ($transport_pairs as $transport_pair) {
-                        if(!is_null($transport_pair)) {
+                        if(!is_null($transport_pair) && isset($transport_pair[1])) {
                             $transport_price = $transport_pair[1]->price + (isset($transport_pair[2]) ? $transport_pair[2]->price : 0);
                         } else {
                             $transport_price = null;
@@ -627,8 +633,8 @@ class MediaObject extends AbstractObject
                         $cheapestPriceSpeed->id_housing_package = $option->id_housing_package;
                         $cheapestPriceSpeed->id_date = $date->getId();
                         $cheapestPriceSpeed->id_option = $option->getId();
-                        $cheapestPriceSpeed->id_transport_1 = !is_null($transport_pair) ? $transport_pair[1]->id : null;
-                        $cheapestPriceSpeed->id_transport_2 = !is_null($transport_pair) && isset($transport_pair[2]) ? $transport_pair[2]->id : null;
+                        $cheapestPriceSpeed->id_transport_1 = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->id : null;
+                        $cheapestPriceSpeed->id_transport_2 = !is_null($transport_pair) && isset($transport_pair[1]) && isset($transport_pair[2]) ? $transport_pair[2]->id : null;
                         $cheapestPriceSpeed->duration = $booking_package->duration;
                         $cheapestPriceSpeed->date_departure = $date->departure;
                         $cheapestPriceSpeed->date_arrival = $date->arrival;
@@ -639,19 +645,19 @@ class MediaObject extends AbstractObject
                         $cheapestPriceSpeed->option_occupancy_min = $option->occupancy_min;
                         $cheapestPriceSpeed->option_occupancy_max = $option->occupancy_max;
                         $cheapestPriceSpeed->price_transport_total = $transport_price;
-                        $cheapestPriceSpeed->price_transport_1 = !is_null($transport_pair) ? $transport_pair[1]->price : null;
-                        $cheapestPriceSpeed->price_transport_2 = !is_null($transport_pair) && isset($transport_pair[2]) ? $transport_pair[2]->price : null;
+                        $cheapestPriceSpeed->price_transport_1 = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->price : null;
+                        $cheapestPriceSpeed->price_transport_2 = !is_null($transport_pair) && isset($transport_pair[1]) && isset($transport_pair[2]) ? $transport_pair[2]->price : null;
                         $cheapestPriceSpeed->price_mix = $booking_package->price_mix;
                         $cheapestPriceSpeed->price_option = $option->price;
                         $cheapestPriceSpeed->price_option_pseudo = $option->price_pseudo;
                         $cheapestPriceSpeed->price_regular_before_discount = $option->price;
                         $cheapestPriceSpeed->price_total = $option->price + $transport_price;
-                        $cheapestPriceSpeed->transport_code = !is_null($transport_pair) ? $transport_pair[1]->code : null;
-                        $cheapestPriceSpeed->transport_type = !is_null($transport_pair) ? $transport_pair[1]->type : null;
-                        $cheapestPriceSpeed->transport_1_way = !is_null($transport_pair) ? $transport_pair[1]->way : null;
-                        $cheapestPriceSpeed->transport_2_way = !is_null($transport_pair) && isset($transport_pair[2]) ? $transport_pair[2]->way : null;
-                        $cheapestPriceSpeed->transport_1_description = !is_null($transport_pair) ? $transport_pair[1]->description : null;
-                        $cheapestPriceSpeed->transport_2_description = !is_null($transport_pair) && isset($transport_pair[2]) ? $transport_pair[2]->description : null;
+                        $cheapestPriceSpeed->transport_code = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->code : null;
+                        $cheapestPriceSpeed->transport_type = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->type : null;
+                        $cheapestPriceSpeed->transport_1_way = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->way : null;
+                        $cheapestPriceSpeed->transport_2_way = !is_null($transport_pair) && isset($transport_pair[1]) && isset($transport_pair[2]) ? $transport_pair[2]->way : null;
+                        $cheapestPriceSpeed->transport_1_description = !is_null($transport_pair) && isset($transport_pair[1]) ? $transport_pair[1]->description : null;
+                        $cheapestPriceSpeed->transport_2_description = !is_null($transport_pair) && isset($transport_pair[1]) && isset($transport_pair[2]) ? $transport_pair[2]->description : null;
                         $cheapestPriceSpeed->state = 1;
                         $cheapestPriceSpeed->infotext = null;
                         $cheapestPriceSpeed->earlybird_discount = null;
