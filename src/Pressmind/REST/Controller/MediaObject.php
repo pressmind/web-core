@@ -12,6 +12,9 @@ class MediaObject extends AbstractController
         $routes = \Pressmind\ORM\Object\MediaObject::getByPrettyUrl($params['route'], $params['id_object_type'], isset($params['language']) ? $params['language'] : 'de', $params['visibility']);
         foreach ($routes as $route) {
             $media_object = new \Pressmind\ORM\Object\MediaObject($route->id, $readRelations);
+            if(isset($params['apiTemplate']) && !empty($params['apiTemplate'])) {
+                return $media_object->renderApiOutputTemplate($params['apiTemplate']);
+            }
             return $media_object;
         }
     }
