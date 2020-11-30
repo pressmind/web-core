@@ -28,6 +28,11 @@ use Pressmind\ORM\Object\Touristic\SeasonalPeriod;
  * @property integer $ibe_type
  * @property string $product_type_ibe
  * @property integer $id_origin
+ * @property string $code
+ * @property string $type_of_travel
+ * @property string $variant_code
+ * @property string $request_code
+ * @property string $destination_airport
  * @property Pickupservice $pickupservice
  * @property Insurance\Group $insurance_group
  * @property Date[] $dates
@@ -85,12 +90,7 @@ class Package extends AbstractObject
                 'name' => 'name',
                 'type' => 'string',
                 'required' => false,
-                'validators' => [
-                    [
-                        'name' => 'maxlength',
-                        'params' => 22,
-                    ],
-                ],
+                'validators' => null,
                 'filters' => null
             ],
             'duration' => [
@@ -204,6 +204,71 @@ class Package extends AbstractObject
                     [
                         'name' => 'maxlength',
                         'params' => 22,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'code' => [
+                'title' => 'code',
+                'name' => 'code',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'type_of_travel' => [
+                'title' => 'type_of_travel',
+                'name' => 'type_of_travel',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'variant_code' => [
+                'title' => 'variant_code',
+                'name' => 'variant_code',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'request_code' => [
+                'title' => 'request_code',
+                'name' => 'request_code',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
+                    ],
+                ],
+                'filters' => null
+            ],
+            'destination_airport' => [
+                'title' => 'destination_airport',
+                'name' => 'destination_airport',
+                'type' => 'string',
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => 'maxlength',
+                        'params' => 255,
                     ],
                 ],
                 'filters' => null

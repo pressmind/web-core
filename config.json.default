@@ -13,7 +13,7 @@
         },
         "rest": {
             "client": {
-                "api_endpoint": "https://api.pm-t2.com/v1.4/rest/",
+                "api_endpoint": "https://api.pm-t2.com/v1.5/rest/",
                 "api_key": "",
                 "api_user": "",
                 "api_password": ""
