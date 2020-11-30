@@ -46,7 +46,7 @@ class Mysql
         if($this->_database_table_allready_exists) {
             $is_object_ok = $this->_orm_object->checkStorageIntegrity();
             if($is_object_ok !== true) {
-                print_r($is_object_ok);
+                //print_r($is_object_ok);
             }
         }
     }

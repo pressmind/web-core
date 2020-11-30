@@ -505,13 +505,13 @@ class MediaObject extends AbstractObject
                 if(!empty($object->$field_name)) {
                     if(is_array($linked_objects)) {
                         if(get_class($linked_objects[0]) == Objectlink::class) {
-                            $objectlink = new MediaObject($linked_objects[0]->id_media_object_link);
-                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($objectlink->data[0]->$linked_object_field_name)));
+                            $object_link = new MediaObject($linked_objects[0]->id_media_object_link);
+                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($object_link->data[0]->$linked_object_field_name)));
                         }
                     } else {
                         if(get_class($linked_objects) == Objectlink::class) {
-                            $objectlink = new MediaObject($linked_objects->id_media_object_link);
-                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($objectlink->data[0]->$linked_object_field_name)));
+                            $object_link = new MediaObject($linked_objects->id_media_object_link);
+                            $url = strtolower(HelperFunctions::replaceLatinSpecialChars(trim($object_link->data[0]->$linked_object_field_name)));
                         }
                     }
                 }
@@ -729,6 +729,8 @@ class MediaObject extends AbstractObject
         $config = Registry::getInstance()->get('config');
         if(isset($config['data']['media_types_fulltext_index_fields'])) {
             $this->_db->delete('pmt2core_fulltext_search', ['id_media_object = ?', $this->getId()]);
+            $complete_fulltext = [];
+            $fulltext = [];
             foreach ($this->data as $data) {
                 $complete_fulltext = [];
                 $fulltext[] = [
