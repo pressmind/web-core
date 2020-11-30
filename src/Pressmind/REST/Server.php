@@ -50,12 +50,19 @@ class Server
         $this->_request = new Request($pApiBaseUrl);
         $this->_response = new Response();
         $this->_router = new Router();
-        $this->_router->addRoute(new Router\Route('search', 'POST', 'REST\\Controller', 'Search', 'search'));
-        $this->_router->addRoute(new Router\Route('mediaObject/getByRoute', 'POST', 'REST\\Controller', 'MediaObject', 'getByRoute'));
-        $pieces = (array_map('ucfirst', explode('/', $this->_request->getUri())));
-        if(class_exists('\Pressmind\\REST\\Controller\\' . implode('\\', $pieces))) {
-            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'GET', 'REST\\Controller', implode('\\', $pieces), 'listAll'));
-            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'POST', 'REST\\Controller', implode('\\', $pieces), 'listAll'));
+        $this->_router->addRoute(new Router\Route('search', 'POST', 'Pressmind\\REST\\Controller', 'Search', 'search'));
+        $this->_router->addRoute(new Router\Route('mediaObject/getByRoute', 'POST', 'Pressmind\\REST\\Controller', 'MediaObject', 'getByRoute'));
+        $pieces = explode('/', $this->_request->getUri());
+        if(class_exists('\\Custom\\REST\\Controller\\'  . ucfirst($pieces[0]))) {
+            $class_name = '\\Custom\\REST\\Controller\\'  .  ucfirst($pieces[0]);
+            $method = isset($pieces[1]) ? $pieces[1] : 'index';
+            if(method_exists($class_name, $method)) {
+                $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'GET', 'Custom\\REST\\Controller', ucfirst($pieces[0]), $method));
+                $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'POST', 'Custom\\REST\\Controller', ucfirst($pieces[0]), $method));
+            }
+        } else if(class_exists('\\Pressmind\\REST\\Controller\\' . implode('\\', $pieces))) {
+            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'GET', 'Pressmind\\REST\\Controller', implode('\\', $pieces), 'listAll'));
+            $this->_router->addRoute(new Router\Route($this->_request->getUri(), 'POST', 'Pressmind\\REST\\Controller', implode('\\', $pieces), 'listAll'));
         }
     }
 
@@ -107,7 +114,7 @@ class Server
             $this->_response->addHeader('Access-Control-Allow-Methods', implode(',', array_merge($this->_output_methods, $this->_header_methods)));
             $this->_response->addHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, Cache-Control, Pragma, Expires');
             if ($route_match = $this->_router->handle($this->_request)) {
-                $classname = '\Pressmind\\' . $route_match['module'] . '\\' . $route_match['controller'];
+                $classname = $route_match['module'] . '\\' . $route_match['controller'];
                 if (class_exists($classname)) {
                     try {
                         $class = new $classname();
