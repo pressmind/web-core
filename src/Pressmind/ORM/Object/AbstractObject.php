@@ -3,6 +3,7 @@
 namespace Pressmind\ORM\Object;
 
 use \Exception;
+use Pressmind\Cache\Adapter\Redis;
 use Pressmind\DB\Adapter\AdapterInterface;
 use Pressmind\DB\Adapter\Pdo;
 use Pressmind\DB\Typemapper\Mysql;
@@ -172,8 +173,8 @@ abstract class AbstractObject implements SplSubject
         foreach ($dataset as $stdObject) {
             /**@var AbstractObject $object * */
             $class_name = get_class($this);
-            $object = new $class_name(null, $this->_read_relations);
-            $object->fromStdClass($stdObject);
+            $object = new $class_name($stdObject->id, $this->_read_relations);
+            //$object->fromStdClass($stdObject);
             $result[] = $object;
         }
         return $result;
@@ -217,19 +218,53 @@ abstract class AbstractObject implements SplSubject
      */
     public function read($id)
     {
+        $cache_adapter = null;
         if ($id != '0' && !empty($id)) {
-            $query = "SELECT * FROM " .
-                $this->getDbTableName() .
-                " WHERE " . $this->_definitions['database']['primary_key'] .
-                " = ?";
-            $dataset = $this->_db->fetchRow($query, [$id]);
-            if(!is_null($dataset)) {
-                $this->fromStdClass($dataset);
+            if($this->_cache_enabled) {
+                $data = $this->_readFromCache($id);
+            } else {
+                $data = $this->_readFromDb($id);
+            }
+            if (!is_null($data)) {
+                $this->fromStdClass($data);
                 return true;
             } else {
                 return false;
             }
         }
+    }
+
+    private function _readFromDb($id)
+    {
+        $start_time = microtime(true);
+        $query = "SELECT * FROM " .
+            $this->getDbTableName() .
+            " WHERE " . $this->_definitions['database']['primary_key'] .
+            " = ?";
+        $data = $this->_db->fetchRow($query, [$id]);
+        $this->readRelations();
+        file_put_contents(APPLICATION_PATH . '/redislog.txt', number_format(microtime(true) - $start_time, 8) . ' reading ' . $this->getDbTableName() . '_' . $id . ' from database' . "\n" , FILE_APPEND);
+        return $data;
+    }
+
+    private function _readFromCache($id)
+    {
+        $start_time = microtime(true);
+        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']);
+        if($cache_adapter->exists($this->getDbTableName() . '_' . $id)) {
+            $data = json_decode($cache_adapter->get($this->getDbTableName() . '_' . $id));
+        } else {
+            $this->setReadRelations(true);
+            $data = $this->_readFromDb($id);
+            $cache_adapter->add($this->getDbTableName() . '_' . $id, $this->toStdClass());
+        }
+        file_put_contents(APPLICATION_PATH . '/redislog.txt', number_format(microtime(true) - $start_time, 8) . ' reading ' . $this->getDbTableName() . '_' . $id . ' from cache' . "\n" , FILE_APPEND);
+        return $data;
+    }
+
+    public function removeFromCache() {
+        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']);
+        $cache_adapter->remove($this->getDbTableName() . '_' . $this->getId());
     }
 
     /**
@@ -294,9 +329,11 @@ abstract class AbstractObject implements SplSubject
     private function _deleteHasManyRelation($property_name) {
         /** @var AbstractObject[] $relations */
         $relations = $this->$property_name;
-        foreach ($relations as $relation) {
-            if(!empty($relation)) {
-                $relation->delete(true);
+        if(is_array($relations)) {
+            foreach ($relations as $relation) {
+                if (!empty($relation)) {
+                    $relation->delete(true);
+                }
             }
         }
     }
@@ -344,7 +381,6 @@ abstract class AbstractObject implements SplSubject
                 $this->$key = $value;
             }
         }
-        $this->readRelations();
     }
 
     public function fromArray($pArray) {

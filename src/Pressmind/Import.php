@@ -305,10 +305,18 @@ class Import
         $conf = Registry::getInstance()->get('config');
         $allowed_object_types = array_keys($conf['data']['media_types']);
         $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . ' Importer::removeOrphans()', Writer::OUTPUT_FILE, 'import.log');
-        $params = [
-            'id_media_object_type' => implode(',', $allowed_object_types)
-        ];
-        $this->_importIds(0, $params);
+        foreach ($allowed_object_types as $allowed_object_type) {
+            $allowed_visibilities = $conf['data']['media_types_allowed_visibilities'][$allowed_object_type];
+            if(is_array($allowed_visibilities)) {
+                foreach ($allowed_visibilities as $allowed_visibility) {
+                    $params = [
+                        'id_media_object_type' => $allowed_object_type,
+                        'visibility' => $allowed_visibility
+                    ];
+                    $this->_importIds(0, $params);
+                }
+            }
+        }
         $dir = new DirectoryIterator(APPLICATION_PATH . DIRECTORY_SEPARATOR . $this->_tmp_import_folder);
         foreach ($dir as $file_info) {
             if (!$file_info->isDot()) {
@@ -317,6 +325,7 @@ class Import
                 $this->_imported_ids[] = $id_media_object;
             }
         }
+        $this->_log[] = Writer::write($this->_getElapsedTimeAndHeap() . 'Importer::removeOrphans() Checking ' . count($this->_imported_ids) . ' mediaobjects', Writer::OUTPUT_BOTH, 'import.log');
         $this->_findAndRemoveOrphans();
     }
 

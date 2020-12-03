@@ -4,8 +4,6 @@
 namespace Pressmind\Cache\Adapter;
 
 
-use Pressmind\Cache\AdapterInterface;
-
 class Redis implements AdapterInterface
 {
 

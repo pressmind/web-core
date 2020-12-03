@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pressmind\Cache;
+namespace Pressmind\Cache\Adapter;
 
 
 interface AdapterInterface
