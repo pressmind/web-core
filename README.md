@@ -1,3 +1,9 @@
+# !!Discontinued!! 
+# New Version [here](https://github.com/pressmind/web-core-skeleton-basic)
+
+Please be aware that this project is marked as beeing discontinued, which means thwre will only be bugfixes provided to this project.  
+If you plan to start a new pressmind® web-core project please visit [pressmind/web-core-skeleton-basic](https://github.com/pressmind/web-core-skeleton-basic)
+
 # pressmind® web-core SDK
 
 ##  System Requirements
