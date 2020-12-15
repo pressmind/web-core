@@ -174,7 +174,7 @@ abstract class AbstractObject implements SplSubject
             /**@var AbstractObject $object * */
             $class_name = get_class($this);
             $object = new $class_name($stdObject->id, $this->_read_relations);
-            //$object->fromStdClass($stdObject);
+            $object->fromStdClass($stdObject);
             $result[] = $object;
         }
         return $result;
@@ -236,20 +236,17 @@ abstract class AbstractObject implements SplSubject
 
     private function _readFromDb($id)
     {
-        $start_time = microtime(true);
         $query = "SELECT * FROM " .
             $this->getDbTableName() .
             " WHERE " . $this->_definitions['database']['primary_key'] .
             " = ?";
         $data = $this->_db->fetchRow($query, [$id]);
         $this->readRelations();
-        file_put_contents(APPLICATION_PATH . '/redislog.txt', number_format(microtime(true) - $start_time, 8) . ' reading ' . $this->getDbTableName() . '_' . $id . ' from database' . "\n" , FILE_APPEND);
         return $data;
     }
 
     private function _readFromCache($id)
     {
-        $start_time = microtime(true);
         $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']);
         if($cache_adapter->exists($this->getDbTableName() . '_' . $id)) {
             $data = json_decode($cache_adapter->get($this->getDbTableName() . '_' . $id));
@@ -258,7 +255,6 @@ abstract class AbstractObject implements SplSubject
             $data = $this->_readFromDb($id);
             $cache_adapter->add($this->getDbTableName() . '_' . $id, $this->toStdClass());
         }
-        file_put_contents(APPLICATION_PATH . '/redislog.txt', number_format(microtime(true) - $start_time, 8) . ' reading ' . $this->getDbTableName() . '_' . $id . ' from cache' . "\n" , FILE_APPEND);
         return $data;
     }
 
