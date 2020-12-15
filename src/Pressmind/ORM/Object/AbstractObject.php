@@ -41,6 +41,8 @@ abstract class AbstractObject implements SplSubject
      */
     protected $_cache_enabled;
 
+    protected $_disable_cache_permanently = false;
+
     protected $_read_relations = true;
 
     /**
@@ -62,6 +64,8 @@ abstract class AbstractObject implements SplSubject
      */
     protected $_log = [];
 
+    protected $_start_time = null;
+
     /**
      * AbstractObject constructor.
      * @param null $id
@@ -70,18 +74,34 @@ abstract class AbstractObject implements SplSubject
      */
     public function __construct($id = null, $readRelations = false)
     {
+        $this->_start_time = microtime(true);
+        $this->_write_log('__constuct()');
         $registry = Registry::getInstance();
         $this->_db = $registry->get('db');
         $this->_cache_enabled = $registry->get('config')['cache']['enabled'];
+        if(true === $this->_disable_cache_permanently) {
+            $this->_cache_enabled = false;
+        }
         $this->setReadRelations($readRelations);
         if(!is_null($id)) {
             $this->read($id);
         }
     }
 
+    private function _write_log($logtext)
+    {
+        $text =  number_format(microtime(true) - $this->_start_time, 8) . get_class($this) . " " . $logtext;
+        $this->_log[] = $text;
+    }
+
     public function getLog()
     {
         return $this->_log;
+    }
+
+    public function __call($name, $arguments)
+    {
+        $this->_write_log($name);
     }
 
     /**
@@ -112,6 +132,7 @@ abstract class AbstractObject implements SplSubject
         $result = [];
         $order_columns = [];
         $query = "SELECT * FROM " . $this->getDbTableName();
+
         if (is_array($where)) {
             $query .= " WHERE ";
             $where_i = 0;
@@ -130,14 +151,14 @@ abstract class AbstractObject implements SplSubject
                         $values[] = $item;
                     }
                 }
-                if($value == 'CURRENT_DATE') {
+                if($value === 'CURRENT_DATE') {
                     $now = new \DateTime();
                     $value = $now->format('Y-m-d h:i:s');
                 }
-                if($value == 'IS NULL') {
+                if($value === 'IS NULL') {
                     $operator = 'IS NULL';
                     $variable_replacement = '';
-                } else if($value == 'IS NOT NULL') {
+                } else if($value === 'IS NOT NULL') {
                     $operator = 'IS NOT NULL';
                     $variable_replacement = '';
                 } else if(strtolower($operator) != 'in') {
@@ -158,23 +179,42 @@ abstract class AbstractObject implements SplSubject
                 $order_columns[] = $column_name . ' ' . $direction;
             }
         }
+
         if(!is_null($order) && is_array($order)) {
             foreach ($order as $column_name => $direction) {
                 $order_columns[] = $column_name . ' ' . $direction;
             }
         }
+
         if((isset($this->_definitions['database']['order_columns']) && !is_null($this->_definitions['database']['order_columns'])) || (!is_null($order) && is_array($order))) {
             $query .= ' ORDER BY ' . implode(', ', $order_columns);
         }
+
         if(!is_null($limit)) {
             $query .= ' LIMIT ' . $limit[0] . ', ' . $limit[1];
         }
-        $dataset = $this->_db->fetchAll($query, $values);
+
+        if($this->_cache_enabled) {
+            $key = md5($query . json_encode($values));
+            $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']['name']);
+            if($cache_adapter->exists($key)) {
+                $dataset = json_decode($cache_adapter->get($key));
+            } else {
+                $dataset = $this->_db->fetchAll($query, $values);
+                $cache_adapter->add($key, json_encode($dataset));
+            }
+        } else {
+            $dataset = $this->_db->fetchAll($query, $values);
+        }
+        /*echo $query;
+        print_r($values);
+        print_r($dataset);*/
         foreach ($dataset as $stdObject) {
             /**@var AbstractObject $object * */
             $class_name = get_class($this);
-            $object = new $class_name($stdObject->id, $this->_read_relations);
+            $object = new $class_name(null, $this->_read_relations);
             $object->fromStdClass($stdObject);
+            $object->readRelations();
             $result[] = $object;
         }
         return $result;
@@ -218,49 +258,73 @@ abstract class AbstractObject implements SplSubject
      */
     public function read($id)
     {
+        $this->_write_log('read(' . $id . ')');
         $cache_adapter = null;
         if ($id != '0' && !empty($id)) {
             if($this->_cache_enabled) {
-                $data = $this->_readFromCache($id);
+                $this->_readFromCache($id);
             } else {
-                $data = $this->_readFromDb($id);
-            }
-            if (!is_null($data)) {
-                $this->fromStdClass($data);
-                return true;
-            } else {
-                return false;
-            }
+                $this->_readFromDb($id);
+            };
         }
+        return true;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     * @throws Exception
+     */
     private function _readFromDb($id)
     {
+        $this->_write_log('_readFromDb( ' . $id . ' )');
         $query = "SELECT * FROM " .
             $this->getDbTableName() .
             " WHERE " . $this->_definitions['database']['primary_key'] .
             " = ?";
         $data = $this->_db->fetchRow($query, [$id]);
-        $this->readRelations();
+        $this->fromStdClass($data);
         return $data;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     private function _readFromCache($id)
     {
-        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']);
+        $this->_write_log('_readFromCache( ' . $id . ' )');
+        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']['name']);
         if($cache_adapter->exists($this->getDbTableName() . '_' . $id)) {
+            //var_dump($cache_adapter->get($this->getDbTableName() . '_' . $id));
             $data = json_decode($cache_adapter->get($this->getDbTableName() . '_' . $id));
+            $this->fromCache($data);
         } else {
-            $this->setReadRelations(true);
-            $data = $this->_readFromDb($id);
-            $cache_adapter->add($this->getDbTableName() . '_' . $id, $this->toStdClass());
+            $data = $this->addToCache($id);
         }
         return $data;
     }
 
+    /**
+     * @return mixed
+     */
+    public function addToCache($id)
+    {
+        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']['name']);
+        $this->setReadRelations(true);
+        $data = $this->_readFromDb($id);
+        $cache_adapter->add($this->getDbTableName() . '_' . $id, json_encode($this->toStdClass()));
+        return $data;
+    }
+
+    /**
+     *
+     */
     public function removeFromCache() {
-        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']);
-        $cache_adapter->remove($this->getDbTableName() . '_' . $this->getId());
+        $cache_adapter = \Pressmind\Cache\Adapter\Factory::create(Registry::getInstance()->get('config')['cache']['adapter']['name']);
+        if($cache_adapter->exists($this->getDbTableName() . '_' . $this->getId())) {
+            $cache_adapter->remove($this->getDbTableName() . '_' . $this->getId());
+        }
     }
 
     /**
@@ -268,6 +332,7 @@ abstract class AbstractObject implements SplSubject
      */
     public function readRelations()
     {
+        $this->_write_log('readRelations()');
         if(true === $this->_read_relations) {
             foreach ($this->_definitions['properties'] as $property_name => $property) {
                 if($property['type'] == 'relation') {
@@ -282,6 +347,7 @@ abstract class AbstractObject implements SplSubject
      */
     public function setReadRelations($readRelations)
     {
+        $this->_write_log('setReadRelations(' . $readRelations . ')');
         $this->_read_relations = $readRelations;
     }
 
@@ -377,6 +443,7 @@ abstract class AbstractObject implements SplSubject
                 $this->$key = $value;
             }
         }
+        $this->readRelations();
     }
 
     public function fromArray($pArray) {
@@ -443,6 +510,45 @@ abstract class AbstractObject implements SplSubject
             }
         }
         return $object;
+    }
+
+    public function fromCache($data) {
+        $this->_write_log('fromCache()');
+        foreach ($this->_definitions['properties'] as $property_name => $property) {
+            if($property['type'] == 'relation') {
+                $objects_to_convert = $data->$property_name;
+                if(!empty($objects_to_convert)) {
+                    if ($property['relation']['type'] == 'hasOne' || $property['relation']['type'] == 'belongsTo') {
+                        $objects_to_convert = [$objects_to_convert];
+                    }
+                    $value = null;
+                    foreach ($objects_to_convert as $object_to_convert) {
+                        $class_name = $property['relation']['class'];
+                        $object = new $class_name();
+                        //$this->$property_name[] = null;
+                        if(isset($property['relation']['from_factory']) && $property['relation']['from_factory'] === true) {
+                            $factory_class_name = $property['relation']['class'];
+                            $parameters = [];
+                            foreach ($property['relation']['factory_parameters'] as $parameter) {
+                                $parameters[] = $this->$parameter;
+                            }
+                            $parameters[] = $object_to_convert;
+                            $value[] = call_user_func_array([$factory_class_name, 'readFromCache'], $parameters);
+                        } else if ($property['relation']['type'] == 'hasOne' || $property['relation']['type'] == 'belongsTo') {
+                            $value = $object->fromCache($object_to_convert);
+                        } else {
+                            $value[] = $object->fromCache($object_to_convert);
+                        }
+                        $this->$property_name = $value;
+                    }
+                } else {
+                    $this->$property_name = null;
+                }
+            } else {
+                $this->$property_name = $data->$property_name;
+            }
+        }
+        return $this;
     }
 
     /**
@@ -650,6 +756,7 @@ abstract class AbstractObject implements SplSubject
      */
     public function __set($name, $value)
     {
+        $this->_write_log('__set(' . $name . ')');
         if (isset($this->_definitions['properties'][$name]) ) {
             try {
                 $this->$name = $this->parsePropertyValue($name, $value);
@@ -781,6 +888,7 @@ abstract class AbstractObject implements SplSubject
      */
     public function __get($name)
     {
+        $this->_write_log('__get(' . $name . ')');
         if(empty($this->$name)) {
             if ($name != '_definitions' && isset($this->_definitions['properties'][$name])) {
                 $property_info = $this->_definitions['properties'][$name];
@@ -821,8 +929,8 @@ abstract class AbstractObject implements SplSubject
      */
     private function getRelationHasOne($property_info)
     {
+        $this->_write_log('getRelationHasOne(' . $property_info['name'] . ')');
         $relation_object_id_name = $property_info['relation']['related_id'];
-
         if(!empty($this->$relation_object_id_name)) {
             $relation_class_name = $property_info['relation']['class'];
             /**@var $relation_object AbstractObject* */
@@ -834,6 +942,7 @@ abstract class AbstractObject implements SplSubject
     }
 
     private function getRelationBelongsTo($property_info) {
+        $this->_write_log('getRelationBelongsTo(' . $property_info['name'] . ')');
         $fieldname = $property_info['name'];
         if (!empty($this->getId()) && empty($this->$fieldname)) {
             if(isset($property_info['relation']['from_factory']) && $property_info['relation']['from_factory'] === true) {
@@ -874,6 +983,7 @@ abstract class AbstractObject implements SplSubject
      */
     private function getRelationHasMany($property_info)
     {
+        $this->_write_log('getRelationHasMany(' . $property_info['name'] . ')');
         $fieldname = $property_info['name'];
         if (!empty($this->getId()) && empty($this->$fieldname)) {
             if(isset($property_info['relation']['from_factory']) && $property_info['relation']['from_factory'] === true) {
@@ -915,6 +1025,7 @@ abstract class AbstractObject implements SplSubject
      */
     private function getRelationManyToMany($property_info)
     {
+        $this->_write_log('getRelationManyToMany(' . $property_info['name'] . ')');
         $objects = [];
         $object_name = $property_info['relation']['class'];
         /**@var AbstractObject $object * */
@@ -1081,8 +1192,8 @@ abstract class AbstractObject implements SplSubject
 
     public function renderApiOutputTemplate($templateName) {
         $config = Registry::getInstance()->get('config');
-        $script_path = $config['view_scripts']['base_path'] . DIRECTORY_SEPARATOR . ucfirst($templateName);
-        require_once BASE_PATH . DIRECTORY_SEPARATOR . $script_path . '.php';
+        $script_path = str_replace('APPLICATION_PATH', APPLICATION_PATH, $config['view_scripts']['base_path']) . DIRECTORY_SEPARATOR . ucfirst($templateName);
+        require_once $script_path . '.php';
         $classname = ucfirst($templateName);
         $renderer = new $classname($this);
         return $renderer->render();
