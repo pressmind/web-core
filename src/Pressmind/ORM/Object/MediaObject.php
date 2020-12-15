@@ -416,6 +416,7 @@ class MediaObject extends AbstractObject
             $language = $config['data']['languages']['default'];
         }
         $media_type_name = ucfirst(HelperFunctions::human_to_machine($config['data']['media_types'][$this->id_object_type]));
+        $this->data;
         $data = HelperFunctions::findObjectInArray($this->data, 'language', $language);
         $booking_packages = $this->booking_packages;
         $media_object = $this;
