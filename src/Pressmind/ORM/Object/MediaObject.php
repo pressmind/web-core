@@ -411,6 +411,8 @@ class MediaObject extends AbstractObject
      * @throws Exception
      */
     public function render($template, $language = null, $custom_data = null) {
+        $this->setReadRelations(true);
+        $this->readRelations();
         $config = Registry::getInstance()->get('config');
         if(is_null($language)) {
             $language = $config['data']['languages']['default'];
