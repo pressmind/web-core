@@ -245,10 +245,40 @@
                     <a href="#mediaobject" class="toc-h2 toc-link" data-title="MediaObject">MediaObject</a>
                 </li>
                 <li>
+                    <a href="#mediaobject-getbyroute" class="toc-h2 toc-link" data-title="MediaObject/getByRoute">MediaObject/getByRoute</a>
+                </li>
+                <li>
                     <a href="#categorytree" class="toc-h2 toc-link" data-title="CategoryTree">CategoryTree</a>
                 </li>
                 <li>
                     <a href="#route" class="toc-h2 toc-link" data-title="Route">Route</a>
+                </li>
+                <li>
+                    <a href="#itinerary-variant" class="toc-h2 toc-link" data-title="Itinerary\Variant">Itinerary\Variant</a>
+                </li>
+                <li>
+                    <a href="#touristic-booking-package" class="toc-h2 toc-link" data-title="Touristic\Booking\Package">Touristic\Booking\Package</a>
+                </li>
+                <li>
+                    <a href="#touristic-date" class="toc-h2 toc-link" data-title="Touristic\Date">Touristic\Date</a>
+                </li>
+                <li>
+                    <a href="#touristic-insurance" class="toc-h2 toc-link" data-title="Touristic\Insurance">Touristic\Insurance</a>
+                </li>
+                <li>
+                    <a href="#touristic-option" class="toc-h2 toc-link" data-title="Touristic\Option">Touristic\Option</a>
+                </li>
+                <li>
+                    <a href="#touristic-pickupservice" class="toc-h2 toc-link" data-title="Touristic\Pickupservice">Touristic\Pickupservice</a>
+                </li>
+                <li>
+                    <a href="#touristic-seasonalperiod" class="toc-h2 toc-link" data-title="Touristic\SeasonalPeriod">Touristic\SeasonalPeriod</a>
+                </li>
+                <li>
+                    <a href="#touristic-startingpoint" class="toc-h2 toc-link" data-title="Touristic\Startingpoint">Touristic\Startingpoint</a>
+                </li>
+                <li>
+                    <a href="#touristic-transport" class="toc-h2 toc-link" data-title="Touristic\Transport">Touristic\Transport</a>
                 </li>
                 <li>
                     <a href="#search" class="toc-h2 toc-link" data-title="Search">Search</a>
@@ -285,6 +315,9 @@
                 </li>
                 <li>
                     <a href="#search-gt-condition-gt-category" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; Category">Search &gt; Condition &gt; Category</a>
+                </li>
+                <li>
+                    <a href="#search-gt-condition-gt-mediaobjectid" class="toc-h2 toc-link" data-title="Search &gt; Condition &gt; MediaObjectID">Search &gt; Condition &gt; MediaObjectID</a>
                 </li>
                 <li>
                     <a href="#search-gt-filters" class="toc-h2 toc-link" data-title="Search &gt; Filters">Search &gt; Filters</a>
@@ -650,43 +683,7 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
         <p>all parameters can also be posted in the requests body as raw json</p>
-        <h3 id='get-media-object-by-route'>Get Media Object By Route</h3>
-        <p><code>POST http://pmt2lib.local/rest/mediaObject/getByRoute</code></p>
-        <h3 id='query-parameters-2'>Query Parameters</h3>
-        <table><thead>
-        <tr>
-            <th>Parameter</th>
-            <th>Default</th>
-            <th>Description</th>
-        </tr>
-        </thead><tbody>
-        <tr>
-            <td>route</td>
-            <td>required</td>
-            <td>Type: string</td>
-        </tr>
-        <tr>
-            <td>id_object_type</td>
-            <td>null</td>
-            <td>Type: integer</td>
-        </tr>
-        <tr>
-            <td>language</td>
-            <td>null</td>
-            <td>Type: string</td>
-        </tr>
-        <tr>
-            <td>visibility</td>
-            <td>null</td>
-            <td>Type: integer</td>
-        </tr>
-        <tr>
-            <td>readRelations</td>
-            <td>null</td>
-            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
-        </tr>
-        </tbody></table>
-
+        <h2 id='mediaobject-getbyroute'>MediaObject/getByRoute</h2>
         <blockquote>
             <p>POST Body Example</p>
         </blockquote>
@@ -754,7 +751,43 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
     </span><span class="p">],</span><span class="w">
     </span><span class="err">...</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h2 id='categorytree'>CategoryTree</h2>
+</span></code></pre>
+        <p><code>POST http://pmt2lib.local/rest/mediaObject/getByRoute</code></p>
+        <h3 id='query-parameters-2'>Query Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>route</td>
+            <td>required</td>
+            <td>Type: string</td>
+        </tr>
+        <tr>
+            <td>id_object_type</td>
+            <td>null</td>
+            <td>Type: integer</td>
+        </tr>
+        <tr>
+            <td>language</td>
+            <td>null</td>
+            <td>Type: string</td>
+        </tr>
+        <tr>
+            <td>visibility</td>
+            <td>null</td>
+            <td>Type: integer</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        </tbody></table>
+        <h2 id='categorytree'>CategoryTree</h2>
         <blockquote>
             <p>Request</p>
         </blockquote>
@@ -978,6 +1011,1569 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
         <p>all parameters can also be posted in the requests body as raw json</p>
+        <h2 id='itinerary-variant'>Itinerary\Variant</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_booking_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"booking_package_name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"booking_package_duration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"variant_duration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"booking_package_variant_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"offset"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"steps"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/itinerary/variant</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_booking_package</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>booking_package_name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>booking_package_duration</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>variant_duration</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>booking_package_variant_code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>offset</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-booking-package'>Touristic\Booking\Package</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"duration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price_mix"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_pickupservice"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_insurance_group"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"ibe_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"product_type_ibe"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_origin"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type_of_travel"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"variant_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"request_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"destination_airport"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pickupservice"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"insurance_group"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dates"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"seasonal_periods"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"itinerary_variants"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"housing_packages"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"sightseeings"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"tickets"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"extras"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/booking/package</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>duration</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>order</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>text</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price_mix</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_pickupservice</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_insurance_group</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>ibe_type</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>product_type_ibe</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_origin</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>type_of_travel</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>variant_code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>request_code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>destination_airport</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-date'>Touristic\Date</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_booking_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_starting_point"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"departure"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"arrival"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"season"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_earlybird_discount"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"link_pib"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"guaranteed"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"saved"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"touroperator"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"startingpoint"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transports"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/date</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_booking_package</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_starting_point</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>departure</td>
+            <td>date</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>arrival</td>
+            <td>date</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>text</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_min</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_max</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>season</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_earlybird_discount</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>link_pib</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>guaranteed</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>saved</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>touroperator</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-insurance'>Touristic\Insurance</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description_long"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"duration_max_days"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"worldwide"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"is_additional_insurance"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"urlinfo"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"urlproduktinfo"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"urlagb"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price_tables"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/insurance</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>active</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description_long</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>duration_max_days</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>worldwide</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>is_additional_insurance</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>urlinfo</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>urlproduktinfo</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>urlagb</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_min</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_max</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-option'>Touristic\Option</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_booking_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_housing_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"season"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"board_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price_pseudo"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price_child"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"occupancy"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"occupancy_child"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"quota"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"renewal_duration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"renewal_price"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"booking_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"event"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price_due"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe_board_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe_board_type_category"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe_category"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"auto_book"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"required_group"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description_long"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"min_pax"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"max_pax"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"reservation_date_from"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"reservation_date_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"age_from"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"age_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"selection_type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"use_earlybird"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"request_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"occupancy_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"occupancy_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"occupancy_max_age"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/option</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_booking_package</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_housing_package</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>season</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>board_type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price_pseudo</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price_child</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>occupancy</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>occupancy_child</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>quota</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>renewal_duration</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>renewal_price</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>order</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>booking_type</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>event</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price_due</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe_board_type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe_board_type_category</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe_category</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>auto_book</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>required</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>required_group</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description_long</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>min_pax</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>max_pax</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>reservation_date_from</td>
+            <td>datetime</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>reservation_date_to</td>
+            <td>datetime</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>age_from</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>age_to</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>selection_type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>use_earlybird</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>request_code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>currency</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>occupancy_min</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>occupancy_max</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>occupancy_max_age</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-pickupservice'>Touristic\Pickupservice</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/pickupservice</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>text</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-seasonalperiod'>Touristic\SeasonalPeriod</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_booking_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"season_begin"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"season_end"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"season"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"monday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"tuesday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"wednesday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"thursday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"friday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"saturday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"sunday"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"offset"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_max"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax_min"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pax"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_touristic_early_bird"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"link_pib"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_starting_point"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"guaranteed"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"saved"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"touroperator"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"startingpoint"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/seasonalperiod</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_booking_package</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>season_begin</td>
+            <td>date</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>season_end</td>
+            <td>date</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>info</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>season</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>monday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>tuesday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>wednesday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>thursday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>friday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>saturday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sunday</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>offset</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_max</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax_min</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>pax</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_touristic_early_bird</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>link_pib</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_starting_point</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>guaranteed</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>saved</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>touroperator</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-startingpoint'>Touristic\Startingpoint</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"logic"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"options"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/startingpoint</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>text</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>logic</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
+        <h2 id='touristic-transport'>Touristic\Transport</h2>
+        <blockquote>
+            <p>Response</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_media_object"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_booking_package"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"way"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code_ibe"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"auto_book"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"required"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"required_group"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transport_group"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description_long"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_starting_point"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transport_date_from"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"transport_date_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id_early_bird"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre><h3 id='request'>Request</h3>
+        <p><code>GET/POST  https://example.com/rest/touristic/transport</code></p>
+        <h3 id='optional-parameters'>Optional Parameters</h3>
+        <table><thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>apiTemplate</td>
+            <td>string</td>
+            <td>null</td>
+            <td>If set, the given apiTemplate will be renderd in the result (<a href="#api-result-templates">See API result Templates</a>)</td>
+        </tr>
+        <tr>
+            <td>readRelations</td>
+            <td>boolean</td>
+            <td>null</td>
+            <td>If set to true(1), the result for will include all relations for that object, not just the flat data<br>BEWARE: this may cause extreme large objects beeing returned</td>
+        </tr>
+        <tr>
+            <td>start</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>start parameter for the query</td>
+        </tr>
+        <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>null</td>
+            <td>limit parameter for the query</td>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_date</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_media_object</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_booking_package</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>way</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>float</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>order</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>state</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>code_ibe</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>auto_book</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>required</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>required_group</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>transport_group</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>description_long</td>
+            <td>string</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_starting_point</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>transport_date_from</td>
+            <td>datetime</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>transport_date_to</td>
+            <td>datetime</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>id_early_bird</td>
+            <td>integer</td>
+            <td>null</td>
+            <td></td>
+        </tr>
+        </tbody></table>
+
+        <p>All parameters can also be posted as a json object in the raw body of a POST request</p>
         <h2 id='search'>Search</h2>
         <blockquote>
             <p>Example for a search body</p>
@@ -1024,7 +2620,7 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
         <p>The search endpoint is only available via the POST method. The content type has to be &quot;application/json&quot; an the body has to be raw, valid json.</p>
-        <h3 id='http-request-4'>HTTP Request</h3>
+        <h3 id='http-request'>HTTP Request</h3>
         <p><code>POST http://example.com/rest/search</code></p>
 
         <p>Possible elements:</p>
@@ -1438,7 +3034,7 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
         <tr>
             <td>var_name</td>
             <td>string</td>
-            <td>the pagesize of the paginated result (how many results per page)</td>
+            <td>the variable_name of the corresponding data entry</td>
         </tr>
         <tr>
             <td>item_ids</td>
@@ -1449,6 +3045,30 @@ will <span class="k">return </span>only media objects with visibility of 10 and 
             <td>combine_operator</td>
             <td>enum</td>
             <td>Possible values: &quot;AND&quot;, &quot;OR&quot;. Defaults to &quot;AND&quot;</td>
+        </tr>
+        </tbody></table>
+        <h2 id='search-gt-condition-gt-mediaobjectid'>Search &gt; Condition &gt; MediaObjectID</h2>
+        <blockquote>
+            <p>Example</p>
+        </blockquote>
+        <pre class="highlight json tab-json"><code><span class="s2">"uniqueIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MediaObjectID"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">12345</span><span class="p">,</span><span class="mi">67890</span><span class="p">,</span><span class="mi">98765</span><span class="p">,</span><span class="mi">654321</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+        <table><thead>
+        <tr>
+            <th>Config Option</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+            <td>item_ids</td>
+            <td>array</td>
+            <td>array of media object ids</td>
         </tr>
         </tbody></table>
         <h2 id='search-gt-filters'>Search &gt; Filters</h2>
